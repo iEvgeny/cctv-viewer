@@ -1,10 +1,50 @@
+VER_MAJ = 0
+VER_MIN = 1
+VER_PAT = 0
+REL_STATUS = "alpha"
+
+VERSION = "$${VER_MAJ}.$${VER_MIN}"
+
+greaterThan(VER_PAT, 0) {
+    VERSION = "$${VERSION}.$${VER_PAT}"
+}
+!isEmpty(REL_STATUS) {
+    VERSION = "$${VERSION} $${REL_STATUS}"
+}
+
+APP_NAME = "CCTV Viewer"
+ORG_NAME = "T171RU"
+ORG_DOMAIN = "https://t171.ru"
+
+DEFINES += VER_MAJ=$${VER_MAJ} \
+           VER_MIN=$${VER_MIN} \
+           VER_PAT=$${VER_PAT} \
+           \"REL_STATUS=\\\"$${REL_STATUS}\\\"\" \
+           \"APP_VERSION=\\\"$${VERSION}\\\"\" \
+           \"APP_NAME=\\\"$${APP_NAME}\\\"\" \
+           \"ORG_NAME=\\\"$${ORG_NAME}\\\"\" \
+           \"ORG_DOMAIN=\\\"$${ORG_DOMAIN}\\\"\"
+
+# Check Qt version
+QT_MIN_MAJOR_VERSION = 5
+QT_MIN_MINOR_VERSION = 8
+if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VERSION, $${QT_MIN_MINOR_VERSION})) {
+    error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
+}
+
 QT += qml quick
 
-CONFIG += c++11
+CONFIG += c++11 debug_and_release
 
-SOURCES += main.cpp
+DESTDIR = bin
 
-RESOURCES += qml.qrc
+HEADERS += src/quickenums.h
+
+SOURCES += src/main.cpp
+
+RESOURCES += cctv-viewer.qrc
+
+TRANSLATIONS += res/translations/cctv-viewer_ru.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
