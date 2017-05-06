@@ -61,28 +61,30 @@ Item {
     }
 
     function parse(string, clear) {
-        try {
-            var jsModel = JSON.parse(string);
+        if (!string.isEmpty()) {
+            try {
+                var jsModel = JSON.parse(string);
 
-            if (typeof(jsModel) === 'object') {
-                if (clear !== undefined && clear) {
-                    model.clear();
-                }
+                if (typeof(jsModel) === 'object') {
+                    if (clear !== undefined && clear) {
+                        model.clear();
+                    }
 
-                for (var i = 0; i < jsModel.length; ++i) {
-                    var element = jsModel[i];
+                    for (var i = 0; i < jsModel.length; ++i) {
+                        var element = jsModel[i];
 
-                    if (typeof(element) === 'object') {
-                        if (i < model.count) {
-                            model.set(i, element);
-                        } else {
-                            model.append(element);
+                        if (typeof(element) === 'object') {
+                            if (i < model.count) {
+                                model.set(i, element);
+                            } else {
+                                model.append(element);
+                            }
                         }
                     }
                 }
+            } catch(err) {
+                CCTV_Viewer.log_error(qsTr('Error reading configuration.'));
             }
-        } catch(err) {
-            CCTV_Viewer.log_error(qsTr('Error reading configuration.'));
         }
 
         return this;
@@ -148,7 +150,7 @@ Item {
 
             // Add missing items.
             if (model.count < cells) {
-                for (var i = 0; i < cells - model.count; ++i) {
+                for (var i = 0; model.count < cells; ++i) {
                     model.append(listModel.defaultElement());
                 }
             }
@@ -161,13 +163,13 @@ Item {
 
                 // Mormalize properties
                 element.url = (element.url !== undefined) ? element.url : '';
-                element.volume = CCTV_Viewer.clamp(element.volume, 0.0, 1.0);
+                element.volume = element.volume.clamp(0.0, 1.0);
 
                 if (index < cells) {
                     if (index > 0 && element.visible === Viewport.Spanned) {
                         // Mormalize properties
-                        element.columnSpan = CCTV_Viewer.clamp(element.columnSpan, -column, 0);
-                        element.rowSpan = CCTV_Viewer.clamp(element.rowSpan, -row, 0);
+                        element.columnSpan = element.columnSpan.clamp(-column, 0);
+                        element.rowSpan = element.rowSpan.clamp(-row, 0);
 
                         // Check for span
                         if (root.spanningIndex(index, division) < 0) {
@@ -181,8 +183,8 @@ Item {
                         }
 
                         // Mormalize properties
-                        element.columnSpan = CCTV_Viewer.clamp(element.columnSpan, 1, division - column);
-                        element.rowSpan = CCTV_Viewer.clamp(element.rowSpan, 1, division - row);
+                        element.columnSpan = element.columnSpan.clamp(1, division - column);
+                        element.rowSpan = element.rowSpan.clamp(1, division - row);
 
                         if (quadSpan === true) {
                             var span = Math.min(element.columnSpan, element.rowSpan);

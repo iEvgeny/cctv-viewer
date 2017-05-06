@@ -34,7 +34,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
 
 QT += qml quick
 
-CONFIG += c++11 debug_and_release
+CONFIG += c++11 warn_on debug_and_release
 
 DESTDIR = bin
 
@@ -44,7 +44,13 @@ SOURCES += src/main.cpp
 
 RESOURCES += cctv-viewer.qrc
 
+DISTFILES += \
+    res/win32.rc \
+    res/translations/cctv-viewer_ru.ts
+
 TRANSLATIONS += res/translations/cctv-viewer_ru.ts
+
+win32:RC_FILE = res/win32.rc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

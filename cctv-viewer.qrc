@@ -4,9 +4,11 @@
         <file>src/qml/main.qml</file>
         <file>src/qml/Player.qml</file>
         <file>src/qml/ViewportsLayout.qml</file>
+        <file>src/qml/ViewportsListModel.qml</file>
         <file>src/qml/SideMenu.qml</file>
         <file>res/qtquickcontrols2.conf</file>
         <file>res/translations/cctv-viewer_ru.qm</file>
-        <file>src/qml/ViewportsListModel.qml</file>
+        <file>res/icons/cctv-viewer.svg</file>
+        <file>res/icons/cctv-viewer.ico</file>
     </qresource>
 </RCC>

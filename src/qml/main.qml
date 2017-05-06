@@ -23,8 +23,8 @@ ApplicationWindow {
         id: rootWindowSettings
 
         category: 'RootWindow'
-        property int width: 640
-        property int height: 480
+        property int width: 960
+        property int height: 540
         property alias fullScreen: rootWindow.fullScreen
     }
     Binding {
@@ -49,8 +49,15 @@ ApplicationWindow {
         property string model
 
         Component.onCompleted: {
-            viewportsLayout.model.changed.connect(function() { model = viewportsLayout.model.stringify(); });
+            function stringifyModel() {
+                model = viewportsLayout.model.stringify();
+            }
+
+            // Load model
             viewportsLayout.model.parse(viewportsLayoutSettings.model);
+            // Save model
+            stringifyModel();
+            viewportsLayout.model.changed.connect(function() { stringifyModel(); });
         }
     }
 

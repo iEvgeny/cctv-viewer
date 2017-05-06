@@ -8,7 +8,7 @@ FocusScope {
     id: root
 
     property int division: 1
-    property string aspectRatio: '16x9'
+    property string aspectRatio: '16:9'
     property var model: ViewportsListModel {}
     property string color: 'black'
 
@@ -196,10 +196,10 @@ FocusScope {
 
                             PropertyChanges {
                                 target: viewport
-                                // HACK: Вводим зависимость от размера элемента родителя для того,
-                                // чтобы инициировать пересчет позиции дочернего элемента при изменении размера GridLayout.
-                                x: viewport.parent.width ? -parent.mapToItem(layout, 0, 0).x : 0
-                                y: viewport.parent.height ? -parent.mapToItem(layout, 0, 0).y : 0
+                                // HACK: Вводим зависимость от размера container для того,
+                                // чтобы инициировать пересчет позиции viewport при изменении размера GridLayout.
+                                x: container.width ? -container.mapToItem(layout, 0, 0).x : 0
+                                y: container.height ? -container.mapToItem(layout, 0, 0).y : 0
                                 width: layout.width
                                 height: layout.height
                             }
@@ -339,17 +339,16 @@ FocusScope {
                         property real volume: model.volume
 
                         property int topIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
-                                                             CCTV_Viewer.clamp(viewport.row - 1, 0, root.division - 1))
+                                                             Number(viewport.row - 1).clamp(0, root.division - 1))
 
-                        property int rightIndex: spanningIndex(CCTV_Viewer.clamp(viewport.column + viewport.columnSpan, 0, root.division - 1),
+                        property int rightIndex: spanningIndex(Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1),
                                                                viewport.row + viewport.cursorRowOffset)
 
                         property int bottomIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
-                                                                CCTV_Viewer.clamp(viewport.row + viewport.rowSpan, 0, root.division - 1))
+                                                                Number(viewport.row + viewport.rowSpan).clamp(0, root.division - 1))
 
-                        property int leftIndex: spanningIndex(CCTV_Viewer.clamp(viewport.column - 1, 0, root.division - 1),
+                        property int leftIndex: spanningIndex(Number(viewport.column - 1).clamp(0, root.division - 1),
                                                               viewport.row + viewport.cursorRowOffset)
-
 
                         function setCurrentIndex(key, current) {
                             if (current === true) {

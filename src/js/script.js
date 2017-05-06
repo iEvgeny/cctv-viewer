@@ -16,18 +16,22 @@ function ifRightToLeft(rightToLeft, leftToRight) {
 }
 
 // Strings
-function leadingChars(str, fieldWidth, fillChar) {
+String.prototype.isEmpty = function() {
+    return this.length === 0 || !this.trim();
+};
+
+String.prototype.leadingChars = function(fieldWidth, fillChar) {
     var chars = '';
 
     if (fillChar === undefined) {
         fillChar = ' ';
     }
 
-    for (var i = 0; i < fieldWidth - String(str).length; ++i) {
+    for (var i = 0; i < fieldWidth - this.length; ++i) {
         chars += fillChar;
     }
 
-    return chars + str;
+    return chars + this;
 }
 
 // Math
@@ -35,12 +39,12 @@ function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function clamp(val, min, max) {
-    return Math.min(Math.max(val, min), max);
+Number.prototype.clamp = function(min, max) {
+    return Math.min(Math.max(this, min), max);
 }
 
-function inRange(val, min, max) {
-    return (val >= min && val <= max) ? true : false;
+Number.prototype.inRange = function(min, max) {
+    return (this >= min && val <= this) ? true : false;
 }
 
 // Debug

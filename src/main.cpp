@@ -1,16 +1,15 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickWindow>
 #include <QTranslator>
 #include "quickenums.h"
 
-void registerQmlTypes()
-{
+void registerQmlTypes() {
     // Enums
     qmlRegisterUncreatableType<QuickViewport>("CCTV_Viewer.Enums", 1, 0, "Viewport", "Uncreatable type!");
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 #if defined(APP_NAME)
@@ -41,6 +40,15 @@ int main(int argc, char *argv[])
 //    app.setLayoutDirection(Qt::RightToLeft);
 
     engine.load(QUrl(QLatin1String("qrc:///src/qml/main.qml")));
+
+    QObject *topLevel = engine.rootObjects().value(0);
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+    if (!window) {
+        qWarning("Error: Your root item has to be a Window.");
+        return -1;
+    }
+
+    window->setIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.ico")));
 
     return app.exec();
 }
