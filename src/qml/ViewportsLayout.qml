@@ -262,23 +262,6 @@ FocusScope {
                             }
 
                             break;
-                        case Qt.Key_Right:
-                            keyNavigationHandler(keyRightCallback);
-
-                            function keyRightCallback(index) {
-                                var rightIndex = root.itemAt(index).rightIndex;
-
-                                if (rightIndex !== index) {
-                                    root.itemAt(rightIndex).cursorRowOffset =
-                                            d.rowFromIndex(index) + root.itemAt(index).cursorRowOffset - d.rowFromIndex(rightIndex);
-                                } else {
-                                    root.itemAt(index).cursorColumnOffset = Math.min(root.itemAt(index).cursorColumnOffset + 1, root.itemAt(index).columnSpan - 1);
-                                }
-
-                                return rightIndex;
-                            }
-
-                            break;
                         case Qt.Key_Down:
                             keyNavigationHandler(keyDownCallback);
 
@@ -293,6 +276,23 @@ FocusScope {
                                 }
 
                                 return bottomIndex;
+                            }
+
+                            break;
+                        case Qt.Key_Right:
+                            keyNavigationHandler(keyRightCallback);
+
+                            function keyRightCallback(index) {
+                                var rightIndex = root.itemAt(index).rightIndex;
+
+                                if (rightIndex !== index) {
+                                    root.itemAt(rightIndex).cursorRowOffset =
+                                            d.rowFromIndex(index) + root.itemAt(index).cursorRowOffset - d.rowFromIndex(rightIndex);
+                                } else {
+                                    root.itemAt(index).cursorColumnOffset = Math.min(root.itemAt(index).cursorColumnOffset + 1, root.itemAt(index).columnSpan - 1);
+                                }
+
+                                return rightIndex;
                             }
 
                             break;
@@ -341,13 +341,17 @@ FocusScope {
                         property int topIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
                                                              Number(viewport.row - 1).clamp(0, root.division - 1))
 
-                        property int rightIndex: spanningIndex(Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1),
-                                                               viewport.row + viewport.cursorRowOffset)
-
                         property int bottomIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
                                                                 Number(viewport.row + viewport.rowSpan).clamp(0, root.division - 1))
 
-                        property int leftIndex: spanningIndex(Number(viewport.column - 1).clamp(0, root.division - 1),
+                        property int rightIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
+                                                               Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1),
+                                                               Number(viewport.column - 1).clamp(0, root.division - 1)),
+                                                               viewport.row + viewport.cursorRowOffset)
+
+                        property int leftIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
+                                                              Number(viewport.column - 1).clamp(0, root.division - 1),
+                                                              Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1)),
                                                               viewport.row + viewport.cursorRowOffset)
 
                         function setCurrentIndex(key, current) {

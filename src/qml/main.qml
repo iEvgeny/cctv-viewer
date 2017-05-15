@@ -15,10 +15,6 @@ ApplicationWindow {
 
     property bool fullScreen: false
 
-    // Right-to-left User Interfaces support
-    LayoutMirroring.enabled: Script.ifRightToLeft(true)
-    LayoutMirroring.childrenInherit: Script.ifRightToLeft(true)
-
     Settings {
         id: rootWindowSettings
 
@@ -70,18 +66,27 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
-    ViewportsLayout {
-        id: viewportsLayout
-
-        focus: true
-        division: 3
+    Item {
         anchors.fill: parent
-    }
 
-    SideMenu {
-        id: submenu
+        // Right-to-left User Interfaces support
+        // (NOTE: This is supported by the ApplicationWindow starting from Qt 5.8)
+        LayoutMirroring.enabled: Script.ifRightToLeft(true)
+        LayoutMirroring.childrenInherit: Script.ifRightToLeft(true)
 
-        height: parent.height
-        anchors.right: parent.right
+        ViewportsLayout {
+            id: viewportsLayout
+
+            focus: true
+            division: 3
+            anchors.fill: parent
+        }
+
+        SideMenu {
+            id: submenu
+
+            height: parent.height
+            anchors.right: parent.right
+        }
     }
 }
