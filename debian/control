@@ -1,0 +1,16 @@
+Source: cctv-viewer
+Section: video
+Priority: optional
+Maintainer: Evgeny S Maksimov <admin@vragam.net>
+Build-Depends: debhelper (>= 9),
+               qtdeclarative5-dev,
+               qttools5-dev-tools
+Standards-Version: 3.9.8
+Homepage: https://github.com/iEvgeny/cctv-viewer
+Vcs-Git: https://github.com/iEvgeny/cctv-viewer.git
+Vcs-Browser: https://github.com/iEvgeny/cctv-viewer
+
+Package: cctv-viewer
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: CCTV Viewer - viewer and mounter video streams.

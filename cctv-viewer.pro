@@ -36,6 +36,10 @@ QT += qml quick
 
 CONFIG += c++11 warn_on debug_and_release
 
+TEMPLATE = app
+
+TARGET = cctv-viewer
+
 DESTDIR = bin
 
 HEADERS += src/quickenums.h
@@ -71,5 +75,5 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
+else: unix:!android: target.path = /usr/bin
 !isEmpty(target.path): INSTALLS += target
