@@ -1,6 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=CCTV Viewer
+GenericName=Video streams viewer
+GenericName[ru]=Просмотрщик видеопотоков
 Comment=Viewer and mounter video streams
 Comment[ru]=Просмотрщик и компоновщик видеопотоков
 Icon=cctv-viewer
