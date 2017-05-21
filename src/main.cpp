@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
@@ -10,6 +11,11 @@ void registerQmlTypes() {
 }
 
 int main(int argc, char *argv[]) {
+#if defined(Q_OS_LINUX)
+    // Ignore the SIGPIPE signal. Can be raised by librtmp.
+    signal(SIGPIPE, SIG_IGN);
+#endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 #if defined(APP_NAME)
