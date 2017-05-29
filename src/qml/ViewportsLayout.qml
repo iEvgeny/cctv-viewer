@@ -223,7 +223,10 @@ FocusScope {
                     ]
 
                     onFullScreenChanged: d2.setCurrentIndex('fullScreenIndex', fullScreen)
-                    onFocusChanged: d2.setCurrentIndex('focusIndex', focus)
+                    onFocusChanged: {
+                        d2.setCurrentIndex('focusIndex', focus);
+                        fullScreen = false;
+                    }
                     onActiveFocusChanged: d2.setCurrentIndex('activeFocusIndex', activeFocus)
                     onSelectedChanged: {
                         if (!selected) {
@@ -310,6 +313,16 @@ FocusScope {
                                 }
 
                                 return leftIndex;
+                            }
+
+                            break;
+                        case Qt.Key_Space:
+                            console.log('DEBUG: Qt.Key_Space')
+                            if (player.playbackState == MediaPlayer.PlayingState) {
+                                player.pause();
+
+                            } else {
+                                player.play();
                             }
 
                             break;
