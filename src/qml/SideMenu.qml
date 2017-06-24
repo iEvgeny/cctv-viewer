@@ -157,7 +157,7 @@ FocusScope {
 
                                     Layout.fillWidth: true
 
-                                    onPressed: viewportsLayout.division = index + 1;
+                                    onClicked: viewportsLayout.division = index + 1
                                 }
                             }
                         }
@@ -187,7 +187,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onPressed: {
+                                onClicked: {
                                     var size = Math.round(rootWindow.width / 16);
 
                                     rootWindow.width = size * 16;
@@ -202,7 +202,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onPressed: {
+                                onClicked: {
                                     var size = Math.round(rootWindow.width / 4);
 
                                     rootWindow.width = size * 4;
@@ -237,7 +237,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onPressed: viewportsLayout.mergeCells()
+                                onClicked: viewportsLayout.mergeCells()
                             }
                         }
                     }
@@ -269,9 +269,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onEditingFinished: {
-                                    viewportsLayout.model.get(viewportsLayout.focusIndex).url = text;
-                                }
+                                onEditingFinished: viewportsLayout.model.get(viewportsLayout.focusIndex).url = text
                             }
 
                             Button {
@@ -279,13 +277,62 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onPressed: {
+                                onClicked: {
                                     if (viewportsLayout.model.get(viewportsLayout.focusIndex).volume > 0) {
                                         viewportsLayout.model.get(viewportsLayout.focusIndex).volume = 0;
                                     } else {
                                         viewportsLayout.model.get(viewportsLayout.focusIndex).volume = 1;
                                     }
                                 }
+                            }
+                        }
+                    }
+
+                    GroupBox {
+                        id: presetsGroup
+
+                        label: RowLayout {
+                            width: parent.width
+                            Label {
+                                text: qsTr('Presets')
+                                font.pixelSize: 14
+                                color: 'white'
+                            }
+                        }
+
+                        Layout.fillWidth: true
+
+                        GridLayout {
+                            columns: 4
+                            anchors.fill: parent
+
+                            Repeater {
+                                model: viewportsLayoutsCollection.count
+                                delegate: Button {
+                                    text: hold ? '➖' : index + 1
+                                    highlighted: viewportsLayoutsCollection.currentIndex == index
+
+                                    property bool hold: false
+
+                                    Layout.fillWidth: true
+
+                                    onClicked: {
+                                        if (hold) {
+                                            viewportsLayoutsCollection.remove(index);
+                                        } else {
+                                            viewportsLayoutsCollection.currentIndex = index;
+                                        }
+                                    }
+                                    onPressAndHold: hold = !hold
+                                }
+                            }
+
+                            Button {
+                                text: '➕'
+
+                                Layout.fillWidth: true
+
+                                onClicked: viewportsLayoutsCollection.append()
                             }
                         }
                     }

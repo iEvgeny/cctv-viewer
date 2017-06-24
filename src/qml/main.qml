@@ -2,7 +2,7 @@ import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.0
 import Qt.labs.settings 1.0
-import '../js/script.js' as Script
+import '../js/script.js' as CCTV_Viewer
 
 ApplicationWindow {
     id: rootWindow
@@ -15,6 +15,10 @@ ApplicationWindow {
 
     property bool fullScreen: false
 
+//    Settings {
+//        id: generalSettings
+//    }
+
     Settings {
         id: rootWindowSettings
 
@@ -23,12 +27,14 @@ ApplicationWindow {
         property int height: 540
         property alias fullScreen: rootWindow.fullScreen
     }
+
     Binding {
         target: rootWindowSettings
         property: 'width'
         value: rootWindow.width
         when: !rootWindow.fullScreen
     }
+
     Binding {
         target: rootWindowSettings
         property: 'height'
@@ -36,24 +42,63 @@ ApplicationWindow {
         when: !rootWindow.fullScreen
     }
 
+    // DEPRECATED: Transitional code. Must be removed in version 0.1.2
     Settings {
         id: viewportsLayoutSettings
 
         category: 'ViewportsLayout'
-        property alias division: viewportsLayout.division
-        property alias aspectRatio: viewportsLayout.aspectRatio
-        property string model
+
+        property int division: 3
+        property string aspectRatio: '16:9'
+        property string model: ''
+    }
+
+    ViewportsLayoutsCollection {
+        id: viewportsLayoutsCollection
+
+        onDataChanged: {
+            if (currentLayout instanceof Object) {
+                var jsModel = currentLayout.model;
+
+                if (currentLayout.division === undefined) {
+                    currentLayout.division = viewportsLayout.division;
+                }
+
+                if (currentLayout.aspectRatio === undefined) {
+                    currentLayout.aspectRatio = viewportsLayout.aspectRatio;
+                }
+
+                viewportsLayout.division = currentLayout.division;
+                viewportsLayout.aspectRatio = currentLayout.aspectRatio;
+
+                if (jsModel !== undefined) {
+                    viewportsLayout.model.setJsModel(jsModel);
+                } else {
+                    viewportsLayout.model.clear();
+                }
+
+            } else {
+                viewportsLayout.model.clear();
+            }
+        }
 
         Component.onCompleted: {
-            function stringifyModel() {
-                model = viewportsLayout.model.stringify();
+            // DEPRECATED: Transitional code. Must be removed in version 0.1.2
+            if(!String(viewportsLayoutSettings.model).isEmpty()) {
+                var jsModel = JSON.parse(viewportsLayoutSettings.model);
+
+                if (!(currentLayout.model instanceof Array)) {
+                    set(currentIndex, {
+                            division: viewportsLayoutSettings.division,
+                            aspectRatio: viewportsLayoutSettings.aspectRatio,
+                            model: jsModel
+                        });
+                }
             }
 
-            // Load model
-            viewportsLayout.model.parse(viewportsLayoutSettings.model);
-            // Save model
-            stringifyModel();
-            viewportsLayout.model.changed.connect(function() { stringifyModel(); });
+            viewportsLayout.divisionChanged.connect(function() { viewportsLayoutsCollection.currentLayout.division = viewportsLayout.division; sync(); });
+            viewportsLayout.aspectRatioChanged.connect(function() { viewportsLayoutsCollection.currentLayout.aspectRatio = viewportsLayout.aspectRatio; sync(); });
+            viewportsLayout.model.changed.connect(function() { viewportsLayoutsCollection.currentLayout.model = viewportsLayout.model.jsModel(); sync(); });
         }
     }
 
@@ -71,8 +116,8 @@ ApplicationWindow {
 
         // Right-to-left User Interfaces support
         // (NOTE: This is supported by the ApplicationWindow starting from Qt 5.8)
-        LayoutMirroring.enabled: Script.ifRightToLeft(true)
-        LayoutMirroring.childrenInherit: Script.ifRightToLeft(true)
+        LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
+        LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
 
         ViewportsLayout {
             id: viewportsLayout

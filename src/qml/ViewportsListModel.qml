@@ -44,7 +44,7 @@ Item {
         }
 
         function defaultElement() {
-            var clone = {
+            var obj = {
                 url: '',
                 columnSpan: 1,
                 rowSpan: 1,
@@ -52,7 +52,7 @@ Item {
                 volume: 0.0
             };
 
-            return clone;
+            return obj;
         }
     }
 
@@ -60,59 +60,36 @@ Item {
         return model.get(index);
     }
 
-    function parse(string, clear) {
-        if (!string.isEmpty()) {
-            try {
-                var jsModel = JSON.parse(string);
-
-                if (typeof(jsModel) === 'object') {
-                    if (clear !== undefined && clear) {
-                        model.clear();
-                    }
-
-                    for (var i = 0; i < jsModel.length; ++i) {
-                        var element = jsModel[i];
-
-                        if (typeof(element) === 'object') {
-                            if (i < model.count) {
-                                model.set(i, element);
-                            } else {
-                                model.append(element);
-                            }
-                        }
-                    }
-                }
-            } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration.'));
-            }
+    function clear() {
+        for (var i = 0; i < model.count; ++i) {
+            model.set(i, listModel.defaultElement());
         }
-
-        return this;
     }
 
-    function stringify() {
+    function jsModel() {
         var jsModel = [];
 
         for (var i = 0; i < model.count; ++i) {
-            // HACK: По непонятным причинам "последнее" свойство объекта всегда дублируется (ключ и значение),
+            // HACK: По непонятным причинам объекты полученные с помощю model.get(i) некорректно сериализируются бибиотекой JSON,
             // потому мы вынуждены применить несколько более сложный подход для добавления объекта в массив
-            // учитывающий данный факт взамен очевидного и куда более простого.
+            // учитывающий данный факт взамен очевидного и более простого.
             //jsModel.push(model.get(i));
-            var obj = {};
-            var prevKey = '';
-            var element = model.get(i);
-
-            for (var key in element) {
-                if (key !== prevKey) {
-                    obj[key] = element[key];
-                    prevKey = key;
-                }
-            }
-
-            jsModel.push(obj);
+            jsModel.push(Object.assign({}, model.get(i)));
         }
 
-        return JSON.stringify(jsModel);
+        return jsModel;
+    }
+
+    function setJsModel(jsModel) {
+        if (jsModel instanceof Array) {
+            for (var i = 0; i < jsModel.length; ++i) {
+                var element = jsModel[i];
+
+                if (element instanceof Object) {
+                    model.set(i, element);
+                }
+            }
+        }
     }
 
     function columnFromIndex(index, division) {

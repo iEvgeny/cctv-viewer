@@ -239,7 +239,7 @@ FocusScope {
                         var fullScreenKey = QT_TR_NOOP('F', 'Shortcut');
                         if (event.text.toUpperCase() === fullScreenKey ||
                             event.text.toUpperCase() === qsTr(fullScreenKey)) {
-                            fullScreen = !fullScreen;
+                            fullScreen = (root.division > 1) ? !fullScreen : false;
                             d.selectionReset();
                         }
 
@@ -313,16 +313,6 @@ FocusScope {
                                 }
 
                                 return leftIndex;
-                            }
-
-                            break;
-                        case Qt.Key_Space:
-                            console.log('DEBUG: Qt.Key_Space')
-                            if (player.playbackState == MediaPlayer.PlayingState) {
-                                player.pause();
-
-                            } else {
-                                player.play();
                             }
 
                             break;
@@ -472,7 +462,7 @@ FocusScope {
                         }
 
                         onDoubleClicked: {
-                            viewport.fullScreen = !viewport.fullScreen;
+                            viewport.fullScreen = (root.division > 1) ? !viewport.fullScreen : false;
                             d.selectionReset();
                         }
 

@@ -57,22 +57,17 @@
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="200"/>
-        <source>4x3</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../../src/qml/SideMenu.qml" line="235"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="278"/>
+        <location filename="../../src/qml/SideMenu.qml" line="276"/>
         <source>Mute audio</source>
         <translation>Выключить звук</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="278"/>
+        <location filename="../../src/qml/SideMenu.qml" line="276"/>
         <source>Enable audio</source>
         <translation>Включить звук</translation>
     </message>
@@ -80,6 +75,16 @@
         <location filename="../../src/qml/SideMenu.qml" line="223"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SideMenu.qml" line="185"/>
+        <source>16:9</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SideMenu.qml" line="200"/>
+        <source>4:3</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/qml/SideMenu.qml" line="251"/>
@@ -97,24 +102,24 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="185"/>
-        <source>16x9</source>
-        <translation></translation>
+        <location filename="../../src/qml/SideMenu.qml" line="297"/>
+        <source>Presets</source>
+        <translation>Пресеты</translation>
     </message>
 </context>
 <context>
     <name>ViewportsLayout</name>
     <message>
-        <location filename="../../src/qml/ViewportsLayout.qml" line="236"/>
+        <location filename="../../src/qml/ViewportsLayout.qml" line="239"/>
         <source>F</source>
         <comment>Shortcut</comment>
         <translation>А</translation>
     </message>
 </context>
 <context>
-    <name>ViewportsListModel</name>
+    <name>ViewportsLayoutsCollection</name>
     <message>
-        <location filename="../../src/qml/ViewportsListModel.qml" line="85"/>
+        <location filename="../../src/qml/ViewportsLayoutsCollection.qml" line="44"/>
         <source>Error reading configuration.</source>
         <translation>Ошибка чтения конфигурации.</translation>
     </message>
