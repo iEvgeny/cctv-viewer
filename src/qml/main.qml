@@ -42,17 +42,6 @@ ApplicationWindow {
         when: !rootWindow.fullScreen
     }
 
-    // DEPRECATED: Transitional code. Must be removed in version 0.1.2
-    Settings {
-        id: viewportsLayoutSettings
-
-        category: 'ViewportsLayout'
-
-        property int division: 3
-        property string aspectRatio: '16:9'
-        property string model: ''
-    }
-
     ViewportsLayoutsCollection {
         id: viewportsLayoutsCollection
 
@@ -83,19 +72,6 @@ ApplicationWindow {
         }
 
         Component.onCompleted: {
-            // DEPRECATED: Transitional code. Must be removed in version 0.1.2
-            if(!String(viewportsLayoutSettings.model).isEmpty()) {
-                var jsModel = JSON.parse(viewportsLayoutSettings.model);
-
-                if (!(currentLayout.model instanceof Array)) {
-                    set(currentIndex, {
-                            division: viewportsLayoutSettings.division,
-                            aspectRatio: viewportsLayoutSettings.aspectRatio,
-                            model: jsModel
-                        });
-                }
-            }
-
             viewportsLayout.divisionChanged.connect(function() { viewportsLayoutsCollection.currentLayout.division = viewportsLayout.division; sync(); });
             viewportsLayout.aspectRatioChanged.connect(function() { viewportsLayoutsCollection.currentLayout.aspectRatio = viewportsLayout.aspectRatio; sync(); });
             viewportsLayout.model.changed.connect(function() { viewportsLayoutsCollection.currentLayout.model = viewportsLayout.model.jsModel(); sync(); });
