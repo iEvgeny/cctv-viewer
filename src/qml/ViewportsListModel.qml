@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.6
 import QtQml.Models 2.2
 import CCTV_Viewer.Enums 1.0
 import '../js/script.js' as CCTV_Viewer

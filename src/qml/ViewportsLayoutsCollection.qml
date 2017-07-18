@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.6
 import Qt.labs.settings 1.0
 
 Item {

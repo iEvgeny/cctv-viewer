@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.6
 import QtMultimedia 5.0
 import QtQuick.Layouts 1.3
 import CCTV_Viewer.Enums 1.0
