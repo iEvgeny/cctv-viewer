@@ -1,6 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
-import Qt.labs.controls 1.0  //Qt 5.7 and older: import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0  // For Qt 5.6: import Qt.labs.controls 1.0
 import Qt.labs.settings 1.0
 import '../js/script.js' as CCTV_Viewer
 
