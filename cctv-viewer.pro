@@ -9,7 +9,7 @@ greaterThan(VER_PAT, 0) {
     VERSION = "$${VERSION}.$${VER_PAT}"
 }
 !isEmpty(REL_STATUS) {
-    VERSION = "$${VERSION} $${REL_STATUS}"
+    VERSION = "$${VERSION}-$${REL_STATUS}"
 }
 
 APP_NAME = "CCTV Viewer"
