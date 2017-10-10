@@ -12,6 +12,14 @@ FocusScope {
     property bool open: false
     property int interval: 1000
 
+    readonly property alias pinned: d.pinned
+
+    QtObject {
+        id: d
+
+        property bool pinned: false
+    }
+
     states: [
         State {
             name: 'open'
@@ -42,7 +50,7 @@ FocusScope {
         interval: root.interval
 
         onTriggered: {
-            root.open = mouseCaptureArea.containsMouse || mouseHoldArea.containsMouse;
+            root.open = d.pinned || mouseCaptureArea.containsMouse || mouseHoldArea.containsMouse;
         }
     }
 
@@ -124,7 +132,27 @@ FocusScope {
                                 pixelSize: 24
                                 underline: true
                             }
-                            anchors.fill: parent
+
+                            Layout.fillWidth: true
+                        }
+                        Button {
+                            id: pin
+
+                            padding: 0
+                            contentItem: Label {
+                                text: '📌'
+                                color: 'white'
+                                font {
+                                    pixelSize: 18
+                                    bold: d.pinned
+                                    underline: pin.visualFocus
+                                }
+                            }
+                            background: Rectangle {
+                                color: 'transparent'
+                            }
+
+                            onClicked: d.pinned = !d.pinned
                         }
                     }
 
@@ -134,8 +162,8 @@ FocusScope {
 
                             Label {
                                 text: qsTr('Window division')
-                                font.pixelSize: 14
                                 color: 'white'
+                                font.pixelSize: 14
                             }
                         }
 
@@ -168,8 +196,8 @@ FocusScope {
                             width: parent.width
                             Label {
                                 text: qsTr('Geometry')
-                                font.pixelSize: 14
                                 color: 'white'
+                                font.pixelSize: 14
                             }
                         }
 
@@ -230,8 +258,8 @@ FocusScope {
                             width: parent.width
                             Label {
                                 text: qsTr('Tools')
-                                font.pixelSize: 14
                                 color: 'white'
+                                font.pixelSize: 14
                             }
                         }
 
@@ -258,8 +286,8 @@ FocusScope {
                             width: parent.width
                             Label {
                                 text: qsTr('Viewport%1').arg(viewportsLayout.focusIndex >= 0 ? qsTr(' #%1').arg(viewportsLayout.focusIndex + 1) : '')
-                                font.pixelSize: 14
                                 color: 'white'
+                                font.pixelSize: 14
                             }
                         }
 
@@ -304,8 +332,8 @@ FocusScope {
                             width: parent.width
                             Label {
                                 text: qsTr('Presets')
-                                font.pixelSize: 14
                                 color: 'white'
+                                font.pixelSize: 14
                             }
                         }
 
