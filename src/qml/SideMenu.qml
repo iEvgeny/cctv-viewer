@@ -139,10 +139,10 @@ FocusScope {
                             }
                         }
 
-                        Layout.fillWidth: true
-
                         // Disable controls when one of the viewports is in full-screen mode.
                         enabled: !(viewportsLayout.fullScreenIndex >= 0)
+
+                        Layout.fillWidth: true
 
                         GridLayout {
                             columns: 2
@@ -152,8 +152,8 @@ FocusScope {
                                 model: 4
                                 delegate: Button {
                                     text: qsTr('%1x%1').arg(index + 1)
-                                    highlighted: viewportsLayout.division == index + 1
                                     enabled: !highlighted
+                                    highlighted: viewportsLayout.division == index + 1
 
                                     Layout.fillWidth: true
 
@@ -175,14 +175,13 @@ FocusScope {
 
                         Layout.fillWidth: true
 
-                        // Disable controls when application window is full-screen.
-                        enabled: !rootWindow.fullScreen
-
-                        RowLayout {
+                        GridLayout {
+                            columns: 2
                             anchors.fill: parent
 
                             Button {
                                 text: qsTr('16:9')
+                                enabled: !rootWindow.fullScreen  // Disable control when application window is full-screen.
                                 highlighted: viewportsLayout.aspectRatio == '16:9'
 
                                 Layout.fillWidth: true
@@ -198,6 +197,7 @@ FocusScope {
                             }
                             Button {
                                 text: qsTr('4:3')
+                                enabled: !rootWindow.fullScreen  // Disable control when application window is full-screen.
                                 highlighted: viewportsLayout.aspectRatio == '4:3'
 
                                 Layout.fillWidth: true
@@ -210,6 +210,15 @@ FocusScope {
 
                                     viewportsLayout.aspectRatio = '4:3';
                                 }
+                            }
+                            Button {
+                                text: qsTr('Full Screen')
+                                highlighted: rootWindow.fullScreen
+
+                                Layout.columnSpan: 2
+                                Layout.fillWidth: true
+
+                                onClicked: rootWindow.fullScreen = !rootWindow.fullScreen
                             }
                         }
                     }
@@ -254,10 +263,10 @@ FocusScope {
                             }
                         }
 
-                        Layout.fillWidth: true
-
                         // Enabled only when one of the viewports is active.
                         enabled: viewportsLayout.focusIndex >= 0
+
+                        Layout.fillWidth: true
 
                         ColumnLayout {
                             anchors.fill: parent
