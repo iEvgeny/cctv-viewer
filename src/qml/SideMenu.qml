@@ -310,7 +310,8 @@ FocusScope {
                             }
 
                             Button {
-                                text: (viewportsLayout.focusIndex >= 0 && viewportsLayout.itemAt(viewportsLayout.focusIndex).volume > 0) ? qsTr('Mute audio') : qsTr('Enable audio')
+                                text: qsTr('Mute')
+                                highlighted: viewportsLayout.focusIndex >= 0 && viewportsLayout.itemAt(viewportsLayout.focusIndex).volume <= 0
 
                                 Layout.fillWidth: true
 

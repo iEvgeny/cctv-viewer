@@ -37,72 +37,72 @@
 <context>
     <name>SideMenu</name>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="121"/>
+        <location filename="../../src/qml/SideMenu.qml" line="129"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="136"/>
+        <location filename="../../src/qml/SideMenu.qml" line="164"/>
         <source>Window division</source>
         <translation>Деление окна</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="154"/>
+        <location filename="../../src/qml/SideMenu.qml" line="182"/>
         <source>%1x%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="170"/>
+        <location filename="../../src/qml/SideMenu.qml" line="198"/>
         <source>Geometry</source>
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="235"/>
+        <location filename="../../src/qml/SideMenu.qml" line="243"/>
+        <source>Full Screen</source>
+        <translation>Полноэкранный режим</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SideMenu.qml" line="272"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="276"/>
-        <source>Mute audio</source>
-        <translation>Выключить звук</translation>
+        <location filename="../../src/qml/SideMenu.qml" line="313"/>
+        <source>Mute</source>
+        <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="276"/>
-        <source>Enable audio</source>
-        <translation>Включить звук</translation>
-    </message>
-    <message>
-        <location filename="../../src/qml/SideMenu.qml" line="223"/>
+        <location filename="../../src/qml/SideMenu.qml" line="260"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="185"/>
+        <location filename="../../src/qml/SideMenu.qml" line="211"/>
         <source>16:9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="200"/>
+        <location filename="../../src/qml/SideMenu.qml" line="227"/>
         <source>4:3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="251"/>
+        <location filename="../../src/qml/SideMenu.qml" line="288"/>
         <source>Viewport%1</source>
         <translation>Вьюпорт%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="251"/>
+        <location filename="../../src/qml/SideMenu.qml" line="288"/>
         <source> #%1</source>
         <translation> №%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="267"/>
+        <location filename="../../src/qml/SideMenu.qml" line="304"/>
         <source>Url</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="297"/>
+        <location filename="../../src/qml/SideMenu.qml" line="335"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
@@ -119,7 +119,7 @@
 <context>
     <name>ViewportsLayoutsCollection</name>
     <message>
-        <location filename="../../src/qml/ViewportsLayoutsCollection.qml" line="44"/>
+        <location filename="../../src/qml/ViewportsLayoutsCollection.qml" line="45"/>
         <source>Error reading configuration.</source>
         <translation>Ошибка чтения конфигурации.</translation>
     </message>
