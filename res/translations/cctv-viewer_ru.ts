@@ -4,32 +4,37 @@
 <context>
     <name>Player</name>
     <message>
-        <location filename="../../src/qml/Player.qml" line="62"/>
+        <location filename="../../src/qml/Player.qml" line="68"/>
         <source>No media!</source>
         <translation>Нет медиаисточника!</translation>
     </message>
     <message>
-        <location filename="../../src/qml/Player.qml" line="66"/>
+        <location filename="../../src/qml/Player.qml" line="72"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../../src/qml/Player.qml" line="70"/>
+        <location filename="../../src/qml/Player.qml" line="76"/>
         <source>Loaded</source>
         <translation>Загружено</translation>
     </message>
     <message>
-        <location filename="../../src/qml/Player.qml" line="81"/>
+        <location filename="../../src/qml/Player.qml" line="83"/>
+        <source>Stalled</source>
+        <translation>Застопорено</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/Player.qml" line="92"/>
         <source>End of media</source>
         <translation>Конец медиаисточника</translation>
     </message>
     <message>
-        <location filename="../../src/qml/Player.qml" line="85"/>
+        <location filename="../../src/qml/Player.qml" line="96"/>
         <source>Invalid media!</source>
         <translation>Недопустимый медиаисточник!</translation>
     </message>
     <message>
-        <location filename="../../src/qml/Player.qml" line="93"/>
+        <location filename="../../src/qml/Player.qml" line="104"/>
         <source>Buffering %1%</source>
         <translation>Буферизация %1%</translation>
     </message>

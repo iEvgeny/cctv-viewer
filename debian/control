@@ -12,5 +12,5 @@ Vcs-Browser: https://github.com/iEvgeny/cctv-viewer
 
 Package: cctv-viewer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, qml-module-qtav
 Description: CCTV Viewer - viewer and mounter video streams.
