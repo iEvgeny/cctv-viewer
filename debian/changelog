@@ -1,3 +1,49 @@
+cctv-viewer (0.1.4-0ppa1~ubuntu18.04) bionic; urgency=medium
+
+  * Migration to QtAV library: https://github.com/wang-bin/QtAV
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Mon, 10 Dec 2018 16:37:20 +0300
+
+cctv-viewer (0.1.2-0ppa4~ubuntu18.04) bionic; urgency=medium
+
+  * Backported to Bionic Beaver
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Mon, 07 May 2018 18:09:58 +0300
+ 
+cctv-viewer (0.1.2-0ppa3~ubuntu17.04) zesty; urgency=medium
+
+  * src/qml/main.qml
+    - Remove deprecated code
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Wed, 19 Jul 2017 17:12:11 +0300
+
+cctv-viewer (0.1.1-0ppa2~ubuntu17.04) zesty; urgency=medium
+
+  * src/qml/ViewportsLayoutsCollection.qml
+    - Presets switching fix
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Sat, 24 Jun 2017 15:22:08 +0300
+
+cctv-viewer (0.1.1-0ppa1~ubuntu17.04) zesty; urgency=medium
+
+  * Added presets for viewports layouts
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Sat, 24 Jun 2017 14:57:45 +0300
+
+cctv-viewer (0.1-0ppa3~ubuntu17.04) zesty; urgency=medium
+
+  * main.cpp:
+    - Ignore the SIGPIPE signal. Can be raised by librtmp.
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Sun, 21 May 2017 19:36:32 +0300
+
+cctv-viewer (0.1-0ppa2~ubuntu17.04) zesty; urgency=medium
+
+  * debian/cctv-viewer.desktop:
+    - Add GenericName section.
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Sat, 20 May 2017 11:23:24 +0300
+
 cctv-viewer (0.1-0ppa1~ubuntu17.04) zesty; urgency=medium
 
   * Initial release
