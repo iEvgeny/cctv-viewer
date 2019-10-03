@@ -1,0 +1,69 @@
+name: cctv-viewer
+version: '0.1.4+git'
+summary: Viewer and mounter video streams
+description: |
+  CCTV Viewer - a simple application for simultaneously viewing multiple
+  video streams. Designed for easy grid-based layout video streaming.
+  Based on QtAV and ffmpeg.
+
+icon: res/icons/cctv-viewer.svg
+license: GPL-3.0
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+base: core18 # more about bases at https://docs.snapcraft.io/t/base-snaps/11198
+
+apps:
+  cctv-viewer:
+    command: desktop-launch $SNAP/usr/bin/cctv-viewer
+    #plugs: [home, x11, wayland, mir, opengl]
+
+parts:
+  cctv-viewer:
+    after: [desktop-qt5]
+    plugin: qmake
+    qt-version: qt5
+    source: https://github.com/iEvgeny/cctv-viewer.git
+    override-pull: |
+      snapcraftctl pull
+      # Point icon to the correct location
+      sed -i.bak -e 's|Icon=cctv-viewer|Icon=${SNAP}/meta/gui/cctv-viewer.svg|g' $SNAPCRAFT_PROJECT_DIR/snap/gui/cctv-viewer.desktop
+    build-packages:
+      - qtdeclarative5-dev
+      #- qttools5-dev-tools
+    stage-packages:
+      - libslang2
+      - libglu1-mesa
+      - qml-module-qtquick-layouts
+      - qml-module-qtqml-models2
+      - qml-module-qtquick-controls
+      - qml-module-qtquick-controls2
+      - qml-module-qtquick-window2
+      - qml-module-qt-labs-settings
+      - qml-module-qtmultimedia
+      - qml-module-qtav
+
+  # Remote part for support of various desktop technologies
+  # Refer: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
+  desktop-qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-depth: 1
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5"]
+    build-packages:
+      - qtbase5-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5svg5 # for loading icon themes which are svg
+      - try: [appmenu-qt5] # not available on core18
+      - locales-all
