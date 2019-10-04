@@ -10,13 +10,32 @@ icon: res/icons/cctv-viewer.svg
 license: GPL-3.0
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
-base: core18 # more about bases at https://docs.snapcraft.io/t/base-snaps/11198
+confinement: strict
+base: core18
+
+plugs:
+  system-files-config:
+    interface: system-files
+    read:
+      - /etc/openal/alsoft.conf
 
 apps:
   cctv-viewer:
     command: desktop-launch $SNAP/usr/bin/cctv-viewer
-    #plugs: [home, x11, wayland, mir, opengl]
+    plugs:
+      - home
+      - desktop
+      - desktop-legacy
+      - account-control
+      - system-files-config
+      - x11
+      - wayland
+      - mir
+      - opengl
+      - pulseaudio
+      - unity7  # Possibly unneeded
+      - removable-media
+      - network
 
 parts:
   cctv-viewer:
