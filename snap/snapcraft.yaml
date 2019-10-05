@@ -22,6 +22,7 @@ plugs:
 apps:
   cctv-viewer:
     command: desktop-launch $SNAP/usr/bin/cctv-viewer
+    desktop: usr/share/applications/cctv-viewer.desktop
     plugs:
       - home
       - desktop
@@ -45,15 +46,8 @@ parts:
     source: https://github.com/iEvgeny/cctv-viewer.git
     override-pull: |
       snapcraftctl pull
-      # Desktop files for menu integration
-      TARGET_DIR="$SNAPCRAFT_PROJECT_DIR/snap/gui"
-      if [ ! -d "$TARGET_DIR" ]; then
-        mkdir "$TARGET_DIR"
-      fi
-      cp -f "$SNAPCRAFT_PROJECT_DIR/debian/cctv-viewer.desktop" "$TARGET_DIR"
-      cp -f "$SNAPCRAFT_PROJECT_DIR/res/icons/cctv-viewer.svg" "$TARGET_DIR"
       # Point icon to the correct location
-      sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=${SNAP}/meta/gui/cctv-viewer.svg|g' "$TARGET_DIR/cctv-viewer.desktop"
+      sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' "$SNAPCRAFT_PROJECT_DIR/cctv-viewer.desktop"
     build-packages:
       - qtdeclarative5-dev
     stage-packages:

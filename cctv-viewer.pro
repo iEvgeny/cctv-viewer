@@ -42,15 +42,15 @@ TARGET = cctv-viewer
 
 DESTDIR = bin
 
-HEADERS += src/quickenums.h
+HEADERS += \
+    src/quickenums.h
 
-SOURCES += src/main.cpp
+SOURCES += \
+    src/main.cpp
 
 RESOURCES += cctv-viewer.qrc
 
-DISTFILES += \
-    res/win32.rc \
-    res/translations/cctv-viewer_ru.ts
+DISTFILES += res/translations/cctv-viewer_ru.ts
 
 TRANSLATIONS += res/translations/cctv-viewer_ru.ts
 
@@ -73,7 +73,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-# Default rules for deployment.
+# Rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /usr/bin
+else: unix:!android: {
+    target.path = /usr/bin
+    icon.path = /usr/share/pixmaps
+    icon.files += res/icons/$${TARGET}.svg
+    desktop.path = /usr/share/applications
+    desktop.files += $${TARGET}.desktop
+}
 !isEmpty(target.path): INSTALLS += target
+!isEmpty(icon.path): INSTALLS += icon
+!isEmpty(desktop.path): INSTALLS += desktop
