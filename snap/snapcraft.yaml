@@ -40,7 +40,7 @@ parts:
     override-pull: |
       snapcraftctl pull
       # Point icon to the correct location
-      sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' "$SNAPCRAFT_PROJECT_DIR/cctv-viewer.desktop"
+      sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' cctv-viewer.desktop
     build-packages:
       - qtdeclarative5-dev
     stage-packages:
