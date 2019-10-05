@@ -13,12 +13,6 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict
 base: core18
 
-plugs:
-  system-files-config:
-    interface: system-files
-    read:
-      - /etc/openal/alsoft.conf
-
 apps:
   cctv-viewer:
     command: desktop-launch $SNAP/usr/bin/cctv-viewer
@@ -28,7 +22,6 @@ apps:
       - desktop
       - desktop-legacy
       - account-control
-      - system-files-config
       - x11
       - wayland
       - mir
