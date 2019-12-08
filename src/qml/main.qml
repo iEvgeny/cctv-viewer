@@ -79,7 +79,7 @@ ApplicationWindow {
     }
 
     Shortcut {
-        sequences: ['F11', StandardKey.FullScreen]
+        sequence: StandardKey.FullScreen
         onActivated: rootWindow.fullScreen = !rootWindow.fullScreen
     }
     Shortcut {
