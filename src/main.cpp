@@ -34,28 +34,28 @@ int main(int argc, char *argv[]) {
 
     registerQmlTypes();
 
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     QTranslator translator;
     const QString locale = QLocale::system().name();
     translator.load(QLatin1String("cctv-viewer_") + locale, QLatin1String(":/res/translations/"));
     app.installTranslator(&translator);
+    app.setWindowIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.ico")));
 
     // NOTE: Debug
     // Testing Right-to-left User Interfaces...
     // (This code must be removed!!!)
 //    app.setLayoutDirection(Qt::RightToLeft);
 
-    engine.load(QUrl(QLatin1String("qrc:///src/qml/main.qml")));
-
-    QObject *topLevel = engine.rootObjects().value(0);
-    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
-    if (!window) {
-        qWarning("Error: Your root item has to be a Window.");
-        return -1;
-    }
-
-    window->setIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.ico")));
+    const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                     &app, [url](QObject *obj, const QUrl &objUrl) {
+        if (!obj && url == objUrl)
+            QCoreApplication::exit(-1);
+    }, Qt::QueuedConnection);
+    engine.load(url);
 
     return app.exec();
 }
