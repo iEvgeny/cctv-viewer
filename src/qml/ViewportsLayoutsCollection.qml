@@ -10,7 +10,7 @@ Item {
 
     signal dataChanged()
 
-//  BUG: Фикс порчи раскладки вьюпортов при переключении пресетов в случае работы с компонентов QtAV
+//  BUG: Фикс порчи раскладки вьюпортов при переключении пресетов в случае работы на базе компонента QtAV
 //    onDataChanged: sync()
     onCurrentIndexChanged: d.currentLayout = get(currentIndex);
     onCountChanged: currentIndex = currentIndex.clamp(0, count - 1);

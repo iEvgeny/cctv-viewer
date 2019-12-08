@@ -91,7 +91,7 @@ ApplicationWindow {
         anchors.fill: parent
 
         // Right-to-left User Interfaces support
-        // (NOTE: This is supported by the ApplicationWindow starting from Qt 5.8)
+        // NOTE: This is supported by the ApplicationWindow starting from Qt 5.8
         LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
         LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
 

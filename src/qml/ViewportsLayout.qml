@@ -28,7 +28,7 @@ FocusScope {
         property var aspectRatio: {
             var arr = root.aspectRatio.split(':', 2);
 
-            if (arr.length != 2 || !CCTV_Viewer.isNumeric(arr[0]) || !CCTV_Viewer.isNumeric(arr[1])) {
+            if (arr.length !== 2 || !CCTV_Viewer.isNumeric(arr[0]) || !CCTV_Viewer.isNumeric(arr[1])) {
                 // Return default value
                 return {x: 16, y: 9, ratio: 16 / 9};
             }
@@ -243,14 +243,22 @@ FocusScope {
                             d.selectionReset();
                         }
 
+                        function keyNavigationHandler(keyNavigationCallback) {
+                            if (!fullScreen) {
+                                if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
+                                    d.selectionIndex2 = keyNavigationCallback(d.selectionIndex2);
+                                } else {
+                                    root.itemAt(keyNavigationCallback(model.index)).forceActiveFocus();
+                                }
+                            }
+                        }
+
                         switch (event.key) {
                         case Qt.Key_Escape:
                             focus = false;
                             fullScreen = false;
                             break;
                         case Qt.Key_Up:
-                            keyNavigationHandler(keyUpCallback);
-
                             function keyUpCallback(index) {
                                 var topIndex = root.itemAt(index).topIndex;
 
@@ -264,10 +272,9 @@ FocusScope {
                                 return topIndex;
                             }
 
+                            keyNavigationHandler(keyUpCallback);
                             break;
                         case Qt.Key_Down:
-                            keyNavigationHandler(keyDownCallback);
-
                             function keyDownCallback(index) {
                                 var bottomIndex = root.itemAt(index).bottomIndex;
 
@@ -281,10 +288,9 @@ FocusScope {
                                 return bottomIndex;
                             }
 
+                            keyNavigationHandler(keyDownCallback);
                             break;
                         case Qt.Key_Right:
-                            keyNavigationHandler(keyRightCallback);
-
                             function keyRightCallback(index) {
                                 var rightIndex = root.itemAt(index).rightIndex;
 
@@ -298,10 +304,9 @@ FocusScope {
                                 return rightIndex;
                             }
 
+                            keyNavigationHandler(keyRightCallback);
                             break;
                         case Qt.Key_Left:
-                            keyNavigationHandler(keyLeftCallback);
-
                             function keyLeftCallback(index) {
                                 var leftIndex = root.itemAt(index).leftIndex;
 
@@ -315,17 +320,8 @@ FocusScope {
                                 return leftIndex;
                             }
 
+                            keyNavigationHandler(keyLeftCallback);
                             break;
-                        }
-
-                        function keyNavigationHandler(keyNavigationCallback) {
-                            if (!fullScreen) {
-                                if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
-                                    d.selectionIndex2 = keyNavigationCallback(d.selectionIndex2);
-                                } else {
-                                    root.itemAt(keyNavigationCallback(model.index)).forceActiveFocus();
-                                }
-                            }
                         }
                     }
 

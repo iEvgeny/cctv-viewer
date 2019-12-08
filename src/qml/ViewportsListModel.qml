@@ -178,7 +178,7 @@ Item {
                             for (var columnSpan = 0; columnSpan < element.columnSpan; ++columnSpan) {
                                 var spannedIndex = index + columnSpan + rowSpan * division;
 
-                                if (spannedIndex < model.count && index != spannedIndex) {
+                                if (spannedIndex < model.count && index !== spannedIndex) {
                                     // Check for span
                                     if (model.get(spannedIndex).visible === Viewport.Spanned) {
                                         var spanningIndex = root.spanningIndex(spannedIndex, division);
