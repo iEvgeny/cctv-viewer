@@ -9,7 +9,7 @@ FocusScope {
 
     property int division: 1
     property string aspectRatio: '16:9'
-    property var model: ViewportsListModel {}
+    property var model: ViewportsLayoutListModel {}
     property string color: 'black'
 
     readonly property alias fullScreenIndex: d.fullScreenIndex
@@ -33,7 +33,7 @@ FocusScope {
                 return {x: 16, y: 9, ratio: 16 / 9};
             }
 
-            return {x: arr[0], y: arr[1], ratio: arr[0] / arr[1]};
+            return { x: arr[0], y: arr[1], ratio: arr[0] / arr[1] };
         }
 
         property int fullScreenIndex: -1

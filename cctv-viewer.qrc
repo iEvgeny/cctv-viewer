@@ -4,7 +4,7 @@
         <file>src/qml/main.qml</file>
         <file>src/qml/Player.qml</file>
         <file>src/qml/ViewportsLayout.qml</file>
-        <file>src/qml/ViewportsListModel.qml</file>
+        <file>src/qml/ViewportsLayoutListModel.qml</file>
         <file>src/qml/ViewportsLayoutsCollection.qml</file>
         <file>src/qml/SideMenu.qml</file>
         <file>res/translations/cctv-viewer_ru.qm</file>

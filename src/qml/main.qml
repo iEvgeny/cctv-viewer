@@ -103,9 +103,19 @@ ApplicationWindow {
             anchors.fill: parent
         }
 
-        SideMenu {
-            id: submenu
+        PageIndicator {
+            interactive: true
+            currentIndex: viewportsLayoutsCollection.currentIndex
+            count: viewportsLayoutsCollection.count
+            anchors {
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+            }
 
+            onCurrentIndexChanged: viewportsLayoutsCollection.currentIndex = currentIndex
+        }
+
+        SideMenu {
             height: parent.height
             anchors.right: parent.right
         }

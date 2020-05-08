@@ -361,7 +361,11 @@ FocusScope {
                                             viewportsLayoutsCollection.currentIndex = index;
                                         }
                                     }
-                                    onPressAndHold: hold = !hold
+                                    onPressAndHold: {
+                                        if (viewportsLayoutsCollection.count > 1) {
+                                            hold = !hold;
+                                        }
+                                    }
                                 }
                             }
 
