@@ -105,6 +105,7 @@ ApplicationWindow {
 
         PageIndicator {
             interactive: true
+            visible: viewportsLayoutsCollection.count > 1
             currentIndex: viewportsLayoutsCollection.currentIndex
             count: viewportsLayoutsCollection.count
             anchors {
