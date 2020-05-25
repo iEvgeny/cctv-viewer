@@ -1,15 +1,14 @@
 import QtQuick 2.6
-import QtMultimedia 5.0
 import QtQuick.Layouts 1.3
-import CCTV_Viewer.Enums 1.0
-import '../js/script.js' as CCTV_Viewer
+import CCTV_Viewer.Models 1.0
+import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
     id: root
 
-    property int division: 1
-    property string aspectRatio: '16:9'
-    property var model: ViewportsLayoutListModel {}
+    property int division: model.size.width  // TODO: Layout must be reimplemented using model size
+    property string aspectRatio: model.aspectRatio.width + ':' + model.aspectRatio.height // TODO: Layout must be reimplemented using model aspectRatio
+    property var model: ViewportsLayoutModel {}
     property string color: 'black'
 
     readonly property alias fullScreenIndex: d.fullScreenIndex
@@ -17,10 +16,7 @@ FocusScope {
     readonly property alias activeFocusIndex: d.activeFocusIndex
     readonly property alias multiselect: d.multiselect
 
-    onDivisionChanged: model.normalize(division, true)
-    Component.onCompleted: {
-        model.changed.connect(function() { model.normalize(division, true); });
-    }
+    onVisibleChanged: d.selectionReset()
 
     QtObject {
         id: d
@@ -47,15 +43,15 @@ FocusScope {
         onSelectionIndex1Changed: selectionReset()
 
         function columnFromIndex(index) {
-            return model.columnFromIndex(index, root.division);
+            return index % root.division;
         }
 
         function rowFromIndex(index) {
-            return model.rowFromIndex(index, root.division);
+            return Math.floor(index / root.division);
         }
 
         function indexFromAddress(column, row) {
-            return model.indexFromAddress(column, row, root.division);
+            return row * root.division + column;
         }
 
         function selectionTop() {
@@ -148,14 +144,14 @@ FocusScope {
         Repeater {
             id: repeater
 
-            model: root.model.listModel
+            model: root.model
 
             delegate: Item {
                 id: container
 
                 implicitWidth: (layout.width / root.division) * Math.max(viewport.columnSpan, 0)
                 implicitHeight: (layout.height / root.division) * Math.max(viewport.rowSpan, 0)
-                visible: (model.visible === Viewport.Visible) ? true : false
+                visible: root.visible && ((model.visible === ViewportsLayoutItem.Visible) ? true : false)
 
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -222,6 +218,7 @@ FocusScope {
                         }
                     ]
 
+                    onVisibleChanged: fullScreen = false
                     onFullScreenChanged: d2.setCurrentIndex('fullScreenIndex', fullScreen)
                     onFocusChanged: {
                         d2.setCurrentIndex('focusIndex', focus);
@@ -377,30 +374,41 @@ FocusScope {
                         }
                     }
 
-                    Player {
-                        id: player
+                    Rectangle {
+                        id: playerContainer
 
-                        keepAlive: true
                         color: root.color
-                        autoLoad: visible
-                        autoPlay: visible
-                        loops: MediaPlayer.Infinite
-                        volume: viewport.volume
                         anchors.fill: parent
 
-                        onVisibleChanged: setPlaybackState()
-                        Component.onCompleted: {
-                            viewport.urlChanged.connect(function() { setPlaybackState(); });
-                        }
+                        property var playerObject
+                        property string source: viewport.url
 
-                        function setPlaybackState() {
-                            // NOTE: Здесь приходится обнулять медиаисточник, иначе на потоковых форматах stop() работает как pause().
-                            if (visible) {
-                                source = viewport.url;
-                                play();
-                            } else {
-                                stop();
-                                source = '';
+                        Component.onCompleted: managePlayer()
+                        onVisibleChanged: managePlayer()
+                        onSourceChanged: managePlayer()
+
+                        function managePlayer() {
+                            var src =  'import QtQuick 2.0
+                                        import QtMultimedia 5.0
+
+                                        Player {
+                                            color: root.color
+                                            source: viewport.url
+                                            volume: viewport.volume
+                                            keepAlive: true
+                                            autoLoad: true
+                                            autoPlay: true
+                                            loops: MediaPlayer.Infinite
+                                            anchors.fill: parent
+                                        }';
+                            if (visible && source.length > 0) {
+//                                console.log("JSDEBUG: Qt.createQmlObject() source=" + source)
+                                playerObject = Qt.createQmlObject(src, playerContainer, 'dynamicSnippet1');
+//                                playerObject.play();
+                            } else if (playerObject !== undefined) {
+//                                console.log("JSDEBUG: Qt.destroy() source=" + source)
+                                playerObject.stop();
+                                playerObject.destroy(100000);
                             }
                         }
                     }
@@ -509,7 +517,12 @@ FocusScope {
 
     function itemAt(index) {
         if (index >= 0 && index < repeater.count) {
-            return repeater.itemAt(index).children[0];
+            var item = repeater.itemAt(index);
+            if (item === null) {
+                return undefined;
+            }
+
+            return item.children[0];
         }
 
         return;
@@ -530,6 +543,9 @@ FocusScope {
 
     function mergeCells(testMode) {
         var topLeftIndex = d.indexFromAddress(d.selectionLeft(), d.selectionTop());
+        if (topLeftIndex < 0 || topLeftIndex >= model.count) {
+            return false;
+        }
         var topLeftElement = model.get(topLeftIndex);
 
         if (d.selectionWidth() !== d.selectionHeight() ||
@@ -548,6 +564,7 @@ FocusScope {
             }
 
             d.selectionReset();
+            model.normalize();
         }
 
         return true;

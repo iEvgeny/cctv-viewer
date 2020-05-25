@@ -3,11 +3,12 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QTranslator>
-#include "quickenums.h"
+#include "viewportslayoutscollectionmodel.h"
 
 void registerQmlTypes() {
-    // Enums
-    qmlRegisterUncreatableType<QuickViewport>("CCTV_Viewer.Enums", 1, 0, "Viewport", "Uncreatable type!");
+    qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
+    qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
+    qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
 }
 
 int main(int argc, char *argv[]) {

@@ -27,7 +27,7 @@ DEFINES += VER_MAJ=$${VER_MAJ} \
 
 # Check Qt version
 QT_MIN_MAJOR_VERSION = 5
-QT_MIN_MINOR_VERSION = 7
+QT_MIN_MINOR_VERSION = 8
 if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VERSION, $${QT_MIN_MINOR_VERSION})) {
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }
@@ -54,10 +54,13 @@ TARGET = cctv-viewer
 DESTDIR = bin
 
 HEADERS += \
-    src/quickenums.h
+    src/viewportslayoutmodel.h \
+    src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/viewportslayoutmodel.cpp \
+    src/viewportslayoutscollectionmodel.cpp
 
 RESOURCES += cctv-viewer.qrc
 

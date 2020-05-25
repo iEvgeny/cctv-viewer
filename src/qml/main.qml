@@ -1,19 +1,26 @@
 import QtQuick 2.9
 import QtQuick.Window 2.2
-import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 2.1
 import Qt.labs.settings 1.0
-import '../js/script.js' as CCTV_Viewer
+import CCTV_Viewer.Models 1.0
+import '../js/utils.js' as CCTV_Viewer
 
 ApplicationWindow {
     id: rootWindow
+
+    title: qsTr('CCTV Viewer')
 
     visible: true
     visibility: rootWindow.fullScreen ? Window.FullScreen : Window.Windowed
     width: rootWindowSettings.width
     height: rootWindowSettings.height
-    title: qsTr('CCTV Viewer')
 
     property bool fullScreen: false
+
+    // Right-to-left User Interfaces support
+    LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
+    LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
 
 //    Settings {
 //        id: generalSettings
@@ -42,40 +49,14 @@ ApplicationWindow {
         when: !rootWindow.fullScreen
     }
 
-    ViewportsLayoutsCollection {
-        id: viewportsLayoutsCollection
+    Settings {
+        id: layoutsCollectionSettings
 
-        onDataChanged: {
-            if (currentLayout instanceof Object) {
-                var jsModel = currentLayout.model;
+        category: 'ViewportsLayoutsCollection'
 
-                if (currentLayout.division === undefined) {
-                    currentLayout.division = viewportsLayout.division;
-                }
-
-                if (currentLayout.aspectRatio === undefined) {
-                    currentLayout.aspectRatio = viewportsLayout.aspectRatio;
-                }
-
-                viewportsLayout.division = currentLayout.division;
-                viewportsLayout.aspectRatio = currentLayout.aspectRatio;
-
-                if (jsModel !== undefined) {
-                    viewportsLayout.model.setJsModel(jsModel);
-                } else {
-                    viewportsLayout.model.clear();
-                }
-
-            } else {
-                viewportsLayout.model.clear();
-            }
-        }
-
-        Component.onCompleted: {
-            viewportsLayout.divisionChanged.connect(function() { viewportsLayoutsCollection.currentLayout.division = viewportsLayout.division; sync(); });
-            viewportsLayout.aspectRatioChanged.connect(function() { viewportsLayoutsCollection.currentLayout.aspectRatio = viewportsLayout.aspectRatio; sync(); });
-            viewportsLayout.model.changed.connect(function() { viewportsLayoutsCollection.currentLayout.model = viewportsLayout.model.jsModel(); sync(); });
-        }
+        property int currentIndex
+        property string models
+        property string collection  // Old property
     }
 
     Shortcut {
@@ -87,33 +68,83 @@ ApplicationWindow {
         onActivated: Qt.quit()
     }
 
+    ViewportsLayoutsCollectionModel {
+        id: layoutsCollectionModel
+
+        ViewportsLayoutModel {
+            size: Qt.size(2, 2)
+            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
+        }
+        ViewportsLayoutModel {
+            size: Qt.size(3, 3)
+            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
+        }
+        ViewportsLayoutModel {
+            size: Qt.size(1, 1)
+            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
+        }
+
+        Component.onCompleted: {
+            var models = '';
+            if (!layoutsCollectionSettings.models.isEmpty()) {
+                models = layoutsCollectionSettings.models;
+            } else {
+                // Use old property
+                models = layoutsCollectionSettings.collection;
+            }
+
+            try {
+                if (!models.isEmpty()) {
+                    fromJSValue(JSON.parse(models));
+                }
+            } catch(err) {
+                CCTV_Viewer.log_error(qsTr('Error parse data model'));
+            }
+
+            stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
+        }
+        onChanged: layoutsCollectionSettings.models = JSON.stringify(toJSValue())
+    }
+
     Item {
         anchors.fill: parent
 
-        // Right-to-left User Interfaces support
-        // NOTE: This is supported by the ApplicationWindow starting from Qt 5.8
-        LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
-        LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
-
-        ViewportsLayout {
-            id: viewportsLayout
-
-            focus: true
-            division: 3
+        Rectangle {
+            color: 'black'
             anchors.fill: parent
+        }
+
+        StackLayout {
+            id: stackLayout
+
+            anchors.fill: parent
+
+            onCurrentIndexChanged: layoutsCollectionSettings.currentIndex = currentIndex
+
+            Repeater {
+                id: swipeViewRepeater
+                model: layoutsCollectionModel
+
+                ViewportsLayout {
+                    model: layoutModel
+                    focus: true
+
+                    visible: SwipeView.isCurrentItem
+                }
+            }
         }
 
         PageIndicator {
             interactive: true
-            visible: viewportsLayoutsCollection.count > 1
-            currentIndex: viewportsLayoutsCollection.currentIndex
-            count: viewportsLayoutsCollection.count
+            visible: stackLayout.count > 1
+            currentIndex: stackLayout.currentIndex
+            count: stackLayout.count
             anchors {
                 bottom: parent.bottom
                 horizontalCenter: parent.horizontalCenter
             }
 
-            onCurrentIndexChanged: viewportsLayoutsCollection.currentIndex = currentIndex
+            onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
         }
 
         SideMenu {

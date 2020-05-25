@@ -1,15 +1,14 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/js/script.js</file>
+        <file>src/js/utils.js</file>
         <file>src/qml/main.qml</file>
         <file>src/qml/Player.qml</file>
         <file>src/qml/ViewportsLayout.qml</file>
-        <file>src/qml/ViewportsLayoutListModel.qml</file>
-        <file>src/qml/ViewportsLayoutsCollection.qml</file>
         <file>src/qml/SideMenu.qml</file>
         <file>res/translations/cctv-viewer_ru.qm</file>
         <file>res/icons/cctv-viewer.svg</file>
         <file>res/icons/cctv-viewer.ico</file>
         <file>qtquickcontrols2.conf</file>
+        <file>res/icons/pin-white.svg</file>
     </qresource>
 </RCC>

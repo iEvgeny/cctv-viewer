@@ -1,14 +1,14 @@
 import QtQuick 2.0
 //import QtMultimedia 5.0
 import QtAV 1.7
-import '../js/script.js' as CCTV_Viewer
+import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
     id: root
 
     property bool keepAlive: false
     property string color: 'black'
-    property int probesize: 200000  // 500 KB
+    property int probesize: 200000  // 200 KB
     property int analyzeduration: 0  // 0 µs
 
     property alias autoLoad: mediaPlayer.autoLoad
@@ -30,8 +30,8 @@ FocusScope {
         color: root.color
         anchors.fill: parent
 
-        VideoOutput2 {
-            id: videoOutput
+//        VideoOutput {
+        VideoOutput2 {            id: videoOutput
 
             source: mediaPlayer
             anchors.fill: parent
@@ -45,7 +45,8 @@ FocusScope {
             anchors.centerIn: parent
         }
 
-        MediaPlayer {
+//        MediaPlayer {
+        AVPlayer {
             id: mediaPlayer
 
             avFormatOptions: {

@@ -1,8 +1,8 @@
 import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
-import '../js/script.js' as CCTV_Viewer
+import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
     id: root
@@ -135,21 +135,40 @@ FocusScope {
 
                             Layout.fillWidth: true
                         }
-                        Button {
+                        RoundButton {
                             id: pin
 
-                            padding: 0
-                            contentItem: Label {
-                                text: '📌'
-                                color: 'white'
-                                font {
-                                    pixelSize: 18
-                                    bold: d.pinned
-                                    underline: pin.visualFocus
-                                }
+                            highlighted: d.pinned
+                            contentItem: Image {
+                                source: 'qrc:/res/icons/pin-white.svg'
                             }
                             background: Rectangle {
+                                id: pinBackground
+
                                 color: 'transparent'
+                                border.width: 0
+                                radius: pin.radius
+                                states: [
+                                    State {
+                                        name: 'pinned'
+                                        when: pin.highlighted
+
+                                        PropertyChanges {
+                                            target: pinBackground
+                                            color: Qt.lighter(background.color, 1.2)
+                                        }
+                                    },
+                                    State {
+                                        name: 'hovered'
+                                        when: pin.hovered
+
+                                        PropertyChanges {
+                                            target: pinBackground
+                                            border.color: 'white'
+                                            border.width: 1
+                                        }
+                                    }
+                                ]
                             }
 
                             onClicked: d.pinned = !d.pinned
@@ -157,18 +176,14 @@ FocusScope {
                     }
 
                     GroupBox {
-                        label: RowLayout {
-                            width: parent.width
-
-                            Label {
-                                text: qsTr('Window division')
-                                color: 'white'
-                                font.pixelSize: 14
-                            }
+                        label: Label {
+                            text: qsTr('Window division')
+                            color: 'white'
+                            font.pixelSize: 14
                         }
 
                         // Disable controls when one of the viewports is in full-screen mode.
-                        enabled: !(viewportsLayout.fullScreenIndex >= 0)
+                        enabled: !(currentLayout().fullScreenIndex >= 0)
 
                         Layout.fillWidth: true
 
@@ -181,24 +196,27 @@ FocusScope {
                                 delegate: Button {
                                     text: qsTr('%1x%1').arg(index + 1)
                                     enabled: !highlighted
-                                    highlighted: viewportsLayout.division == index + 1
+                                    highlighted: {
+                                        var division = index + 1;
+                                        currentModel().size === Qt.size(division, division);
+                                    }
 
                                     Layout.fillWidth: true
 
-                                    onClicked: viewportsLayout.division = index + 1
+                                    onClicked: {
+                                        var division = index + 1;
+                                        currentModel().size = Qt.size(division, division);
+                                    }
                                 }
                             }
                         }
                     }
 
                     GroupBox {
-                        label: RowLayout {
-                            width: parent.width
-                            Label {
-                                text: qsTr('Geometry')
-                                color: 'white'
-                                font.pixelSize: 14
-                            }
+                        label: Label {
+                            text: qsTr('Geometry')
+                            color: 'white'
+                            font.pixelSize: 14
                         }
 
                         Layout.fillWidth: true
@@ -209,34 +227,36 @@ FocusScope {
 
                             Button {
                                 text: qsTr('16:9')
-                                enabled: !rootWindow.fullScreen  // Disable control when application window is full-screen.
-                                highlighted: viewportsLayout.aspectRatio == '16:9'
+                                highlighted: currentModel().aspectRatio === Qt.size(16, 9)
 
                                 Layout.fillWidth: true
 
                                 onClicked: {
                                     var size = Math.round(rootWindow.width / 16);
 
-                                    rootWindow.width = size * 16;
-                                    rootWindow.height = size * 9;
+                                    if (!rootWindow.fullScreen) {
+                                        rootWindow.width = size * 16;
+                                        rootWindow.height = size * 9;
+                                    }
 
-                                    viewportsLayout.aspectRatio = '16:9';
+                                    currentModel().aspectRatio = Qt.size(16, 9);
                                 }
                             }
                             Button {
                                 text: qsTr('4:3')
-                                enabled: !rootWindow.fullScreen  // Disable control when application window is full-screen.
-                                highlighted: viewportsLayout.aspectRatio == '4:3'
+                                highlighted: currentModel().aspectRatio === Qt.size(4, 3)
 
                                 Layout.fillWidth: true
 
                                 onClicked: {
                                     var size = Math.round(rootWindow.width / 4);
 
-                                    rootWindow.width = size * 4;
-                                    rootWindow.height = size * 3;
+                                    if (!rootWindow.fullScreen) {
+                                        rootWindow.width = size * 4;
+                                        rootWindow.height = size * 3;
+                                    }
 
-                                    viewportsLayout.aspectRatio = '4:3';
+                                    currentModel().aspectRatio = Qt.size(4, 3);
                                 }
                             }
                             Button {
@@ -254,13 +274,10 @@ FocusScope {
                     GroupBox {
                         id: toolsGroup
 
-                        label: RowLayout {
-                            width: parent.width
-                            Label {
-                                text: qsTr('Tools')
-                                color: 'white'
-                                font.pixelSize: 14
-                            }
+                        label: Label {
+                            text: qsTr('Tools')
+                            color: 'white'
+                            font.pixelSize: 14
                         }
 
                         Layout.fillWidth: true
@@ -270,11 +287,11 @@ FocusScope {
 
                             Button {
                                 text: qsTr('Merging cells')
-                                enabled: viewportsLayout.mergeCells(true)
+                                enabled: currentLayout().mergeCells(true)
 
                                 Layout.fillWidth: true
 
-                                onClicked: viewportsLayout.mergeCells()
+                                onClicked: currentLayout().mergeCells()
                             }
                         }
                     }
@@ -282,17 +299,17 @@ FocusScope {
                     GroupBox {
                         id: viewportGroup
 
-                        label: RowLayout {
-                            width: parent.width
-                            Label {
-                                text: qsTr('Viewport%1').arg(viewportsLayout.focusIndex >= 0 ? qsTr(' #%1').arg(viewportsLayout.focusIndex + 1) : '')
-                                color: 'white'
-                                font.pixelSize: 14
-                            }
+                        label: Label {
+                            text: qsTr('Viewport%1').arg(viewportNumber)
+                            color: 'white'
+                            font.pixelSize: 14
+
+                            // HACK: External argument for fix GroupBox geometry calculation
+                            property string viewportNumber: currentLayout().focusIndex >= 0 ? qsTr(' #%1').arg(currentLayout().focusIndex + 1) : ''
                         }
 
                         // Enabled only when one of the viewports is active.
-                        enabled: viewportsLayout.focusIndex >= 0
+                        enabled: currentLayout().focusIndex >= 0
 
                         Layout.fillWidth: true
 
@@ -300,26 +317,26 @@ FocusScope {
                             anchors.fill: parent
 
                             TextField {
-                                text: viewportGroup.enabled ? viewportsLayout.itemAt(viewportsLayout.focusIndex).url : ''
+                                text: viewportGroup.enabled ? currentModel().get(currentLayout().focusIndex).url : ''
                                 placeholderText: qsTr('Url')
                                 selectByMouse: true
 
                                 Layout.fillWidth: true
 
-                                onEditingFinished: viewportsLayout.model.get(viewportsLayout.focusIndex).url = text
+                                onEditingFinished: currentModel().get(currentLayout().focusIndex).url = text
                             }
 
                             Button {
                                 text: qsTr('Mute')
-                                highlighted: viewportsLayout.focusIndex >= 0 && viewportsLayout.itemAt(viewportsLayout.focusIndex).volume <= 0
+                                highlighted: currentLayout().focusIndex >= 0 && currentModel().get(currentLayout().focusIndex).volume <= 0
 
                                 Layout.fillWidth: true
 
                                 onClicked: {
-                                    if (viewportsLayout.model.get(viewportsLayout.focusIndex).volume > 0) {
-                                        viewportsLayout.model.get(viewportsLayout.focusIndex).volume = 0;
+                                    if (currentModel().get(currentLayout().focusIndex).volume > 0) {
+                                        currentModel().get(currentLayout().focusIndex).volume = 0;
                                     } else {
-                                        viewportsLayout.model.get(viewportsLayout.focusIndex).volume = 1;
+                                        currentModel().get(currentLayout().focusIndex).volume = 1;
                                     }
                                 }
                             }
@@ -329,13 +346,10 @@ FocusScope {
                     GroupBox {
                         id: presetsGroup
 
-                        label: RowLayout {
-                            width: parent.width
-                            Label {
-                                text: qsTr('Presets')
-                                color: 'white'
-                                font.pixelSize: 14
-                            }
+                        label: Label {
+                            text: qsTr('Presets')
+                            color: 'white'
+                            font.pixelSize: 14
                         }
 
                         Layout.fillWidth: true
@@ -345,10 +359,10 @@ FocusScope {
                             anchors.fill: parent
 
                             Repeater {
-                                model: viewportsLayoutsCollection.count
+                                model: layoutsCollectionModel.count
                                 delegate: Button {
                                     text: hold ? '➖' : index + 1
-                                    highlighted: viewportsLayoutsCollection.currentIndex == index
+                                    highlighted: stackLayout.currentIndex === index
 
                                     property bool hold: false
 
@@ -356,13 +370,13 @@ FocusScope {
 
                                     onClicked: {
                                         if (hold) {
-                                            viewportsLayoutsCollection.remove(index);
+                                            layoutsCollectionModel.remove(index);
                                         } else {
-                                            viewportsLayoutsCollection.currentIndex = index;
+                                            stackLayout.currentIndex = index;
                                         }
                                     }
                                     onPressAndHold: {
-                                        if (viewportsLayoutsCollection.count > 1) {
+                                        if (layoutsCollectionModel.count > 1) {
                                             hold = !hold;
                                         }
                                     }
@@ -374,7 +388,9 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onClicked: viewportsLayoutsCollection.append()
+                                onClicked: {
+                                    layoutsCollectionModel.append().size = Qt.size(3, 3);
+                                }
                             }
                         }
                     }
@@ -420,5 +436,13 @@ FocusScope {
                 }
             }
         }
+    }
+
+    function currentModel() {
+        return layoutsCollectionModel.get(stackLayout.currentIndex);
+    }
+
+    function currentLayout() {
+        return swipeViewRepeater.itemAt(stackLayout.currentIndex);
     }
 }
