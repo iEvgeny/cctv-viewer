@@ -14,7 +14,7 @@ class ViewportsLayoutsCollectionModel : public QAbstractListModel
     Q_CLASSINFO("DefaultProperty", "models")
 
 public:
-    ViewportsLayoutsCollectionModel(QObject *parent = nullptr) : QAbstractListModel(parent) {}
+    ViewportsLayoutsCollectionModel(QObject *parent = nullptr);
 
     enum ModelRoles {
         LayoutModel = Qt::UserRole + 1

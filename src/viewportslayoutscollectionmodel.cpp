@@ -1,5 +1,10 @@
 #include "viewportslayoutscollectionmodel.h"
 
+ViewportsLayoutsCollectionModel::ViewportsLayoutsCollectionModel(QObject *parent) : QAbstractListModel(parent)
+{
+    connect(this, &ViewportsLayoutsCollectionModel::countChanged, this, &ViewportsLayoutsCollectionModel::changed);
+}
+
 QVariant ViewportsLayoutsCollectionModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || role != LayoutModel) {
