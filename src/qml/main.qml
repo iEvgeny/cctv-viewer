@@ -104,6 +104,7 @@ ApplicationWindow {
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
         }
         onChanged: layoutsCollectionSettings.models = JSON.stringify(toJSValue())
+        onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
     }
 
     Item {

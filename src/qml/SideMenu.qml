@@ -388,9 +388,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                onClicked: {
-                                    layoutsCollectionModel.append().size = Qt.size(3, 3);
-                                }
+                                onClicked: layoutsCollectionModel.append().size = Qt.size(3, 3)
                             }
                         }
                     }
