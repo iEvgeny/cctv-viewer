@@ -26,6 +26,7 @@ apps:
       - wayland
       - mir
       - opengl
+      - alsa
       - pulseaudio
       - unity7  # Possibly unneeded
       - removable-media
