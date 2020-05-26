@@ -21,13 +21,11 @@ apps:
       - home
       - desktop
       - desktop-legacy
-      - account-control
       - x11
       - wayland
       - mir
       - opengl
-      - alsa
-      - pulseaudio
+      - audio-playback
       - unity7  # Possibly unneeded
       - removable-media
       - network
