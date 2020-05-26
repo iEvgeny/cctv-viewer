@@ -1,6 +1,6 @@
 VER_MAJ = 0
 VER_MIN = 1
-VER_PAT = 4
+VER_PAT = 5
 REL_STATUS = "alpha"
 
 VERSION = "$${VER_MAJ}.$${VER_MIN}"

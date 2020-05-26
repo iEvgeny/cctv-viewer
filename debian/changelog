@@ -1,3 +1,9 @@
+cctv-viewer (0.1.5-0ppa1~ubuntu20.04) focal; urgency=medium
+
+  * Data model refactoring, etc.
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Tue, 26 May 2020 13:04:01 +0300
+
 cctv-viewer (0.1.4-0ppa1~ubuntu18.04) bionic; urgency=medium
 
   * Migration to QtAV library: https://github.com/wang-bin/QtAV
