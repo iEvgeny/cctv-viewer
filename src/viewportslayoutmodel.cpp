@@ -162,9 +162,14 @@ normalize:
 
             set(index, item);
         } else {
+            int span = 1;
             int rowSpan = clamp(item->property("rowSpan").toInt(), 1, m_rows - row(index));
             int columnSpan = clamp(item->property("columnSpan").toInt(), 1, m_columns - column(index));
-            int span = std::min(rowSpan, columnSpan);
+
+            if (rowSpan != m_rows && columnSpan != m_columns) {
+                span = std::min(rowSpan, columnSpan);
+            }
+
             item->setProperty("rowSpan", span);
             item->setProperty("columnSpan", span);
             item->setProperty("visible", static_cast<int>(ViewportsLayoutItem::Visible::Visible));
