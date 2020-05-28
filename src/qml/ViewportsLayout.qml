@@ -6,8 +6,8 @@ import '../js/utils.js' as CCTV_Viewer
 FocusScope {
     id: root
 
+    property var size: model.size
     property int division: model.size.width  // TODO: Layout must be reimplemented using model size
-    property string aspectRatio: model.aspectRatio.width + ':' + model.aspectRatio.height // TODO: Layout must be reimplemented using model aspectRatio
     property var model: ViewportsLayoutModel {}
     property string color: 'black'
 
@@ -21,17 +21,7 @@ FocusScope {
     QtObject {
         id: d
 
-        property var aspectRatio: {
-            var arr = root.aspectRatio.split(':', 2);
-
-            if (arr.length !== 2 || !CCTV_Viewer.isNumeric(arr[0]) || !CCTV_Viewer.isNumeric(arr[1])) {
-                // Return default value
-                return {x: 16, y: 9, ratio: 16 / 9};
-            }
-
-            return { x: arr[0], y: arr[1], ratio: arr[0] / arr[1] };
-        }
-
+        property var layoutRatio: (model.aspectRatio.width * model.size.width) / (model.aspectRatio.height * model.size.height);
         property int fullScreenIndex: -1
         property int focusIndex: -1
         property int activeFocusIndex: -1
@@ -40,18 +30,19 @@ FocusScope {
         property bool multiselect: selectionIndex2 != selectionIndex1
         property int keyModifiers: 0
 
+        onLayoutRatioChanged: selectionReset()
         onSelectionIndex1Changed: selectionReset()
 
         function columnFromIndex(index) {
-            return index % root.division;
+            return index % root.size.width;
         }
 
         function rowFromIndex(index) {
-            return Math.floor(index / root.division);
+            return Math.floor(index / root.size.width);
         }
 
         function indexFromAddress(column, row) {
-            return row * root.division + column;
+            return row * root.size.width + column;
         }
 
         function selectionTop() {
@@ -133,10 +124,10 @@ FocusScope {
     GridLayout {
         id: layout
 
-        width: (root.width / root.height <= d.aspectRatio.ratio) ? root.width : root.height * d.aspectRatio.ratio;
-        height: (root.width / root.height < d.aspectRatio.ratio) ? root.width / d.aspectRatio.ratio : root.height;
-        columns: root.division
-        rows: root.division
+        width: (root.width / root.height <= d.layoutRatio) ? root.width : root.height * d.layoutRatio;
+        height: (root.width / root.height < d.layoutRatio) ? root.width / d.layoutRatio : root.height;
+        columns: root.size.width
+        rows: root.size.height
         columnSpacing: 0
         rowSpacing: 0
         anchors.centerIn: parent
@@ -149,8 +140,8 @@ FocusScope {
             delegate: Item {
                 id: container
 
-                implicitWidth: (layout.width / root.division) * Math.max(viewport.columnSpan, 0)
-                implicitHeight: (layout.height / root.division) * Math.max(viewport.rowSpan, 0)
+                implicitWidth: (layout.width / root.size.width) * Math.max(viewport.columnSpan, 0)
+                implicitHeight: (layout.height / root.size.height) * Math.max(viewport.rowSpan, 0)
                 visible: root.visible && ((model.visible === ViewportsLayoutItem.Visible) ? true : false)
 
                 Layout.fillHeight: true
@@ -236,7 +227,7 @@ FocusScope {
                         var fullScreenKey = QT_TR_NOOP('F', 'Shortcut');
                         if (event.text.toUpperCase() === fullScreenKey ||
                             event.text.toUpperCase() === qsTr(fullScreenKey)) {
-                            fullScreen = (root.division > 1) ? !fullScreen : false;
+                            fullScreen = (root.size.width > 1 && root.size.height > 1) ? !fullScreen : false;
                             d.selectionReset();
                         }
 
@@ -335,19 +326,19 @@ FocusScope {
                         property real volume: model.volume
 
                         property int topIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
-                                                             Number(viewport.row - 1).clamp(0, root.division - 1))
+                                                             Number(viewport.row - 1).clamp(0, root.size.height - 1))
 
                         property int bottomIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
-                                                                Number(viewport.row + viewport.rowSpan).clamp(0, root.division - 1))
+                                                                Number(viewport.row + viewport.rowSpan).clamp(0, root.size.height - 1))
 
                         property int rightIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
-                                                               Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1),
-                                                               Number(viewport.column - 1).clamp(0, root.division - 1)),
+                                                               Number(viewport.column + viewport.columnSpan).clamp(0, root.size.width - 1),
+                                                               Number(viewport.column - 1).clamp(0, root.size.width - 1)),
                                                                viewport.row + viewport.cursorRowOffset)
 
                         property int leftIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
-                                                              Number(viewport.column - 1).clamp(0, root.division - 1),
-                                                              Number(viewport.column + viewport.columnSpan).clamp(0, root.division - 1)),
+                                                              Number(viewport.column - 1).clamp(0, root.size.width - 1),
+                                                              Number(viewport.column + viewport.columnSpan).clamp(0, root.size.width - 1)),
                                                               viewport.row + viewport.cursorRowOffset)
 
                         function setCurrentIndex(key, current) {
@@ -466,7 +457,7 @@ FocusScope {
                         }
 
                         onDoubleClicked: {
-                            viewport.fullScreen = (root.division > 1) ? !viewport.fullScreen : false;
+                            viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
                             d.selectionReset();
                         }
 
@@ -550,7 +541,7 @@ FocusScope {
 
         if (d.selectionWidth() !== d.selectionHeight() ||
             d.selectionWidth() <= 0 || d.selectionHeight() <= 0 ||
-            d.selectionWidth() >= root.division || d.selectionHeight() >= root.division) {
+            d.selectionWidth() >= root.size.width || d.selectionHeight() >= root.size.height) {
             return false;
         }
 

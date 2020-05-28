@@ -15,8 +15,8 @@ ViewportsLayoutItem::ViewportsLayoutItem(QObject *parent)
 
 ViewportsLayoutModel::ViewportsLayoutModel(QObject *parent)
     : QAbstractListModel(parent),
-      m_rows(0),
       m_columns(0),
+      m_rows(0),
       m_aspectRatio(16, 9)
 {
     connect(this, &ViewportsLayoutModel::dataChanged, this, &ViewportsLayoutModel::changed);
@@ -61,10 +61,6 @@ bool ViewportsLayoutModel::insertRows(int row, int count, const QModelIndex &par
         return false;
     }
 
-    Q_ASSERT(m_columns > 0);
-
-    m_rows = static_cast<int>((m_items.size() + count) / m_columns);
-
     beginInsertRows(parent, row, row + count - 1);
     normalize();
     endInsertRows();
@@ -77,10 +73,6 @@ bool ViewportsLayoutModel::removeRows(int row, int count, const QModelIndex &par
     if (parent.isValid()) {
         return false;
     }
-
-    Q_ASSERT(m_columns > 0);
-
-    m_rows = static_cast<int>((m_items.size() - count) / m_columns);
 
     beginRemoveRows(parent, row, row + count - 1);
     normalize();
@@ -111,26 +103,27 @@ void ViewportsLayoutModel::clear() {
     endResetModel();
 }
 
-void ViewportsLayoutModel::resize(int rows, int columns)
+void ViewportsLayoutModel::resize(int columns, int rows)
 {
     int count = rows * columns;
 
     if (rows >= 0 && columns >= 0) {
         m_columns = columns;
+        m_rows = rows;
 
         if (count > m_items.size()) {
             insertRows(m_items.size(), count - m_items.size());
-        }
-
-        if (count < m_items.size()) {
+        } else if (count < m_items.size()) {
             removeRows(count, m_items.size() - count);
+        } else {
+            normalize();
         }
     }
 }
 
 void ViewportsLayoutModel::normalize()
 {
-    int count = m_rows * m_columns;
+    int count = m_columns * m_rows;
 
     // Resize
     if (m_items.size() != count) {
@@ -163,15 +156,15 @@ normalize:
             set(index, item);
         } else {
             int span = 1;
-            int rowSpan = clamp(item->property("rowSpan").toInt(), 1, m_rows - row(index));
             int columnSpan = clamp(item->property("columnSpan").toInt(), 1, m_columns - column(index));
+            int rowSpan = clamp(item->property("rowSpan").toInt(), 1, m_rows - row(index));
 
-            if (rowSpan != m_rows && columnSpan != m_columns) {
+            if (columnSpan != m_columns || rowSpan != m_rows) {
                 span = std::min(rowSpan, columnSpan);
             }
 
-            item->setProperty("rowSpan", span);
             item->setProperty("columnSpan", span);
+            item->setProperty("rowSpan", span);
             item->setProperty("visible", static_cast<int>(ViewportsLayoutItem::Visible::Visible));
             item->setProperty("volume", clamp(item->property("volume").toDouble(), 0.0, 1.0));
         }
@@ -181,8 +174,8 @@ normalize:
         auto item = get(index);
 
         if (item->property("visible").toInt() == static_cast<int>(ViewportsLayoutItem::Visible::Visible)) {
-            int rowSpan = item->property("rowSpan").toInt();
             int columnSpan = item->property("columnSpan").toInt();
+            int rowSpan = item->property("rowSpan").toInt();
 
             // Iterate hidden elements
             for (int r = 0; r < rowSpan; ++r) {
@@ -191,13 +184,13 @@ normalize:
                     if (hiddenIndex != index) {
                         auto hiddenItem = get(hiddenIndex);
                         if (hiddenItem->property("visible").toInt() == static_cast<int>(ViewportsLayoutItem::Visible::Visible)) {
-                            hiddenItem->setProperty("rowSpan", -r);
                             hiddenItem->setProperty("columnSpan", -c);
+                            hiddenItem->setProperty("rowSpan", -r);
                             hiddenItem->setProperty("visible", static_cast<int>(ViewportsLayoutItem::Visible::Hidden));
                         } else {
                             // Span collision
-                            item->setProperty("rowSpan", 1);
                             item->setProperty("columnSpan", 1);
+                            item->setProperty("rowSpan", 1);
                             goto normalize;
                         }
                     }
@@ -238,7 +231,6 @@ void ViewportsLayoutModel::fromJSValue(QVariantMap model)
             if (strList.size() == 2) {
                 setAspectRatio(QSize(strList.at(0).toInt(), strList.at(1).toInt()));
             }
-
         }
     }
 
@@ -298,7 +290,7 @@ void ViewportsLayoutModel::setSize(QSize size)
         return;
     }
 
-    resize(size.height(), size.width());
+    resize(size.width(), size.height());
 
     emit sizeChanged(size);
 }

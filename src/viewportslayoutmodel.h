@@ -95,7 +95,7 @@ public:
     Q_INVOKABLE void clear();
     Q_INVOKABLE QSize size() const { return QSize(m_columns, m_rows); }
     Q_INVOKABLE QSize aspectRatio() const { return m_aspectRatio; }
-    Q_INVOKABLE void resize(int rows, int columns);
+    Q_INVOKABLE void resize(int columns, int rows);
     Q_INVOKABLE void normalize();
 
     Q_INVOKABLE void fromJSValue(QVariantMap model);
@@ -124,8 +124,8 @@ private:
     }
 
 private:
-    int m_rows;
     int m_columns;
+    int m_rows;
     QSize m_aspectRatio;
     QVector<ViewportsLayoutItem *> m_items;
 };

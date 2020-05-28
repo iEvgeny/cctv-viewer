@@ -98,7 +98,7 @@ ApplicationWindow {
                     fromJSValue(JSON.parse(models));
                 }
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error parse data model'));
+                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
             }
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;

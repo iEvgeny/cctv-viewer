@@ -2,6 +2,7 @@ import QtQuick 2.6
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
+import Qt.labs.settings 1.0
 import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
@@ -43,6 +44,14 @@ FocusScope {
             }
         }
     ]
+
+    Settings {
+        id: sideMenuSettings
+
+        category: 'SideMenu'
+
+        property string windowDivision
+    }
 
     Timer {
         id: timer
@@ -191,21 +200,121 @@ FocusScope {
                             columns: 2
                             anchors.fill: parent
 
-                            Repeater {
-                                model: 4
-                                delegate: Button {
-                                    text: qsTr('%1x%1').arg(index + 1)
-                                    enabled: !highlighted
-                                    highlighted: {
-                                        var division = index + 1;
-                                        currentModel().size === Qt.size(division, division);
+                            ListModel {
+                                id: divisionModel
+
+                                ListElement {
+                                    size: '1x1'
+                                }
+                                ListElement {
+                                    size: '2x2'
+                                }
+                                ListElement {
+                                    size: '3x3'
+                                }
+                                ListElement {
+                                    size: '4x4'
+                                }
+
+                                Component.onCompleted: {
+                                    fromJSValue(sideMenuSettings.windowDivision);
+
+                                    divisionModel.dataChanged.connect(function () {
+                                        sideMenuSettings.windowDivision = JSON.stringify(toJSValue());
+                                    });
+                                }
+
+                                function fromJSValue(model) {
+                                    var arr;
+
+                                    try {
+                                        if (!model.isEmpty()) {
+                                            arr = JSON.parse(model);
+                                        }
+                                    } catch(err) {
+                                        CCTV_Viewer.log_error(qsTr('Error reading configuration'));
                                     }
+
+                                    if (arr instanceof Array) {
+                                        for (var i = 0; i < arr.length; ++i) {
+                                            divisionModel.set(i, arr[i]);
+                                        }
+                                    }
+                                }
+
+                                function toJSValue() {
+                                    var arr = [];
+                                    for (var i = 0; i < divisionModel.count; ++i) {
+                                        arr[i] = divisionModel.get(i)
+                                    }
+                                    return arr;
+                                }
+                            }
+
+                            Repeater {
+                                model: divisionModel
+                                delegate: Item {
+                                    id: divisionItem
+
+                                    implicitWidth: divisionTextField.implicitWidth
+                                    implicitHeight: divisionTextField.implicitHeight
 
                                     Layout.fillWidth: true
 
-                                    onClicked: {
-                                        var division = index + 1;
-                                        currentModel().size = Qt.size(division, division);
+                                    Keys.onEscapePressed: divisionTextField.cancel()
+                                    Keys.onPressed: {
+                                        if (event.key === Qt.Key_F2) {
+                                            divisionTextField.edit();
+                                        }
+                                    }
+
+                                    Button {
+                                        text: size
+                                        highlighted: {
+                                            currentModel().size === str2size(size);
+                                        }
+                                        anchors.fill: parent
+
+                                        onClicked: currentModel().size = str2size(size)
+                                        onPressAndHold: divisionTextField.edit()
+                                    }
+
+                                    TextField {
+                                        id: divisionTextField
+
+                                        visible: false
+                                        anchors.fill: parent
+                                        horizontalAlignment: TextInput.AlignHCenter
+                                        selectByMouse: true
+
+                                        onEditingFinished: {
+                                            visible = false;
+                                            if(str2size(text)) {
+                                                size = text;
+                                            }
+                                        }
+
+                                        function edit() {
+                                            text = size;
+                                            visible = true;
+                                            forceActiveFocus();
+                                        }
+
+                                        function cancel() {
+                                            text = size;
+                                            visible = false;
+                                        }
+                                    }
+
+                                    function str2size(str) {
+                                        var separatorTr = qsTr('x');
+                                        var regexp = new RegExp('^[1-9][x%1][1-9]$'.arg(separatorTr));
+                                        if (regexp.test(str)) {
+                                            var size = str.split(new RegExp('[x%1]'.arg(separatorTr)));
+                                            return Qt.size(size[0], size[1]);
+                                        }
+
+                                        return null;
                                     }
                                 }
                             }
@@ -222,6 +331,8 @@ FocusScope {
                         Layout.fillWidth: true
 
                         GridLayout {
+                            id: geometryLayout
+
                             columns: 2
                             anchors.fill: parent
 
@@ -232,14 +343,8 @@ FocusScope {
                                 Layout.fillWidth: true
 
                                 onClicked: {
-                                    var size = Math.round(rootWindow.width / 16);
-
-                                    if (!rootWindow.fullScreen) {
-                                        rootWindow.width = size * 16;
-                                        rootWindow.height = size * 9;
-                                    }
-
                                     currentModel().aspectRatio = Qt.size(16, 9);
+                                    setRootWindowRatio(currentModel().aspectRatio);
                                 }
                             }
                             Button {
@@ -249,14 +354,8 @@ FocusScope {
                                 Layout.fillWidth: true
 
                                 onClicked: {
-                                    var size = Math.round(rootWindow.width / 4);
-
-                                    if (!rootWindow.fullScreen) {
-                                        rootWindow.width = size * 4;
-                                        rootWindow.height = size * 3;
-                                    }
-
                                     currentModel().aspectRatio = Qt.size(4, 3);
+                                    setRootWindowRatio(currentModel().aspectRatio);
                                 }
                             }
                             Button {
@@ -442,5 +541,16 @@ FocusScope {
 
     function currentLayout() {
         return swipeViewRepeater.itemAt(stackLayout.currentIndex);
+    }
+
+    function setRootWindowRatio(ratio) {
+        var horzRatio = currentModel().size.width * ratio.width;
+        var vertRatio = currentModel().size.height * ratio.height;
+        var pixels = Math.round(rootWindow.width / horzRatio);
+
+        if (!rootWindow.fullScreen) {
+            rootWindow.width = horzRatio * pixels;
+            rootWindow.height = vertRatio * pixels;
+        }
     }
 }
