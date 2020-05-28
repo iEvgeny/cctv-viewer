@@ -21,11 +21,10 @@ public:
     };
 
     // QAbstractItemModel interface
-    QVariant data(const QModelIndex &index, int role) const;
-    QHash<int, QByteArray> roleNames() const;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
-    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    QVariant data(const QModelIndex &index, int role) const override;
+    // bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     // Model control interface
     Q_INVOKABLE int count() const { return m_models.size(); }
@@ -33,7 +32,7 @@ public:
     Q_INVOKABLE ViewportsLayoutModel *set(int index, ViewportsLayoutModel *p);
     Q_INVOKABLE void clear();
     Q_INVOKABLE ViewportsLayoutModel *insert(int index, ViewportsLayoutModel *p);
-    Q_INVOKABLE void remove(int index, int count = 1) { removeRows(index, count); }
+    Q_INVOKABLE void remove(int index, int count = 1);
     Q_INVOKABLE ViewportsLayoutModel *append(ViewportsLayoutModel *p = nullptr) { return insert(m_models.size(), p); }
     Q_INVOKABLE void resize(int count);
 

@@ -7,7 +7,6 @@ FocusScope {
     id: root
 
     property var size: model.size
-    property int division: model.size.width  // TODO: Layout must be reimplemented using model size
     property var model: ViewportsLayoutModel {}
     property string color: 'black'
 

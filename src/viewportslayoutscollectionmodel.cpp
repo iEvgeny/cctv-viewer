@@ -31,47 +31,6 @@ int ViewportsLayoutsCollectionModel::rowCount(const QModelIndex &parent) const
     return m_models.size();
 }
 
-bool ViewportsLayoutsCollectionModel::insertRows(int row, int count, const QModelIndex &parent)
-{
-    if (parent.isValid()) {
-        return false;
-    }
-
-    QQmlEngine *engine = qmlEngine(this);
-
-    Q_ASSERT(engine != nullptr);
-
-    beginInsertRows(parent, row, row + count - 1);
-    for (int i = 0; i < count; ++i) {
-        ViewportsLayoutModel *obj = new ViewportsLayoutModel(this);
-        QQmlEngine::setContextForObject(obj, engine->rootContext());
-
-        connect(obj, &ViewportsLayoutModel::changed, this, &ViewportsLayoutsCollectionModel::changed);
-
-        m_models.insert(row + i, obj);
-    }
-    endInsertRows();
-
-    emit countChanged(m_models.size());
-
-    return true;
-}
-
-bool ViewportsLayoutsCollectionModel::removeRows(int row, int count, const QModelIndex &parent)
-{
-    if (parent.isValid()) {
-        return false;
-    }
-
-    beginRemoveRows(parent, row, row + count - 1);
-    m_models.remove(row, count);
-    endRemoveRows();
-
-    emit countChanged(m_models.size());
-
-    return true;
-}
-
 ViewportsLayoutModel *ViewportsLayoutsCollectionModel::set(int index, ViewportsLayoutModel *p)
 {
     if (p == get(index)) {
@@ -98,27 +57,48 @@ void ViewportsLayoutsCollectionModel::clear()
 ViewportsLayoutModel *ViewportsLayoutsCollectionModel::insert(int index, ViewportsLayoutModel *p)
 {
     if (index >= 0 && index <= m_models.size()) {
+        QQmlEngine *engine = qmlEngine(this);
 
-        insertRows(index, 1);
+        Q_ASSERT(engine != nullptr);
 
-        if (p != nullptr) {
-            set(index, p);
-        } else {
-            p = get(index);
+        beginInsertRows(QModelIndex(), index, index);
+
+        if (p == nullptr) {
+            p = new ViewportsLayoutModel(this);
+            QQmlEngine::setContextForObject(p, engine->rootContext());
         }
+
+        Q_ASSERT(p != nullptr);
+
+        m_models.insert(index, p);
+        connect(p, &ViewportsLayoutModel::changed, this, &ViewportsLayoutsCollectionModel::changed);
+        endInsertRows();
+
+        emit countChanged(m_models.size());
     }
 
     return p;
 }
 
+void ViewportsLayoutsCollectionModel::remove(int index, int count)
+{
+    beginRemoveRows(QModelIndex(), index, index + count - 1);
+    m_models.remove(index, count);
+    endRemoveRows();
+
+    emit countChanged(m_models.size());
+}
+
 void ViewportsLayoutsCollectionModel::resize(int count)
 {
     if (count > m_models.size()) {
-        insertRows(m_models.size(), count - m_models.size());
+        while (count - m_models.size() > 0) {
+            append();
+        }
     }
 
     if (count < m_models.size()) {
-        removeRows(count, m_models.size() - count);
+        remove(count, m_models.size() - count);
     }
 }
 
@@ -161,7 +141,7 @@ void ViewportsLayoutsCollectionModel::appendModel(QQmlListProperty<ViewportsLayo
 
 int ViewportsLayoutsCollectionModel::modelsCount(QQmlListProperty<ViewportsLayoutModel> *list)
 {
-    return reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->count();
+    return reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->m_models.size();
 }
 
 ViewportsLayoutModel *ViewportsLayoutsCollectionModel::model(QQmlListProperty<ViewportsLayoutModel> *list, int index)

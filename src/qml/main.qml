@@ -73,18 +73,19 @@ ApplicationWindow {
 
         ViewportsLayoutModel {
             size: Qt.size(2, 2)
-            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
         }
         ViewportsLayoutModel {
             size: Qt.size(3, 3)
-            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
         }
         ViewportsLayoutModel {
             size: Qt.size(1, 1)
-            Component.onCompleted: changed.connect(function() { layoutsCollectionModel.changed() })
         }
 
         Component.onCompleted: {
+            layoutsCollectionModel.changed.connect(function () {
+                layoutsCollectionSettings.models = JSON.stringify(toJSValue());
+            });
+
             var models = '';
             if (!layoutsCollectionSettings.models.isEmpty()) {
                 models = layoutsCollectionSettings.models;
@@ -103,7 +104,6 @@ ApplicationWindow {
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
         }
-        onChanged: layoutsCollectionSettings.models = JSON.stringify(toJSValue())
         onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
     }
 
