@@ -465,6 +465,8 @@ FocusScope {
 
                                     property bool hold: false
 
+                                    Keys.onEscapePressed: hold = false;
+
                                     Layout.fillWidth: true
 
                                     onClicked: {
