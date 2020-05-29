@@ -540,7 +540,7 @@ FocusScope {
 
         if (d.selectionWidth() !== d.selectionHeight() ||
             d.selectionWidth() <= 0 || d.selectionHeight() <= 0 ||
-            d.selectionWidth() >= root.size.width || d.selectionHeight() >= root.size.height) {
+            (d.selectionWidth() >= root.size.width && d.selectionHeight() >= root.size.height)) {
             return false;
         }
 
