@@ -7,7 +7,7 @@ ViewportsLayoutsCollectionModel::ViewportsLayoutsCollectionModel(QObject *parent
 
 QVariant ViewportsLayoutsCollectionModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || role != LayoutModel) {
+    if (!hasIndex(index.row(), index.column()) || role != LayoutModel) {
         return QVariant();
     }
 
@@ -141,7 +141,7 @@ void ViewportsLayoutsCollectionModel::appendModel(QQmlListProperty<ViewportsLayo
 
 int ViewportsLayoutsCollectionModel::modelsCount(QQmlListProperty<ViewportsLayoutModel> *list)
 {
-    return reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->m_models.size();
+    return reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->count();
 }
 
 ViewportsLayoutModel *ViewportsLayoutsCollectionModel::model(QQmlListProperty<ViewportsLayoutModel> *list, int index)

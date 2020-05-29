@@ -84,17 +84,17 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     virtual QHash<int, QByteArray> roleNames() const override;
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+//    virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+//    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     // Model control interface
-    Q_INVOKABLE ViewportsLayoutItem *get(int index) const { return m_items.value(index); }
-    Q_INVOKABLE ViewportsLayoutItem *get(int row, int column) const { return get(dataIndex(row, column)); }
-    Q_INVOKABLE ViewportsLayoutItem *set(int index, ViewportsLayoutItem *p);
-    Q_INVOKABLE ViewportsLayoutItem *set(int row, int column, ViewportsLayoutItem *p) { return set(dataIndex(row, column), p); };
-    Q_INVOKABLE void clear();
     Q_INVOKABLE QSize size() const { return QSize(m_columns, m_rows); }
     Q_INVOKABLE QSize aspectRatio() const { return m_aspectRatio; }
+    Q_INVOKABLE ViewportsLayoutItem *get(int index) const { return m_items.value(index); }
+    Q_INVOKABLE ViewportsLayoutItem *get(int column, int row) const { return get(dataIndex(column, row)); }
+    Q_INVOKABLE ViewportsLayoutItem *set(int index, ViewportsLayoutItem *p);
+    Q_INVOKABLE ViewportsLayoutItem *set(int column, int row, ViewportsLayoutItem *p) { return set(dataIndex(column, row), p); }
+    Q_INVOKABLE void clear();
     Q_INVOKABLE void resize(int columns, int rows);
     Q_INVOKABLE void normalize();
 
@@ -111,7 +111,7 @@ signals:
     void aspectRatioChanged(QSize ratio);
 
 protected:
-    int dataIndex(int row, int column) const { return m_columns * row + column; }
+    int dataIndex(int column, int row) const { return m_columns * row + column; }
     int column(int index) const { return index % m_columns; }
     int row(int index) const { return std::floor(index / m_columns); }
 

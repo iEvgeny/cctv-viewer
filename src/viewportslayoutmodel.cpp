@@ -1,5 +1,4 @@
 #include "viewportslayoutmodel.h"
-#include "viewportslayoutscollectionmodel.h"
 
 ViewportsLayoutItem::ViewportsLayoutItem(QObject *parent)
     : QObject(parent), m_rowSpan(1), m_columnSpan(1), m_visible(Visible::Visible), m_volume(0.0)
@@ -28,7 +27,7 @@ QVariant ViewportsLayoutModel::data(const QModelIndex &index, int role) const
 {
     QString key = roleNames().value(role);
 
-    if (!index.isValid()) {
+    if (!hasIndex(index.row(), index.column())) {
         return QVariant();
     }
 
@@ -54,32 +53,6 @@ int ViewportsLayoutModel::rowCount(const QModelIndex &parent) const
     }
 
     return m_items.size();
-}
-
-bool ViewportsLayoutModel::insertRows(int row, int count, const QModelIndex &parent)
-{
-    if (parent.isValid()) {
-        return false;
-    }
-
-    beginInsertRows(parent, row, row + count - 1);
-    normalize();
-    endInsertRows();
-
-    return true;
-}
-
-bool ViewportsLayoutModel::removeRows(int row, int count, const QModelIndex &parent)
-{
-    if (parent.isValid()) {
-        return false;
-    }
-
-    beginRemoveRows(parent, row, row + count - 1);
-    normalize();
-    endRemoveRows();
-
-    return true;
 }
 
 ViewportsLayoutItem *ViewportsLayoutModel::set(int index, ViewportsLayoutItem *p)
@@ -113,9 +86,13 @@ void ViewportsLayoutModel::resize(int columns, int rows)
         m_rows = rows;
 
         if (count > m_items.size()) {
-            insertRows(m_items.size(), count - m_items.size());
+            beginInsertRows(QModelIndex(), m_items.size(), count - 1);
+            normalize();
+            endInsertRows();
         } else if (count < m_items.size()) {
-            removeRows(count, m_items.size() - count);
+            beginRemoveRows(QModelIndex(), count, m_items.size() - 1);
+            normalize();
+            endRemoveRows();
         } else {
             normalize();
         }
@@ -181,7 +158,7 @@ normalize:
             // Iterate hidden elements
             for (int r = 0; r < rowSpan; ++r) {
                 for (int c = 0; c < columnSpan; ++c) {
-                    int hiddenIndex = dataIndex(row(index) + r, column(index) + c);
+                    int hiddenIndex = dataIndex(column(index) + c, row(index) + r);
                     if (hiddenIndex != index) {
                         auto hiddenItem = get(hiddenIndex);
                         if (hiddenItem->property("visible").toInt() == static_cast<int>(ViewportsLayoutItem::Visible::Visible)) {
