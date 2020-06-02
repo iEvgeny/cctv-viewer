@@ -144,6 +144,7 @@ FocusScope {
 
                             Layout.fillWidth: true
                         }
+
                         RoundButton {
                             id: pin
 

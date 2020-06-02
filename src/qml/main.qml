@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
 import Qt.labs.settings 1.0
+import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
 import '../js/utils.js' as CCTV_Viewer
 
@@ -22,9 +23,28 @@ ApplicationWindow {
     LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
     LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
 
-//    Settings {
-//        id: generalSettings
-//    }
+    SingleApplicationDialog {
+        onVisibleChanged: {
+            if (!visible) {
+                if (singleApplication) {
+                    Qt.quit();
+                } else {
+                    generalSettings.singleApplication = false;
+                }
+            }
+        }
+        Component.onCompleted: {
+            if (generalSettings.singleApplication && SingleApplication.isRunning()) {
+                open();
+            }
+        }
+    }
+
+    Settings {
+        id: generalSettings
+
+        property bool singleApplication: true
+    }
 
     Settings {
         id: rootWindowSettings
@@ -81,6 +101,7 @@ ApplicationWindow {
             size: Qt.size(1, 1)
         }
 
+        onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
         Component.onCompleted: {
             layoutsCollectionModel.changed.connect(function () {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
@@ -104,7 +125,6 @@ ApplicationWindow {
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
         }
-        onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
     }
 
     Item {
@@ -118,6 +138,7 @@ ApplicationWindow {
         StackLayout {
             id: stackLayout
 
+            visible: !(generalSettings.singleApplication && SingleApplication.isRunning())
             anchors.fill: parent
 
             onCurrentIndexChanged: layoutsCollectionSettings.currentIndex = currentIndex

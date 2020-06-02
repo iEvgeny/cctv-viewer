@@ -10,5 +10,6 @@
         <file>res/icons/cctv-viewer.ico</file>
         <file>qtquickcontrols2.conf</file>
         <file>res/icons/pin-white.svg</file>
+        <file>src/qml/SingleApplicationDialog.qml</file>
     </qresource>
 </RCC>

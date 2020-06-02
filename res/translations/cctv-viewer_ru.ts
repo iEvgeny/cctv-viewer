@@ -47,42 +47,42 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="189"/>
+        <location filename="../../src/qml/SideMenu.qml" line="190"/>
         <source>Window division</source>
         <translation>Деление окна</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="235"/>
+        <location filename="../../src/qml/SideMenu.qml" line="236"/>
         <source>Error reading configuration</source>
         <translation>Ошибка чтения конфигурации</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="297"/>
+        <location filename="../../src/qml/SideMenu.qml" line="311"/>
         <source>x</source>
         <translation>х</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="313"/>
+        <location filename="../../src/qml/SideMenu.qml" line="327"/>
         <source>Geometry</source>
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="349"/>
+        <location filename="../../src/qml/SideMenu.qml" line="363"/>
         <source>Full Screen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="375"/>
+        <location filename="../../src/qml/SideMenu.qml" line="389"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="416"/>
+        <location filename="../../src/qml/SideMenu.qml" line="430"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="364"/>
+        <location filename="../../src/qml/SideMenu.qml" line="378"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
@@ -91,40 +91,58 @@
         <translation type="vanished">/^[1-9]х[1-9]$/</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="327"/>
+        <location filename="../../src/qml/SideMenu.qml" line="341"/>
         <source>16:9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="338"/>
+        <location filename="../../src/qml/SideMenu.qml" line="352"/>
         <source>4:3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="389"/>
+        <location filename="../../src/qml/SideMenu.qml" line="403"/>
         <source>Viewport%1</source>
         <translation>Вьюпорт%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="394"/>
+        <location filename="../../src/qml/SideMenu.qml" line="408"/>
         <source> #%1</source>
         <translation> №%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="407"/>
+        <location filename="../../src/qml/SideMenu.qml" line="421"/>
         <source>Url</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideMenu.qml" line="436"/>
+        <location filename="../../src/qml/SideMenu.qml" line="450"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
 </context>
 <context>
+    <name>SingleApplicationDialog</name>
+    <message>
+        <location filename="../../src/qml/SingleApplicationDialog.qml" line="7"/>
+        <source>Warning!</source>
+        <translation>Внимание!</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SingleApplicationDialog.qml" line="25"/>
+        <source>The application is already running!</source>
+        <translation>Приложение уже запущено!</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SingleApplicationDialog.qml" line="40"/>
+        <source>Allow running multiple application instances</source>
+        <translation>Разрешить запуск нескольких экземпляров приложения</translation>
+    </message>
+</context>
+<context>
     <name>ViewportsLayout</name>
     <message>
-        <location filename="../../src/qml/ViewportsLayout.qml" line="235"/>
+        <location filename="../../src/qml/ViewportsLayout.qml" line="226"/>
         <source>F</source>
         <comment>Shortcut</comment>
         <translation>А</translation>
@@ -140,12 +158,24 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../../src/qml/main.qml" line="12"/>
+        <location filename="../../src/qml/main.qml" line="13"/>
         <source>CCTV Viewer</source>
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../../src/qml/main.qml" line="101"/>
+        <source>Warning!</source>
+        <translation type="vanished">Внимание!</translation>
+    </message>
+    <message>
+        <source>The application is already running!</source>
+        <translation type="vanished">Приложение уже запущено!</translation>
+    </message>
+    <message>
+        <source>Allow running multiple application instances</source>
+        <translation type="vanished">Разрешить запуск нескольких экземпляров приложения</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/main.qml" line="123"/>
         <source>Error reading configuration</source>
         <translation>Ошибка чтения конфигурации</translation>
     </message>

@@ -26,7 +26,7 @@ class ViewportsLayoutItem : public QObject
     Q_PROPERTY(QVariant volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
 public:
-    ViewportsLayoutItem(QObject *parent = nullptr);
+    explicit ViewportsLayoutItem(QObject *parent = nullptr);
 
     enum class Visible {
         Visible,
@@ -70,7 +70,7 @@ class ViewportsLayoutModel : public QAbstractListModel
     Q_PROPERTY(QSize aspectRatio READ aspectRatio WRITE setAspectRatio NOTIFY aspectRatioChanged)
 
 public:
-    ViewportsLayoutModel(QObject *parent = nullptr);
+    explicit ViewportsLayoutModel(QObject *parent = nullptr);
 
     enum ModelRoles {
         UrlRole = Qt::UserRole + 1,

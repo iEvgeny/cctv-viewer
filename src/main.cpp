@@ -3,15 +3,26 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QTranslator>
+#include "singleapplication.h"
 #include "viewportslayoutscollectionmodel.h"
 
-void registerQmlTypes() {
+void registerQmlTypes()
+{
+    qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Utils", 1, 0, "SingleApplication",
+                                                [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        Q_UNUSED(engine)
+        Q_UNUSED(scriptEngine)
+
+        return new SingleApplication();
+    });
+
     qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
     qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
     qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 // NOTE: This code is actual only when using QtMultimedia.
 #if defined(Q_OS_LINUX)
     // Ignore the SIGPIPE signal. Can be raised by librtmp.
@@ -51,8 +62,7 @@ int main(int argc, char *argv[]) {
 //    app.setLayoutDirection(Qt::RightToLeft);
 
     const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);

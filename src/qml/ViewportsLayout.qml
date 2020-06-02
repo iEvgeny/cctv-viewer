@@ -373,9 +373,9 @@ FocusScope {
                         property var playerObject
                         property string source: viewport.url
 
-                        Component.onCompleted: managePlayer()
                         onVisibleChanged: managePlayer()
                         onSourceChanged: managePlayer()
+                        Component.onCompleted: managePlayer()
 
                         function managePlayer() {
                             var src =  'import QtQuick 2.0

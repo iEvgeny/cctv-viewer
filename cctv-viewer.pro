@@ -54,6 +54,7 @@ TARGET = cctv-viewer
 DESTDIR = bin
 
 HEADERS += \
+    src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
