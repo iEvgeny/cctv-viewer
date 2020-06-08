@@ -1,4 +1,4 @@
-cctv-viewer (0.1.5-0ppa1~ubuntu20.04) focal; urgency=medium
+cctv-viewer (0.1.5.2-0) focal; urgency=medium
 
   * Data model refactoring, etc.
 
