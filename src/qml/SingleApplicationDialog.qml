@@ -18,6 +18,7 @@ Dialog {
 
             clip: true
             implicitWidth: Math.max(itemAt(0).implicitWidth, itemAt(1).implicitWidth)
+            implicitHeight: Math.max(itemAt(0).implicitHeight, itemAt(1).implicitHeight)
             anchors.fill: parent
 
             RowLayout {
