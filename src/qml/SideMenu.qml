@@ -11,20 +11,22 @@ FocusScope {
     implicitWidth: 220
 
     property bool open: false
-    property int interval: 1000
-
+    property int openInterval: 300
+    property int closeInterval: 2000
     readonly property alias pinned: d.pinned
 
     QtObject {
         id: d
 
+        property bool open: root.open || d.pinned || (currentLayout().pressAndHoldIndex >= 0) ||
+                            (mouseCaptureArea.containsMouse && !openTimer.running) || (mouseHoldArea.containsMouse || closeTimer.running)
         property bool pinned: false
     }
 
     states: [
         State {
             name: 'open'
-            when: root.open
+            when: d.open
 
             PropertyChanges {
                 target: background
@@ -54,13 +56,14 @@ FocusScope {
     }
 
     Timer {
-        id: timer
+        id: openTimer
 
-        interval: root.interval
+        interval: root.openInterval
+    }
+    Timer {
+        id: closeTimer
 
-        onTriggered: {
-            root.open = d.pinned || mouseCaptureArea.containsMouse || mouseHoldArea.containsMouse;
-        }
+        interval: root.closeInterval
     }
 
     MouseArea {
@@ -71,7 +74,7 @@ FocusScope {
         width: 20
         height: root.height
 
-        onContainsMouseChanged: timer.restart()
+        onContainsMouseChanged: openTimer.restart()
     }
 
     Rectangle {
@@ -83,7 +86,7 @@ FocusScope {
         height: root.height
 
         // Disable the menu when it is not active to prevent the capture of keyboard focus.
-        enabled: root.open
+        enabled: d.open
 
         layer.enabled: true
         layer.effect: DropShadow {
@@ -102,10 +105,8 @@ FocusScope {
             anchors.fill: parent
 
             onContainsMouseChanged: {
-                if (containsMouse) {
-                    root.open = true;
-                } else {
-                    timer.restart();
+                if (!containsMouse) {
+                    closeTimer.restart();
                 }
             }
 

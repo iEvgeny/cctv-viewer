@@ -13,6 +13,7 @@ FocusScope {
     readonly property alias fullScreenIndex: d.fullScreenIndex
     readonly property alias focusIndex: d.focusIndex
     readonly property alias activeFocusIndex: d.activeFocusIndex
+    readonly property alias pressAndHoldIndex: d.pressAndHoldIndex
     readonly property alias multiselect: d.multiselect
 
     onVisibleChanged: d.selectionReset()
@@ -24,6 +25,7 @@ FocusScope {
         property int fullScreenIndex: -1
         property int focusIndex: -1
         property int activeFocusIndex: -1
+        property int pressAndHoldIndex: -1
         property int selectionIndex1: focusIndex
         property int selectionIndex2
         property bool multiselect: selectionIndex2 != selectionIndex1
@@ -212,6 +214,7 @@ FocusScope {
                     onFullScreenChanged: d2.setCurrentIndex('fullScreenIndex', fullScreen)
                     onFocusChanged: {
                         d2.setCurrentIndex('focusIndex', focus);
+                        d2.setCurrentIndex('pressAndHoldIndex', false);
                         fullScreen = false;
                     }
                     onActiveFocusChanged: d2.setCurrentIndex('activeFocusIndex', activeFocus)
@@ -454,7 +457,7 @@ FocusScope {
                                 d.selectionReset();
                             }
                         }
-
+                        onPressAndHold: d2.setCurrentIndex('pressAndHoldIndex', true)
                         onDoubleClicked: {
                             viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
                             d.selectionReset();
