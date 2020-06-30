@@ -50,6 +50,7 @@ parts:
       - qml-module-qtquick-controls
       - qml-module-qtquick-controls2
       - qml-module-qtquick-window2
+      - qml-module-qtquick-dialogs
       - qml-module-qt-labs-settings
       - qml-module-qtmultimedia
       - qml-module-qtav
