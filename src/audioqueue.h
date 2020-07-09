@@ -1,7 +1,6 @@
 #ifndef AUDIOQUEUE_H
 #define AUDIOQUEUE_H
 
-#include <memory>
 #include <QtCore>
 
 #include "frame.h"

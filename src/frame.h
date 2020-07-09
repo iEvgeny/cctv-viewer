@@ -1,6 +1,7 @@
 #ifndef FRAME_H
 #define FRAME_H
 
+#include <memory>
 #include <QtCore>
 #include <QVideoFrame>
 
