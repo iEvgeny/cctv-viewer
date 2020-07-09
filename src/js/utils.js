@@ -77,9 +77,9 @@ Number.prototype.inRange = function(min, max) {
 }
 
 // Other
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+//function sleep(ms) {
+//  return new Promise(resolve => setTimeout(resolve, ms));
+//}
 
 // Debug
 function log_info(message) {
