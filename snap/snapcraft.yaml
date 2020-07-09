@@ -48,20 +48,24 @@ parts:
       - libswresample-dev
       - libavdevice-dev
       - qtdeclarative5-dev
+      - qtmultimedia5-dev
     stage-packages:
       - libslang2
       - libglu1-mesa
-      - libavformat58
-      - libavcodec58
-      - libavutil56
-      - libswscale5
-      - libswresample3
-      - libavdevice58
+      - libavformat57
+      - libavcodec57
+      - libavutil55
+      - libswscale4
+      - libswresample2
+      - libavdevice57
+      - libqt5multimedia5
+      - libqt5multimediaquick5
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
       - qml-module-qtquick-controls
       - qml-module-qtquick-controls2
       - qml-module-qtquick-window2
+      - qml-module-qtquick-dialogs
       - qml-module-qt-labs-settings
       - qml-module-qtmultimedia
 
