@@ -83,6 +83,9 @@ void Demuxer::load(const QUrl &url, const QVariantMap &options)
         return;
     }
 
+    // NOTE: For compatibility with older ffmpeg versions. Must be deleted in future.
+    avformat_network_init();
+
     // TODO: Only Unix systems are supported
     if (url.isLocalFile()) {
         avdevice_register_all();
