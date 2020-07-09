@@ -1,6 +1,6 @@
 VER_MAJ = 0
 VER_MIN = 1
-VER_PAT = 5
+VER_PAT = 6
 REL_STATUS = "alpha"
 
 VERSION = "$${VER_MAJ}.$${VER_MIN}"
@@ -32,7 +32,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }
 
-QT += qml quick
+QT += qml quick multimedia
 
 CONFIG += c++11 warn_on debug_and_release
 
@@ -54,11 +54,23 @@ TARGET = cctv-viewer
 DESTDIR = bin
 
 HEADERS += \
+    src/audioqueue.h \
+    src/decoder.h \
+    src/demuxer.h \
+    src/ffplayer.h \
+    src/format.h \
+    src/frame.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
+    src/audioqueue.cpp \
+    src/decoder.cpp \
+    src/demuxer.cpp \
+    src/ffplayer.cpp \
+    src/format.cpp \
+    src/frame.cpp \
     src/main.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp
@@ -68,6 +80,9 @@ RESOURCES += cctv-viewer.qrc
 DISTFILES += res/translations/cctv-viewer_ru.ts
 
 TRANSLATIONS += res/translations/cctv-viewer_ru.ts
+
+OTHER_FILES += \
+    $$files($$PWD/src/qml/*.qml)
 
 win32:RC_FILE = res/win32.rc
 
@@ -87,6 +102,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+LIBS += -lavformat -lavcodec -lavutil -lswscale -lswresample -lavdevice
 
 # Rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

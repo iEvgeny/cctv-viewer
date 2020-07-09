@@ -36,7 +36,7 @@ public:
     Q_INVOKABLE ViewportsLayoutModel *append(ViewportsLayoutModel *p = nullptr) { return insert(m_models.size(), p); }
     Q_INVOKABLE void resize(int count);
 
-    Q_INVOKABLE void fromJSValue(QVariantList models);
+    Q_INVOKABLE void fromJSValue(const QVariantList &models);
     Q_INVOKABLE QVariantList toJSValue() const;
 
     // Default property
@@ -45,7 +45,7 @@ public:
 private:
     static void appendModel(QQmlListProperty<ViewportsLayoutModel> *list, ViewportsLayoutModel *p);
     static int modelsCount(QQmlListProperty<ViewportsLayoutModel> *list);
-    static ViewportsLayoutModel* model(QQmlListProperty<ViewportsLayoutModel> *list, int index);
+    static ViewportsLayoutModel *model(QQmlListProperty<ViewportsLayoutModel> *list, int index);
     static void clearModels(QQmlListProperty<ViewportsLayoutModel> *list);
 
 signals:
@@ -53,7 +53,7 @@ signals:
     void countChanged(int count);
 
 private:
-    QVector<ViewportsLayoutModel *> m_models;
+    QVector<ViewportsLayoutModel*> m_models;
 };
 
 QML_DECLARE_TYPE(ViewportsLayoutsCollectionModel)

@@ -3,6 +3,12 @@ Section: video
 Priority: optional
 Maintainer: Evgeny S Maksimov <admin@vragam.net>
 Build-Depends: debhelper (>= 9),
+               libavformat-dev,
+               libavcodec-dev,
+               libavutil-dev,
+               libswscale-dev,
+               libswresample-dev,
+               libavdevice-dev,
                qtdeclarative5-dev,
                qttools5-dev-tools
 Standards-Version: 3.9.8
@@ -12,5 +18,12 @@ Vcs-Browser: https://github.com/iEvgeny/cctv-viewer
 
 Package: cctv-viewer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, qml-module-qtav
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         qml-module-qtquick-layouts,
+         qml-module-qtqml-models2,
+         qml-module-qtquick-controls,
+         qml-module-qtquick-controls2,
+         qml-module-qtquick-window2,
+         qml-module-qt-labs-settings,
+         qml-module-qtmultimedia
 Description: CCTV Viewer - viewer and mounter video streams.

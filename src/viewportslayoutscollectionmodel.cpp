@@ -102,7 +102,7 @@ void ViewportsLayoutsCollectionModel::resize(int count)
     }
 }
 
-void ViewportsLayoutsCollectionModel::fromJSValue(QVariantList models)
+void ViewportsLayoutsCollectionModel::fromJSValue(const QVariantList &models)
 {
     if (models.size() != m_models.size()) {
         resize(models.size());

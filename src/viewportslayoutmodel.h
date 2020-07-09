@@ -1,12 +1,12 @@
 #ifndef VIEWPORTSLAYOUTMODEL_H
 #define VIEWPORTSLAYOUTMODEL_H
 
-#include "math.h"
+#include <math.h>
 #include <QtCore>
 #include <QQmlEngine>
 
 #define Q_PROPERTY_WRITE_IMPL(type, name, write, notify) \
-    void write(type var) { \
+    void write(const type &var) { \
         if (m_##name == var) \
             return; \
         m_##name = var; \
@@ -22,7 +22,7 @@ class ViewportsLayoutItem : public QObject
     Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
     Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan NOTIFY rowSpanChanged)
     Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan NOTIFY columnSpanChanged)
-    Q_PROPERTY(Visible visible READ visible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(ViewportsLayoutItem::Visible visible READ visible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(QVariant volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
 public:
@@ -36,31 +36,32 @@ public:
     QString url() const { return m_url; }
     int rowSpan() const { return m_rowSpan; }
     int columnSpan() const { return m_columnSpan; }
-    Visible visible() const { return m_visible; }
+    ViewportsLayoutItem::Visible visible() const { return m_visible; }
     QVariant volume() const { return m_volume; }
 
 public slots:
     Q_PROPERTY_WRITE_IMPL(QString, url, setUrl, urlChanged)
     Q_PROPERTY_WRITE_IMPL(int, rowSpan, setRowSpan, rowSpanChanged)
     Q_PROPERTY_WRITE_IMPL(int, columnSpan, setColumnSpan, columnSpanChanged)
-    Q_PROPERTY_WRITE_IMPL(Visible, visible, setVisible, visibleChanged)
+    Q_PROPERTY_WRITE_IMPL(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged)
     Q_PROPERTY_WRITE_IMPL(QVariant, volume, setVolume, volumeChanged)
 
 signals:
     void changed();
-    void urlChanged(QString url);
+    void urlChanged(const QString &url);
     void rowSpanChanged(int rowSpan);
     void columnSpanChanged(int columnSpan);
-    void visibleChanged(Visible visible);
-    void volumeChanged(QVariant volume);
+    void visibleChanged(ViewportsLayoutItem::Visible visible);
+    void volumeChanged(const QVariant &volume);
 
 private:
     QString m_url;
     int m_rowSpan;
     int m_columnSpan;
-    Visible m_visible;
+    ViewportsLayoutItem::Visible m_visible;
     QVariant m_volume;
 };
+QML_DECLARE_TYPE(ViewportsLayoutItem)
 
 class ViewportsLayoutModel : public QAbstractListModel
 {
@@ -98,17 +99,17 @@ public:
     Q_INVOKABLE void resize(int columns, int rows);
     Q_INVOKABLE void normalize();
 
-    Q_INVOKABLE void fromJSValue(QVariantMap model);
+    Q_INVOKABLE void fromJSValue(const QVariantMap &model);
     Q_INVOKABLE QVariantMap toJSValue() const;
 
 public slots:
-    void setSize(QSize size);
-    void setAspectRatio(QSize ratio);
+    void setSize(const QSize &size);
+    void setAspectRatio(const QSize &ratio);
 
 signals:
     void changed();
-    void sizeChanged(QSize size);
-    void aspectRatioChanged(QSize ratio);
+    void sizeChanged(const QSize &size);
+    void aspectRatioChanged(const QSize &ratio);
 
 protected:
     int dataIndex(int column, int row) const { return m_columns * row + column; }
@@ -129,8 +130,6 @@ private:
     QSize m_aspectRatio;
     QVector<ViewportsLayoutItem *> m_items;
 };
-
-QML_DECLARE_TYPE(ViewportsLayoutItem)
 QML_DECLARE_TYPE(ViewportsLayoutModel)
 
 #endif // VIEWPORTSLAYOUTMODEL_H

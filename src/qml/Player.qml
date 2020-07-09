@@ -1,6 +1,6 @@
 import QtQuick 2.0
-//import QtMultimedia 5.0
-import QtAV 1.7
+import QtMultimedia 5.0
+import CCTV_Viewer.Multimedia 1.0
 import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
@@ -8,61 +8,87 @@ FocusScope {
 
     property bool keepAlive: false
     property string color: 'black'
-    property int probesize: 200000  // 200 KB
+    property bool autoLoad: true
+    property bool autoPlay: false
+    property int probesize: 500000  // 500 KB
     property int analyzeduration: 0  // 0 µs
 
-    property alias autoLoad: mediaPlayer.autoLoad
-    property alias autoPlay: mediaPlayer.autoPlay
-    property alias duration: mediaPlayer.duration
-    property alias error: mediaPlayer.error
-    property alias errorString: mediaPlayer.errorString
-    property alias loops: mediaPlayer.loops
-    property alias source: mediaPlayer.source
-    property alias status: mediaPlayer.status
-    property alias metaData: mediaPlayer.metaData
-    property alias muted: mediaPlayer.muted
-    property alias playbackRate: mediaPlayer.playbackRate
-    property alias playbackState: mediaPlayer.playbackState
-    property alias position: mediaPlayer.position
-    property alias volume: mediaPlayer.volume
+//    property alias duration: mediaPlayer.duration
+    property alias loops: ffPlayer.loops
+    property alias source: ffPlayer.source
+    property alias status: ffPlayer.status
+//    property alias metaData: mediaPlayer.metaData
+    property alias muted: ffPlayer.muted
+//    property alias playbackRate: mediaPlayer.playbackRate
+//    property alias playbackState: mediaPlayer.playbackState
+//    property alias position: mediaPlayer.position
+    property alias volume: ffPlayer.volume
+
+    readonly property alias hasAudio: ffPlayer.hasAudio
+
+    onVisibleChanged: {
+        if (visible && autoPlay) {
+            ffPlayer.autoPlay = true;
+        } else {
+            ffPlayer.autoPlay = false;
+            ffPlayer.stop();
+        }
+    }
+    Component.onCompleted: {
+        if (visible) {
+            timer.start();
+        }
+    }
+
+    Timer {
+        id: timer
+
+        interval: 50
+
+        onTriggered: {
+            if (root.visible) {
+                ffPlayer.autoPlay = true;
+            }
+        }
+    }
 
     Rectangle {
         color: root.color
         anchors.fill: parent
 
-//        VideoOutput {
-        VideoOutput2 {            id: videoOutput
+        VideoOutput {
+            id: videoOutput
 
-            source: mediaPlayer
+            source: ffPlayer
             anchors.fill: parent
         }
+
+//        Rectangle {
+//            id: shutter
+
+//            color: root.color
+//            visible: ffPlayer.status !== MediaPlayer.Buffering && ffPlayer.status !== MediaPlayer.Buffered
+//            anchors.fill: parent
+//        }
 
         Text {
             id: message
 
             color: 'white'
-            visible: mediaPlayer.status != MediaPlayer.Buffered
+            visible: ffPlayer.status !== MediaPlayer.Buffered
             anchors.centerIn: parent
         }
 
 //        MediaPlayer {
-        AVPlayer {
-            id: mediaPlayer
+        FFPlayer {
+            id: ffPlayer
 
-            avFormatOptions: {
+            autoLoad: false
+
+            ffmpegFormatOptions: {
                 'probesize': root.probesize,
                 'analyzeduration': root.analyzeduration,
                 'sync': 'ext'
-            }
-
-            onError: {
-                if (MediaPlayer.NoError !== error) {
-                    if (keepAlive) {
-                        play();
-                    }
-
-                    CCTV_Viewer.log_error(errorString);
-                }
             }
 
             onStatusChanged: {
@@ -92,6 +118,13 @@ FocusScope {
                 case MediaPlayer.UnknownStatus:
                     break;
                 }
+
+//                if (playbackState === MediaPlayer.StoppedState) {
+//                    if (keepAlive) {
+//                        CCTV_Viewer.sleep(500);
+//                        play();
+//                    }
+//                }
             }
 
             onBufferProgressChanged: {
@@ -100,8 +133,8 @@ FocusScope {
         }
     }
 
-    function play() { mediaPlayer.play(); }
-    function pause() { mediaPlayer.pause(); }
-    function seek(position) { mediaPlayer.seek(position); }
-    function stop() { mediaPlayer.stop(); }
+    function play() { ffPlayer.play(); }
+//    function pause() { mediaPlayer.pause(); }
+//    function seek(position) { mediaPlayer.seek(position); }
+    function stop() { ffPlayer.stop(); }
 }

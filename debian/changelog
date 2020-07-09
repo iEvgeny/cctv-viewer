@@ -1,4 +1,10 @@
-cctv-viewer (0.1.5.2-0) focal; urgency=medium
+cctv-viewer (0.1.6-0) focal; urgency=medium
+
+  * Migration to ffmpeg native
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Sat, 13 Jun 2020 20:13:13 +0300
+
+cctv-viewer (0.1.5-0) focal; urgency=medium
 
   * Data model refactoring, etc.
 

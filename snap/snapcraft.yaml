@@ -1,5 +1,5 @@
 name: cctv-viewer
-version: '0.1.5+git'
+version: '0.1.6+git'
 summary: Viewer and mounter video streams
 description: |
   CCTV Viewer - a simple application for simultaneously viewing multiple
@@ -41,19 +41,29 @@ parts:
       # Point icon to the correct location
       sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' cctv-viewer.desktop
     build-packages:
+      - libavformat-dev
+      - libavcodec-dev
+      - libavutil-dev
+      - libswscale-dev
+      - libswresample-dev
+      - libavdevice-dev
       - qtdeclarative5-dev
     stage-packages:
       - libslang2
       - libglu1-mesa
+      - libavformat58
+      - libavcodec58
+      - libavutil56
+      - libswscale5
+      - libswresample3
+      - libavdevice58
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
       - qml-module-qtquick-controls
       - qml-module-qtquick-controls2
       - qml-module-qtquick-window2
-      - qml-module-qtquick-dialogs
       - qml-module-qt-labs-settings
       - qml-module-qtmultimedia
-      - qml-module-qtav
 
   # Remote part for support of various desktop technologies
   # Refer: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml

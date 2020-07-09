@@ -138,6 +138,7 @@ ApplicationWindow {
         StackLayout {
             id: stackLayout
 
+            currentIndex: -1
             visible: !(generalSettings.singleApplication && SingleApplication.isRunning())
             anchors.fill: parent
 
@@ -150,8 +151,6 @@ ApplicationWindow {
                 ViewportsLayout {
                     model: layoutModel
                     focus: true
-
-                    visible: SwipeView.isCurrentItem
                 }
             }
         }

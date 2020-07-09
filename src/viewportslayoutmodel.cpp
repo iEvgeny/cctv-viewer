@@ -37,11 +37,11 @@ QVariant ViewportsLayoutModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> ViewportsLayoutModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[UrlRole] = "url";
-    roles[ColumnSpanRole] = "columnSpan";
-    roles[RowSpanRole] = "rowSpan";
-    roles[VisibleRole] = "visible";
-    roles[VolumeRole] = "volume";
+    roles[ViewportsLayoutModel::UrlRole] = "url";
+    roles[ViewportsLayoutModel::ColumnSpanRole] = "columnSpan";
+    roles[ViewportsLayoutModel::RowSpanRole] = "rowSpan";
+    roles[ViewportsLayoutModel::VisibleRole] = "visible";
+    roles[ViewportsLayoutModel::VolumeRole] = "volume";
 
     return roles;
 }
@@ -180,7 +180,7 @@ normalize:
     }
 }
 
-void ViewportsLayoutModel::fromJSValue(QVariantMap model)
+void ViewportsLayoutModel::fromJSValue(const QVariantMap &model)
 {
     QVariant val;
 
@@ -262,7 +262,7 @@ QVariantMap ViewportsLayoutModel::toJSValue() const
     return model;
 }
 
-void ViewportsLayoutModel::setSize(QSize size)
+void ViewportsLayoutModel::setSize(const QSize &size)
 {
     if (size == QSize(m_columns, m_rows)) {
         return;
@@ -273,7 +273,7 @@ void ViewportsLayoutModel::setSize(QSize size)
     emit sizeChanged(size);
 }
 
-void ViewportsLayoutModel::setAspectRatio(QSize ratio)
+void ViewportsLayoutModel::setAspectRatio(const QSize &ratio)
 {
     if (ratio == m_aspectRatio) {
         return;

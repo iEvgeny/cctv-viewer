@@ -15,14 +15,6 @@ FocusScope {
     property int closeInterval: 2000
     readonly property alias pinned: d.pinned
 
-    QtObject {
-        id: d
-
-        property bool open: root.open || d.pinned || (currentLayout().pressAndHoldIndex >= 0) ||
-                            (mouseCaptureArea.containsMouse && !openTimer.running) || (mouseHoldArea.containsMouse || closeTimer.running)
-        property bool pinned: false
-    }
-
     states: [
         State {
             name: 'open'
@@ -46,6 +38,14 @@ FocusScope {
             }
         }
     ]
+
+    QtObject {
+        id: d
+
+        property bool open: root.open || d.pinned || (currentLayout().pressAndHoldIndex >= 0) ||
+                            (mouseCaptureArea.containsMouse && !openTimer.running) || (mouseHoldArea.containsMouse || closeTimer.running)
+        property bool pinned: false
+    }
 
     Settings {
         id: sideMenuSettings
@@ -429,6 +429,7 @@ FocusScope {
 
                             Button {
                                 text: qsTr('Mute')
+                                enabled: currentLayout().focusIndex >= 0 ? currentLayout().get(currentLayout().focusIndex).hasAudio : false
                                 highlighted: currentLayout().focusIndex >= 0 && currentModel().get(currentLayout().focusIndex).volume <= 0
 
                                 Layout.fillWidth: true

@@ -1,5 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
+import QtMultimedia 5.0
 import CCTV_Viewer.Models 1.0
 import '../js/utils.js' as CCTV_Viewer
 
@@ -54,32 +55,32 @@ FocusScope {
         }
 
         function selectionRight() {
-            var item1 = root.itemAt(selectionIndex1);
-            var item2 = root.itemAt(selectionIndex2);
+            var item1 = root.get(selectionIndex1);
+            var item2 = root.get(selectionIndex2);
             var right1 = columnFromIndex(selectionIndex1);
             var right2 = columnFromIndex(selectionIndex2);
 
             if (item1 !== undefined) {
-                right1 += root.itemAt(selectionIndex1).columnSpan;
+                right1 += root.get(selectionIndex1).columnSpan;
             }
             if (item2 !== undefined) {
-                right2 += root.itemAt(selectionIndex2).columnSpan;
+                right2 += root.get(selectionIndex2).columnSpan;
             }
 
             return Math.max(right1, right2);
         }
 
         function selectionBottom() {
-            var item1 = root.itemAt(selectionIndex1);
-            var item2 = root.itemAt(selectionIndex2);
+            var item1 = root.get(selectionIndex1);
+            var item2 = root.get(selectionIndex2);
             var bottom1 = rowFromIndex(selectionIndex1);
             var bottom2 = rowFromIndex(selectionIndex2);
 
             if (item1 !== undefined) {
-                bottom1 += root.itemAt(selectionIndex1).rowSpan;
+                bottom1 += root.get(selectionIndex1).rowSpan;
             }
             if (item2 !== undefined) {
-                bottom2 += root.itemAt(selectionIndex2).rowSpan;
+                bottom2 += root.get(selectionIndex2).rowSpan;
             }
 
             return Math.max(bottom1, bottom2);
@@ -138,6 +139,21 @@ FocusScope {
 
             model: root.model
 
+            onCountChanged: {
+                if (d.fullScreenIndex >= count) {
+                    d.fullScreenIndex = -1;
+                }
+                if (d.focusIndex) {
+                    d.focusIndex = -1;
+                }
+                if (d.activeFocusIndex) {
+                    d.activeFocusIndex = -1;
+                }
+                if (d.pressAndHoldIndex) {
+                    d.pressAndHoldIndex = -1;
+                }
+            }
+
             delegate: Item {
                 id: container
 
@@ -176,6 +192,8 @@ FocusScope {
                     readonly property alias rightIndex: d2.rightIndex
                     readonly property alias bottomIndex: d2.bottomIndex
                     readonly property alias leftIndex: d2.leftIndex
+
+                    readonly property alias hasAudio: player.hasAudio
 
                     states: [
                         State {
@@ -238,7 +256,7 @@ FocusScope {
                                 if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
                                     d.selectionIndex2 = keyNavigationCallback(d.selectionIndex2);
                                 } else {
-                                    root.itemAt(keyNavigationCallback(model.index)).forceActiveFocus();
+                                    root.get(keyNavigationCallback(model.index)).forceActiveFocus();
                                 }
                             }
                         }
@@ -250,13 +268,13 @@ FocusScope {
                             break;
                         case Qt.Key_Up:
                             function keyUpCallback(index) {
-                                var topIndex = root.itemAt(index).topIndex;
+                                var topIndex = root.get(index).topIndex;
 
                                 if (topIndex !== index) {
-                                    root.itemAt(topIndex).cursorColumnOffset =
-                                            d.columnFromIndex(index) + root.itemAt(index).cursorColumnOffset - d.columnFromIndex(topIndex);
+                                    root.get(topIndex).cursorColumnOffset =
+                                            d.columnFromIndex(index) + root.get(index).cursorColumnOffset - d.columnFromIndex(topIndex);
                                 } else {
-                                    root.itemAt(index).cursorRowOffset = Math.max(root.itemAt(index).cursorRowOffset - 1, 0);
+                                    root.get(index).cursorRowOffset = Math.max(root.get(index).cursorRowOffset - 1, 0);
                                 }
 
                                 return topIndex;
@@ -266,13 +284,13 @@ FocusScope {
                             break;
                         case Qt.Key_Down:
                             function keyDownCallback(index) {
-                                var bottomIndex = root.itemAt(index).bottomIndex;
+                                var bottomIndex = root.get(index).bottomIndex;
 
                                 if (bottomIndex !== index) {
-                                    root.itemAt(bottomIndex).cursorColumnOffset =
-                                            d.columnFromIndex(index) + root.itemAt(index).cursorColumnOffset - d.columnFromIndex(bottomIndex);
+                                    root.get(bottomIndex).cursorColumnOffset =
+                                            d.columnFromIndex(index) + root.get(index).cursorColumnOffset - d.columnFromIndex(bottomIndex);
                                 } else {
-                                    root.itemAt(index).cursorRowOffset = Math.min(root.itemAt(index).cursorRowOffset + 1, root.itemAt(index).rowSpan - 1);
+                                    root.get(index).cursorRowOffset = Math.min(root.get(index).cursorRowOffset + 1, root.get(index).rowSpan - 1);
                                 }
 
                                 return bottomIndex;
@@ -282,13 +300,13 @@ FocusScope {
                             break;
                         case Qt.Key_Right:
                             function keyRightCallback(index) {
-                                var rightIndex = root.itemAt(index).rightIndex;
+                                var rightIndex = root.get(index).rightIndex;
 
                                 if (rightIndex !== index) {
-                                    root.itemAt(rightIndex).cursorRowOffset =
-                                            d.rowFromIndex(index) + root.itemAt(index).cursorRowOffset - d.rowFromIndex(rightIndex);
+                                    root.get(rightIndex).cursorRowOffset =
+                                            d.rowFromIndex(index) + root.get(index).cursorRowOffset - d.rowFromIndex(rightIndex);
                                 } else {
-                                    root.itemAt(index).cursorColumnOffset = Math.min(root.itemAt(index).cursorColumnOffset + 1, root.itemAt(index).columnSpan - 1);
+                                    root.get(index).cursorColumnOffset = Math.min(root.get(index).cursorColumnOffset + 1, root.get(index).columnSpan - 1);
                                 }
 
                                 return rightIndex;
@@ -298,13 +316,13 @@ FocusScope {
                             break;
                         case Qt.Key_Left:
                             function keyLeftCallback(index) {
-                                var leftIndex = root.itemAt(index).leftIndex;
+                                var leftIndex = root.get(index).leftIndex;
 
                                 if (leftIndex !== index) {
-                                    root.itemAt(leftIndex).cursorRowOffset =
-                                            d.rowFromIndex(index) + root.itemAt(index).cursorRowOffset - d.rowFromIndex(leftIndex);
+                                    root.get(leftIndex).cursorRowOffset =
+                                            d.rowFromIndex(index) + root.get(index).cursorRowOffset - d.rowFromIndex(leftIndex);
                                 } else {
-                                    root.itemAt(index).cursorColumnOffset = Math.max(root.itemAt(index).cursorColumnOffset - 1, 0);
+                                    root.get(index).cursorColumnOffset = Math.max(root.get(index).cursorColumnOffset - 1, 0);
                                 }
 
                                 return leftIndex;
@@ -355,7 +373,7 @@ FocusScope {
                             var spanningIndex = d.indexFromAddress(column, row);
 
                             if (spanningIndex !== model.index) {
-                                var spanningItem = root.itemAt(spanningIndex);
+                                var spanningItem = root.get(spanningIndex);
 
                                 if (spanningItem !== undefined && !spanningItem.visible) {
                                     spanningIndex = d.indexFromAddress(d.columnFromIndex(spanningIndex) + spanningItem.columnSpan,
@@ -373,36 +391,17 @@ FocusScope {
                         color: root.color
                         anchors.fill: parent
 
-                        property var playerObject
-                        property string source: viewport.url
+                        Player {
+                            id: player
 
-                        onVisibleChanged: managePlayer()
-                        onSourceChanged: managePlayer()
-                        Component.onCompleted: managePlayer()
-
-                        function managePlayer() {
-                            var src =  'import QtQuick 2.0
-                                        import QtMultimedia 5.0
-
-                                        Player {
-                                            color: root.color
-                                            source: viewport.url
-                                            volume: viewport.volume
-                                            keepAlive: true
-                                            autoLoad: true
-                                            autoPlay: true
-                                            loops: MediaPlayer.Infinite
-                                            anchors.fill: parent
-                                        }';
-                            if (visible && source.length > 0) {
-//                                console.log("JSDEBUG: Qt.createQmlObject() source=" + source)
-                                playerObject = Qt.createQmlObject(src, playerContainer, 'dynamicSnippet1');
-//                                playerObject.play();
-                            } else if (playerObject !== undefined) {
-//                                console.log("JSDEBUG: Qt.destroy() source=" + source)
-                                playerObject.stop();
-                                playerObject.destroy(100000);
-                            }
+                            color: root.color
+                            source: viewport.url
+                            volume: viewport.volume
+                            keepAlive: true
+                            autoLoad: true
+                            autoPlay: true
+                            loops: MediaPlayer.Infinite
+                            anchors.fill: parent
                         }
                     }
 
@@ -508,7 +507,7 @@ FocusScope {
     Keys.onPressed: d.keyModifiers = event.modifiers
     Keys.onReleased: d.keyModifiers = event.modifiers
 
-    function itemAt(index) {
+    function get(index) {
         if (index >= 0 && index < repeater.count) {
             var item = repeater.itemAt(index);
             if (item === null) {

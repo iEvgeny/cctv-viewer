@@ -7,9 +7,6 @@ class SingleApplication : public QObject
 {
     Q_OBJECT
 
-private:
-    static QLockFile g_lockFile;
-
 public:
     explicit SingleApplication(QObject *parent = nullptr)
         : QObject(parent),

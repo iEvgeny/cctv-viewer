@@ -76,6 +76,11 @@ Number.prototype.inRange = function(min, max) {
     return (this >= min && val <= this) ? true : false;
 }
 
+// Other
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Debug
 function log_info(message) {
     console.log(message);

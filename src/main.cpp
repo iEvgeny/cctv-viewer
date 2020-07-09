@@ -4,6 +4,7 @@
 #include <QQuickWindow>
 #include <QTranslator>
 #include "singleapplication.h"
+#include "ffplayer.h"
 #include "viewportslayoutscollectionmodel.h"
 
 void registerQmlTypes()
@@ -16,6 +17,7 @@ void registerQmlTypes()
         return new SingleApplication();
     });
 
+    qmlRegisterType<FFPlayer>("CCTV_Viewer.Multimedia", 1, 0, "FFPlayer");
     qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
     qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
     qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
