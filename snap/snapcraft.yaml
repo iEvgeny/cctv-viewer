@@ -59,7 +59,7 @@ parts:
       - libswresample2
       - libavdevice57
       - libqt5multimedia5
-      - libqt5multimediaquick5
+      - libqt5multimediaquick-p5
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
       - qml-module-qtquick-controls
