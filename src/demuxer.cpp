@@ -83,8 +83,10 @@ void Demuxer::load(const QUrl &url, const QVariantMap &options)
         return;
     }
 
-    // NOTE: For compatibility with older ffmpeg versions. Must be deleted in future.
+#ifndef FF_API_NEXT
+    av_register_all();
     avformat_network_init();
+#endif
 
     // TODO: Only Unix systems are supported
     if (url.isLocalFile()) {
@@ -106,16 +108,17 @@ void Demuxer::load(const QUrl &url, const QVariantMap &options)
     m_formatCtx->interrupt_callback = m_interruptCallback;
 
     m_interruptCallback.startTimer();
-    ret = avformat_open_input(&m_formatCtx, source.toUtf8(), NULL, &avOptions);
+    ret = avformat_open_input(&m_formatCtx, source.toUtf8(), nullptr, &avOptions);
     if (ret < 0) {
         setStatus(QMediaPlayer::InvalidMedia);
         setPlaybackState(QMediaPlayer::StoppedState);
+        qDebug() << ret;
         return;
     }
     m_interruptCallback.stopTimer();
 
     m_interruptCallback.startTimer();
-    ret = avformat_find_stream_info(m_formatCtx, NULL);
+    ret = avformat_find_stream_info(m_formatCtx, nullptr);
     if (ret < 0) {
         setStatus(QMediaPlayer::InvalidMedia);
         setPlaybackState(QMediaPlayer::StoppedState);
@@ -185,7 +188,7 @@ void Demuxer::run()
         }
 
         av_init_packet(&m_packet);
-        m_packet.data = NULL;
+        m_packet.data = nullptr;
         m_packet.size = 0;
 
         m_interruptCallback.startTimer();
