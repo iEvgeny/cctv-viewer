@@ -15,7 +15,12 @@ FFPlayer::FFPlayer(QObject *parent)
       m_hasAudio(false)
 {
     qRegisterMetaType<QList<QVideoFrame::PixelFormat>>();
+
     m_audioDeviceInfo = QAudioDeviceInfo::defaultOutputDevice();
+
+    m_playTimer.setSingleShot(true);
+    connect(&m_playTimer, &QTimer::timeout, this, &FFPlayer::play);
+
     m_thread.start();
 }
 
@@ -30,16 +35,17 @@ FFPlayer::~FFPlayer()
 
 void FFPlayer::play()
 {
-    load();
-    emit demuxerStart();
+    if (load()) {
+        emit demuxerStart();
+    }
 }
 
 void FFPlayer::stop()
 {
     if (m_demuxer) {
         m_demuxer->requestInterruption();
-        m_demuxer->deleteLater();
         m_demuxer->disconnect();
+        m_demuxer->deleteLater();
         m_demuxer = nullptr;
     }
 
@@ -130,7 +136,7 @@ void FFPlayer::setVolume(const QVariant &volume)
     emit volumeChanged(m_volume);
 }
 
-void FFPlayer::load()
+bool FFPlayer::load()
 {
     if (!m_demuxer && m_source.isValid()) {
         m_demuxer = new Demuxer();
@@ -152,7 +158,11 @@ void FFPlayer::load()
         if (m_videoSurface) {
             emit demuxerSetSupportedPixelFormats(m_videoSurface->supportedPixelFormats());
         }
+
+        return true;
     }
+
+    return false;
 }
 
 void FFPlayer::stateMachine()
@@ -191,7 +201,7 @@ void FFPlayer::stateMachine()
         case QMediaPlayer::InvalidMedia:
             stop();
             if (m_loops) {
-                play();
+                m_playTimer.start(1000);
             }
             break;
         default:

@@ -56,10 +56,9 @@ public:
     bool hasVideo() const { return m_hasVideo; }
     bool hasAudio() const { return m_hasAudio; }
 
-    Q_INVOKABLE void play();
-    Q_INVOKABLE void stop();
-
 public slots:
+    void play();
+    void stop();
     void setVideoSurface(QAbstractVideoSurface *surface);
 
     Q_PROPERTY_WRITE_IMPL(QVariantMap, ffmpegFormatOptions, setFFmpegFormatOptions, ffmpegFormatOptionsChanged)
@@ -91,7 +90,7 @@ signals:
     void ffmpegFormatOptionsChanged(QVariantMap ffmpegFormatOptions);
 
 protected:
-    void load();
+    bool load();
     void stateMachine();
 
 protected slots:
@@ -112,6 +111,7 @@ private:
     QAudioDeviceInfo m_audioDeviceInfo;
     QAudioFormat m_audioFormat;
     QAudioOutput *m_audioOutput;
+    QTimer m_playTimer;
 
     QVariantMap m_ffmpegFormatOptions;
     bool m_autoLoad;
