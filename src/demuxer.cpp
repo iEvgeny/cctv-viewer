@@ -112,7 +112,6 @@ void Demuxer::load(const QUrl &url, const QVariantMap &options)
     if (ret < 0) {
         setStatus(QMediaPlayer::InvalidMedia);
         setPlaybackState(QMediaPlayer::StoppedState);
-        qDebug() << ret;
         return;
     }
     m_interruptCallback.stopTimer();

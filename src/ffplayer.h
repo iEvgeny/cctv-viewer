@@ -27,7 +27,7 @@ class FFPlayer : public QObject
     Q_PROPERTY(QVariantMap ffmpegFormatOptions READ ffmpegFormatOptions WRITE setFFmpegFormatOptions NOTIFY ffmpegFormatOptionsChanged)
     Q_PROPERTY(bool autoLoad READ autoLoad WRITE setAutoLoad NOTIFY autoLoadChanged)
     Q_PROPERTY(bool autoPlay READ autoPlay WRITE setAutoPlay NOTIFY autoPlayChanged)
-    Q_PROPERTY(int loops READ loops WRITE setLoops NOTIFY loopsChanged)
+    Q_PROPERTY(int loops READ loops WRITE setLoops NOTIFY loopsChanged) // NOTE: Implemented partially (Once playing and infinite loop behavior)
     Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(QMediaPlayer::State playbackState READ playbackState NOTIFY playbackStateChanged)
     Q_PROPERTY(QMediaPlayer::MediaStatus status READ status NOTIFY statusChanged)

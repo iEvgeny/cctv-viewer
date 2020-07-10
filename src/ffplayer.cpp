@@ -200,7 +200,7 @@ void FFPlayer::stateMachine()
         case QMediaPlayer::EndOfMedia:
         case QMediaPlayer::InvalidMedia:
             stop();
-            if (m_loops) {
+            if (m_loops == -1 /*MediaPlayer.Infinite*/) {
                 m_playTimer.start(1000);
             }
             break;
