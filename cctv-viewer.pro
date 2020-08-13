@@ -53,6 +53,13 @@ TARGET = cctv-viewer
 
 DESTDIR = bin
 
+# DEBUG:
+# Static build for Android
+android {
+    INCLUDEPATH += 3rd/FFmpeg
+    LIBS += "-L3rd/FFmpeg/ffbuild/x86/lib"
+}
+
 HEADERS += \
     src/audioqueue.h \
     src/decoder.h \
@@ -82,7 +89,8 @@ DISTFILES += res/translations/cctv-viewer_ru.ts
 TRANSLATIONS += res/translations/cctv-viewer_ru.ts
 
 OTHER_FILES += \
-    $$files($$PWD/src/qml/*.qml)
+    $$files(src/qml/*.qml) \
+    3rd/prebuild_ffmpeg.sh
 
 win32:RC_FILE = res/win32.rc
 
