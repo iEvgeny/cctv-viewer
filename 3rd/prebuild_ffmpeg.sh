@@ -5,7 +5,7 @@ SOURCE=./FFmpeg
 
 TARGET_OS=android
 ANDROID_API_VERSION=28
-ANDROID_ABI=x86
+ANDROID_ABI=armeabi-v7a
 
 # Available in runtime variables
 ANDROID_NDK_HOST=linux-x86_64
@@ -52,7 +52,7 @@ fi
     --enable-static \
     --enable-shared \
     --enable-cross-compile \
-    --disable-x86asm \
+    --disable-asm \
     --disable-programs \
     --disable-doc
 

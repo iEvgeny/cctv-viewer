@@ -53,13 +53,6 @@ TARGET = cctv-viewer
 
 DESTDIR = bin
 
-# DEBUG:
-# Static build for Android
-android {
-    INCLUDEPATH += 3rd/FFmpeg
-    LIBS += "-L3rd/FFmpeg/ffbuild/x86/lib"
-}
-
 HEADERS += \
     src/audioqueue.h \
     src/decoder.h \
@@ -111,7 +104,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lavformat -lavcodec -lavutil -lswscale -lswresample -lavdevice
+LIBS += -lavcodec -lavdevice -lavformat -lavutil -lswresample -lswscale
+
+# Static build for Android
+android {
+    INCLUDEPATH += ./3rd/FFmpeg
+    DEPENDPATH += ./3rd/FFmpeg
+    for(abi, ANDROID_ABIS) {
+        LIBS += -L$$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib
+        ANDROID_EXTRA_LIBS = \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavcodec.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavdevice.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavfilter.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavformat.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavutil.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libswresample.so \
+            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libswscale.so
+    }
+}
 
 # Rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
