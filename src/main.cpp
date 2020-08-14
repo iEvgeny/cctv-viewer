@@ -25,14 +25,6 @@ void registerQmlTypes()
 
 int main(int argc, char *argv[])
 {
-// NOTE: This code is actual only when using QtMultimedia.
-#if defined(Q_OS_LINUX)
-    // Ignore the SIGPIPE signal. Can be raised by librtmp.
-    signal(SIGPIPE, SIG_IGN);
-#endif
-
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
 #if defined(APP_NAME)
     QCoreApplication::setApplicationName(QLatin1String(APP_NAME));
 #endif
