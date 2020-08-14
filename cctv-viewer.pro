@@ -32,7 +32,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }
 
-QT += qml quick multimedia
+QT += qml quick multimedia svg
 
 CONFIG += c++11 warn_on debug_and_release
 
