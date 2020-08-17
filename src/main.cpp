@@ -3,8 +3,9 @@
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
 #include <QTranslator>
+
+#include "qmlav/src/qmlavplayer.h"
 #include "singleapplication.h"
-#include "ffplayer.h"
 #include "viewportslayoutscollectionmodel.h"
 
 void registerQmlTypes()
@@ -17,7 +18,7 @@ void registerQmlTypes()
         return new SingleApplication();
     });
 
-    qmlRegisterType<FFPlayer>("CCTV_Viewer.Multimedia", 1, 0, "FFPlayer");
+    qmlRegisterType<QmlAVPlayer>("CCTV_Viewer.Multimedia", 1, 0, "QmlAVPlayer");
     qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
     qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
     qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
@@ -25,14 +26,6 @@ void registerQmlTypes()
 
 int main(int argc, char *argv[])
 {
-// NOTE: This code is actual only when using QtMultimedia.
-#if defined(Q_OS_LINUX)
-    // Ignore the SIGPIPE signal. Can be raised by librtmp.
-    signal(SIGPIPE, SIG_IGN);
-#endif
-
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
 #if defined(APP_NAME)
     QCoreApplication::setApplicationName(QLatin1String(APP_NAME));
 #endif

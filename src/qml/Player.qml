@@ -14,24 +14,24 @@ FocusScope {
     property int analyzeduration: 0  // 0 µs
 
 //    property alias duration: mediaPlayer.duration
-    property alias loops: ffPlayer.loops
-    property alias source: ffPlayer.source
-    property alias status: ffPlayer.status
+    property alias loops: qmlAvPlayer.loops
+    property alias source: qmlAvPlayer.source
+    property alias status: qmlAvPlayer.status
 //    property alias metaData: mediaPlayer.metaData
-    property alias muted: ffPlayer.muted
+    property alias muted: qmlAvPlayer.muted
 //    property alias playbackRate: mediaPlayer.playbackRate
 //    property alias playbackState: mediaPlayer.playbackState
 //    property alias position: mediaPlayer.position
-    property alias volume: ffPlayer.volume
+    property alias volume: qmlAvPlayer.volume
 
-    readonly property alias hasAudio: ffPlayer.hasAudio
+    readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
     onVisibleChanged: {
         if (visible && autoPlay) {
-            ffPlayer.autoPlay = true;
+            qmlAvPlayer.autoPlay = true;
         } else {
-            ffPlayer.autoPlay = false;
-            ffPlayer.stop();
+            qmlAvPlayer.autoPlay = false;
+            qmlAvPlayer.stop();
         }
     }
     Component.onCompleted: {
@@ -47,7 +47,7 @@ FocusScope {
 
         onTriggered: {
             if (root.visible) {
-                ffPlayer.autoPlay = true;
+                qmlAvPlayer.autoPlay = true;
             }
         }
     }
@@ -59,7 +59,7 @@ FocusScope {
         VideoOutput {
             id: videoOutput
 
-            source: ffPlayer
+            source: qmlAvPlayer
             anchors.fill: parent
         }
 
@@ -67,7 +67,7 @@ FocusScope {
 //            id: shutter
 
 //            color: root.color
-//            visible: ffPlayer.status !== MediaPlayer.Buffering && ffPlayer.status !== MediaPlayer.Buffered
+//            visible: qmlAvPlayer.status !== MediaPlayer.Buffering && qmlAvPlayer.status !== MediaPlayer.Buffered
 //            anchors.fill: parent
 //        }
 
@@ -75,13 +75,13 @@ FocusScope {
             id: message
 
             color: 'white'
-            visible: ffPlayer.status !== MediaPlayer.Buffered
+            visible: qmlAvPlayer.status !== MediaPlayer.Buffered
             anchors.centerIn: parent
         }
 
 //        MediaPlayer {
-        FFPlayer {
-            id: ffPlayer
+        QmlAVPlayer {
+            id: qmlAvPlayer
 
             autoLoad: false
 
@@ -133,8 +133,8 @@ FocusScope {
         }
     }
 
-    function play() { ffPlayer.play(); }
+    function play() { qmlAvPlayer.play(); }
 //    function pause() { mediaPlayer.pause(); }
 //    function seek(position) { mediaPlayer.seek(position); }
-    function stop() { ffPlayer.stop(); }
+    function stop() { qmlAvPlayer.stop(); }
 }

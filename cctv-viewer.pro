@@ -32,7 +32,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }
 
-QT += qml quick multimedia
+QT += qml quick multimedia svg
 
 CONFIG += c++11 warn_on debug_and_release
 
@@ -54,24 +54,24 @@ TARGET = cctv-viewer
 DESTDIR = bin
 
 HEADERS += \
-    src/audioqueue.h \
-    src/decoder.h \
-    src/demuxer.h \
-    src/ffplayer.h \
-    src/format.h \
-    src/frame.h \
+    src/qmlav/src/qmlavaudioqueue.h \
+    src/qmlav/src/qmlavdecoder.h \
+    src/qmlav/src/qmlavdemuxer.h \
+    src/qmlav/src/qmlavformat.h \
+    src/qmlav/src/qmlavframe.h \
+    src/qmlav/src/qmlavplayer.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
-    src/audioqueue.cpp \
-    src/decoder.cpp \
-    src/demuxer.cpp \
-    src/ffplayer.cpp \
-    src/format.cpp \
-    src/frame.cpp \
     src/main.cpp \
+    src/qmlav/src/qmlavaudioqueue.cpp \
+    src/qmlav/src/qmlavdecoder.cpp \
+    src/qmlav/src/qmlavdemuxer.cpp \
+    src/qmlav/src/qmlavformat.cpp \
+    src/qmlav/src/qmlavframe.cpp \
+    src/qmlav/src/qmlavplayer.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp
 
@@ -82,7 +82,8 @@ DISTFILES += res/translations/cctv-viewer_ru.ts
 TRANSLATIONS += res/translations/cctv-viewer_ru.ts
 
 OTHER_FILES += \
-    $$files($$PWD/src/qml/*.qml)
+    $$files(src/qml/*.qml) \
+    3rd/prebuild_ffmpeg.sh
 
 win32:RC_FILE = res/win32.rc
 
@@ -103,7 +104,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lavformat -lavcodec -lavutil -lswscale -lswresample -lavdevice
+LIBS += -lavcodec -lavdevice -lavformat -lavutil -lswresample -lswscale
+
+# Static build for Android
+android {
+    INCLUDEPATH += ./src/qmlav/3rd/FFmpeg
+    DEPENDPATH += ./src/qmlav/3rd/FFmpeg
+    for(abi, ANDROID_ABIS) {
+        LIBS += -L$$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib
+        ANDROID_EXTRA_LIBS = \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavcodec.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavdevice.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavfilter.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavformat.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavutil.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libswresample.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libswscale.so
+    }
+}
 
 # Rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
