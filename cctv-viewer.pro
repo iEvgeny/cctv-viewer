@@ -54,24 +54,24 @@ TARGET = cctv-viewer
 DESTDIR = bin
 
 HEADERS += \
-    src/audioqueue.h \
-    src/decoder.h \
-    src/demuxer.h \
-    src/ffplayer.h \
-    src/format.h \
-    src/frame.h \
+    src/qmlav/src/qmlavaudioqueue.h \
+    src/qmlav/src/qmlavdecoder.h \
+    src/qmlav/src/qmlavdemuxer.h \
+    src/qmlav/src/qmlavformat.h \
+    src/qmlav/src/qmlavframe.h \
+    src/qmlav/src/qmlavplayer.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
-    src/audioqueue.cpp \
-    src/decoder.cpp \
-    src/demuxer.cpp \
-    src/ffplayer.cpp \
-    src/format.cpp \
-    src/frame.cpp \
     src/main.cpp \
+    src/qmlav/src/qmlavaudioqueue.cpp \
+    src/qmlav/src/qmlavdecoder.cpp \
+    src/qmlav/src/qmlavdemuxer.cpp \
+    src/qmlav/src/qmlavformat.cpp \
+    src/qmlav/src/qmlavframe.cpp \
+    src/qmlav/src/qmlavplayer.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp
 
@@ -108,18 +108,18 @@ LIBS += -lavcodec -lavdevice -lavformat -lavutil -lswresample -lswscale
 
 # Static build for Android
 android {
-    INCLUDEPATH += ./3rd/FFmpeg
-    DEPENDPATH += ./3rd/FFmpeg
+    INCLUDEPATH += ./src/qmlav/3rd/FFmpeg
+    DEPENDPATH += ./src/qmlav/3rd/FFmpeg
     for(abi, ANDROID_ABIS) {
-        LIBS += -L$$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib
+        LIBS += -L$$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib
         ANDROID_EXTRA_LIBS = \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavcodec.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavdevice.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavfilter.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavformat.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libavutil.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libswresample.so \
-            $$PWD/3rd/FFmpeg/ffbuild/$${abi}/lib/libswscale.so
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavcodec.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavdevice.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavfilter.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavformat.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libavutil.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libswresample.so \
+            $$PWD/src/qmlav/3rd/FFmpeg/ffbuild/$${abi}/lib/libswscale.so
     }
 }
 
