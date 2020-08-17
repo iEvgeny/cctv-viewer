@@ -32,7 +32,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }
 
-QT += qml quick multimedia svg
+QT += qml quick multimedia
 
 CONFIG += c++11 warn_on debug_and_release
 
@@ -108,6 +108,7 @@ LIBS += -lavcodec -lavdevice -lavformat -lavutil -lswresample -lswscale
 
 # Static build for Android
 android {
+    QT += svg
     INCLUDEPATH += ./src/qmlav/3rd/FFmpeg
     DEPENDPATH += ./src/qmlav/3rd/FFmpeg
     for(abi, ANDROID_ABIS) {
