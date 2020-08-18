@@ -1,5 +1,5 @@
 name: cctv-viewer
-version: '0.1.6+git'
+version: '0.1.7+git'
 summary: Viewer and mounter video streams
 description: |
   CCTV Viewer - a simple application for simultaneously viewing multiple
