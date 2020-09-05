@@ -448,14 +448,14 @@ FocusScope {
                                 Layout.fillWidth: true
 
                                 Label {
-                                    text: qsTr('Options')
+                                    text: qsTr('AVFormat options')
                                     color: 'white'
                                     font.pixelSize: 14
                                 }
 
                                 TextField {
                                     text: viewportGroup.enabled ? getString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
-                                    placeholderText: qsTr('AVFormat options')
+                                    placeholderText: qsTr('-analyzeduration 0 -probesize 500000')
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
