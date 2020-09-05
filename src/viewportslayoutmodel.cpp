@@ -42,6 +42,7 @@ QHash<int, QByteArray> ViewportsLayoutModel::roleNames() const
     roles[ViewportsLayoutModel::RowSpanRole] = "rowSpan";
     roles[ViewportsLayoutModel::VisibleRole] = "visible";
     roles[ViewportsLayoutModel::VolumeRole] = "volume";
+    roles[ViewportsLayoutModel::AVFormatOptionsRole] = "avFormatOptions";
 
     return roles;
 }

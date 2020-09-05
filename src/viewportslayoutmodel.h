@@ -24,6 +24,7 @@ class ViewportsLayoutItem : public QObject
     Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan NOTIFY columnSpanChanged)
     Q_PROPERTY(ViewportsLayoutItem::Visible visible READ visible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(QVariant volume READ volume WRITE setVolume NOTIFY volumeChanged)
+    Q_PROPERTY(QVariantMap avFormatOptions READ avFormatOptions WRITE setAVFormatOptions NOTIFY avFormatOptionsChanged)
 
 public:
     explicit ViewportsLayoutItem(QObject *parent = nullptr);
@@ -38,6 +39,7 @@ public:
     int columnSpan() const { return m_columnSpan; }
     ViewportsLayoutItem::Visible visible() const { return m_visible; }
     QVariant volume() const { return m_volume; }
+    QVariantMap avFormatOptions() const { return m_avFormatOptions; }
 
 public slots:
     Q_PROPERTY_WRITE_IMPL(QString, url, setUrl, urlChanged)
@@ -45,6 +47,7 @@ public slots:
     Q_PROPERTY_WRITE_IMPL(int, columnSpan, setColumnSpan, columnSpanChanged)
     Q_PROPERTY_WRITE_IMPL(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged)
     Q_PROPERTY_WRITE_IMPL(QVariant, volume, setVolume, volumeChanged)
+    Q_PROPERTY_WRITE_IMPL(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged)
 
 signals:
     void changed();
@@ -53,6 +56,7 @@ signals:
     void columnSpanChanged(int columnSpan);
     void visibleChanged(ViewportsLayoutItem::Visible visible);
     void volumeChanged(const QVariant &volume);
+    void avFormatOptionsChanged(QVariantMap avFormatOptions);
 
 private:
     QString m_url;
@@ -60,6 +64,7 @@ private:
     int m_columnSpan;
     ViewportsLayoutItem::Visible m_visible;
     QVariant m_volume;
+    QVariantMap m_avFormatOptions;
 };
 QML_DECLARE_TYPE(ViewportsLayoutItem)
 
@@ -78,7 +83,8 @@ public:
         ColumnSpanRole,
         RowSpanRole,
         VisibleRole,
-        VolumeRole
+        VolumeRole,
+        AVFormatOptionsRole
     };
 
     // QAbstractItemModel interface

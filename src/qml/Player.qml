@@ -6,30 +6,22 @@ import '../js/utils.js' as CCTV_Viewer
 FocusScope {
     id: root
 
-    property bool keepAlive: false
     property string color: 'black'
-    property bool autoLoad: true
-    property bool autoPlay: false
-    property int probesize: 500000  // 500 KB
-    property int analyzeduration: 0  // 0 µs
+    property var avFormatOptions: ({})
 
-//    property alias duration: mediaPlayer.duration
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
-    property alias status: qmlAvPlayer.status
-//    property alias metaData: mediaPlayer.metaData
     property alias muted: qmlAvPlayer.muted
-//    property alias playbackRate: mediaPlayer.playbackRate
-//    property alias playbackState: mediaPlayer.playbackState
-//    property alias position: mediaPlayer.position
     property alias volume: qmlAvPlayer.volume
-
     readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
     onVisibleChanged: {
-        if (visible && autoPlay) {
-            qmlAvPlayer.autoPlay = true;
+        if (visible) {
+            if (!timer.running) {
+                timer.start();
+            }
         } else {
+            timer.stop();
             qmlAvPlayer.autoPlay = false;
             qmlAvPlayer.stop();
         }
@@ -79,16 +71,21 @@ FocusScope {
             anchors.centerIn: parent
         }
 
-//        MediaPlayer {
         QmlAVPlayer {
             id: qmlAvPlayer
 
             autoLoad: false
 
-            ffmpegFormatOptions: {
-                'probesize': root.probesize,
-                'analyzeduration': root.analyzeduration,
-                'sync': 'ext'
+            avFormatOptions: {
+                var avFormatOptions = root.avFormatOptions;
+
+                // Set default options
+                if (avFormatOptions.probesize === undefined && avFormatOptions.analyzeduration === undefined) {
+                    avFormatOptions.probesize = 500000; // 500 KB
+                    avFormatOptions.analyzeduration = 0; // 0 µs
+                }
+
+                return avFormatOptions;
             }
 
             onStatusChanged: {
@@ -118,13 +115,6 @@ FocusScope {
                 case MediaPlayer.UnknownStatus:
                     break;
                 }
-
-//                if (playbackState === MediaPlayer.StoppedState) {
-//                    if (keepAlive) {
-//                        CCTV_Viewer.sleep(500);
-//                        play();
-//                    }
-//                }
             }
 
             onBufferProgressChanged: {

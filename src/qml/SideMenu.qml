@@ -442,6 +442,53 @@ FocusScope {
                                     }
                                 }
                             }
+
+
+                            ColumnLayout {
+                                Layout.fillWidth: true
+
+                                Label {
+                                    text: qsTr('Options')
+                                    color: 'white'
+                                    font.pixelSize: 14
+                                }
+
+                                TextField {
+                                    text: viewportGroup.enabled ? getString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
+                                    placeholderText: qsTr('AVFormat options')
+                                    selectByMouse: true
+
+                                    Layout.fillWidth: true
+
+                                    onEditingFinished: currentModel().get(currentLayout().focusIndex).avFormatOptions = parseString(text)
+
+                                    function parseString(str) {
+                                        var obj = {};
+                                        var regexp = /-([a-z0-9_]+)\s([a-z0-9_.]+)/g;
+                                        var pairs = str.match(regexp);
+
+                                        if (Array.isArray(pairs)) {
+                                            for (var i = 0; i < pairs.length; ++i) {
+                                                var arr = pairs[i].split(/\s/);
+                                                obj[arr[0].slice(1)] = arr[1];
+                                            }
+                                        }
+
+                                        return obj;
+                                    }
+
+                                    function getString(options) {
+                                        var str = '';
+
+                                        for (var key in options) {
+                                            str += '-%1 %2 '.arg(key).arg(options[key]);
+                                        }
+
+                                        return str.trim();
+                                    }
+
+                                }
+                            }
                         }
                     }
 

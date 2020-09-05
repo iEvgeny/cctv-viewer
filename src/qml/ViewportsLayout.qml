@@ -187,6 +187,7 @@ FocusScope {
                     readonly property alias columnSpan: d2.columnSpan
                     readonly property alias rowSpan: d2.rowSpan
                     readonly property alias volume: d2.volume
+                    readonly property alias avFormatOptions: d2.avFormatOptions
 
                     readonly property alias topIndex: d2.topIndex
                     readonly property alias rightIndex: d2.rightIndex
@@ -344,6 +345,7 @@ FocusScope {
                         property int columnSpan: model.columnSpan
                         property int rowSpan: model.rowSpan
                         property real volume: model.volume
+                        property var avFormatOptions: model.avFormatOptions
 
                         property int topIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
                                                              Number(viewport.row - 1).clamp(0, root.size.height - 1))
@@ -397,9 +399,7 @@ FocusScope {
                             color: root.color
                             source: viewport.url
                             volume: viewport.volume
-                            keepAlive: true
-                            autoLoad: true
-                            autoPlay: true
+                            avFormatOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
                             anchors.fill: parent
                         }
