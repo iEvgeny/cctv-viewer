@@ -471,7 +471,6 @@ FocusScope {
                                                 }
                                             }
 
-                                            console.log('DEBUG_2')
                                             currentModel().get(currentLayout().focusIndex).avFormatOptions = {};
                                         } else {
                                             currentModel().get(currentLayout().focusIndex).avFormatOptions = options;
