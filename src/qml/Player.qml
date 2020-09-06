@@ -79,11 +79,7 @@ FocusScope {
             avFormatOptions: {
                 var avFormatOptions = root.avFormatOptions;
 
-                // Set default options
-                if (avFormatOptions.probesize === undefined && avFormatOptions.analyzeduration === undefined) {
-                    avFormatOptions.probesize = 500000; // 500 KB
-                    avFormatOptions.analyzeduration = 0; // 0 µs
-                }
+                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.fromJSON('defaultAVFormatOptions'));
 
                 return avFormatOptions;
             }

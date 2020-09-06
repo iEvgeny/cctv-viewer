@@ -16,33 +16,33 @@ function ifRightToLeft(rightToLeft, leftToRight) {
 }
 
 // Objects
-if (!Object.assign) {
-    // NOTE: Shallow, not recursive "cloning"!
-    Object.defineProperty(Object, 'assign', {
-                              enumerable: false,
-                              configurable: true,
-                              writable: true,
-                              value: function(target) {
-                                  if (!(target instanceof Object)) {
-                                      throw new TypeError('Cannot convert first argument to object');
-                                  }
-
-                                  for (var i = 1; i < arguments.length; ++i) {
-                                      var source = arguments[i];
-
-                                      if (!(source instanceof Object)) {
-                                          continue;
-                                      }
-
-                                      for (var key in source) {
-                                          target[key] = source[key];
-                                      }
-                                  }
-
-                                  return target;
+// NOTE: Shallow, not recursive "cloning"!
+Object.defineProperty(Object, 'assignDefault', {
+                          enumerable: false,
+                          configurable: true,
+                          writable: true,
+                          value: function(target) {
+                              if (!(target instanceof Object)) {
+                                  throw new TypeError('Cannot convert first argument to object');
                               }
-                          });
-}
+
+                              for (var i = 1; i < arguments.length; ++i) {
+                                  var source = arguments[i];
+
+                                  if (!(source instanceof Object)) {
+                                      continue;
+                                  }
+
+                                  for (var key in source) {
+                                      if (target[key] === undefined) {
+                                        target[key] = source[key];
+                                      }
+                                  }
+                              }
+
+                              return target;
+                          }
+                      });
 
 // Strings
 String.prototype.isEmpty = function() {

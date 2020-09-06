@@ -455,12 +455,28 @@ FocusScope {
 
                                 TextField {
                                     text: viewportGroup.enabled ? getString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
-                                    placeholderText: qsTr('-analyzeduration 0 -probesize 500000')
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
 
-                                    onEditingFinished: currentModel().get(currentLayout().focusIndex).avFormatOptions = parseString(text)
+                                    onEditingFinished: {
+                                        var options = parseString(text);
+                                        var defaultAVFormatOptions = layoutsCollectionSettings.fromJSON('defaultAVFormatOptions');
+
+                                        if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
+                                            for (var key in options) {
+                                                if (defaultAVFormatOptions[key] === undefined || String(defaultAVFormatOptions[key]) !== String(options[key])) {
+                                                    currentModel().get(currentLayout().focusIndex).avFormatOptions = options;
+                                                    return;
+                                                }
+                                            }
+
+                                            console.log('DEBUG_2')
+                                            currentModel().get(currentLayout().focusIndex).avFormatOptions = {};
+                                        } else {
+                                            currentModel().get(currentLayout().focusIndex).avFormatOptions = options;
+                                        }
+                                    }
 
                                     function parseString(str) {
                                         var obj = {};
@@ -480,8 +496,12 @@ FocusScope {
                                     function getString(options) {
                                         var str = '';
 
+                                        Object.assignDefault(options, layoutsCollectionSettings.fromJSON('defaultAVFormatOptions'));
+
                                         for (var key in options) {
-                                            str += '-%1 %2 '.arg(key).arg(options[key]);
+                                            if (typeof options[key] === 'string' || typeof options[key] === 'number') {
+                                                str += '-%1 %2 '.arg(key).arg(options[key]);
+                                            }
                                         }
 
                                         return str.trim();

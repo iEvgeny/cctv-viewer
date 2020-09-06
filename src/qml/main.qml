@@ -76,7 +76,23 @@ ApplicationWindow {
 
         property int currentIndex
         property string models
-        property string collection  // Old property
+        property string collection  // DEPRECATED: Old property
+        property string defaultAVFormatOptions: JSON.stringify({
+            'analyzeduration': 0, // 0 µs
+            'probesize': 500000 // 500 KB
+        })
+
+        function fromJSON(key) {
+            var obj = {};
+
+            try {
+                obj = JSON.parse(layoutsCollectionSettings[String(key)]);
+            } catch(err) {
+                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
+            }
+
+            return obj;
+        }
     }
 
     Shortcut {
