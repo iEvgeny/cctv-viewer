@@ -107,8 +107,14 @@ ApplicationWindow {
     ViewportsLayoutsCollectionModel {
         id: layoutsCollectionModel
 
+        // Demo group
         ViewportsLayoutModel {
             size: Qt.size(2, 2)
+
+            // TODO: Probably worth implementing a default property for ViewportsLayoutModel?
+            Component.onCompleted: {
+                get(0).url = 'rtmp://live.a71.ru/demo/0';
+            }
         }
         ViewportsLayoutModel {
             size: Qt.size(3, 3)
