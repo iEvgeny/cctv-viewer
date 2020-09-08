@@ -110,11 +110,6 @@ ApplicationWindow {
         // Demo group
         ViewportsLayoutModel {
             size: Qt.size(2, 2)
-
-            // TODO: Probably worth implementing a default property for ViewportsLayoutModel?
-            Component.onCompleted: {
-                get(0).url = 'rtmp://live.a71.ru/demo/0';
-            }
         }
         ViewportsLayoutModel {
             size: Qt.size(3, 3)
@@ -125,6 +120,9 @@ ApplicationWindow {
 
         onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
         Component.onCompleted: {
+            // Demo stream
+            get(0).get(0).url = 'rtmp://live.a71.ru/demo/0';
+
             layoutsCollectionModel.changed.connect(function () {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
             });
