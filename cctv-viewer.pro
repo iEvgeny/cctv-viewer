@@ -60,6 +60,7 @@ HEADERS += \
     src/qmlav/src/qmlavformat.h \
     src/qmlav/src/qmlavframe.h \
     src/qmlav/src/qmlavplayer.h \
+    src/qmlav/src/qmlavutils.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
@@ -72,6 +73,7 @@ SOURCES += \
     src/qmlav/src/qmlavformat.cpp \
     src/qmlav/src/qmlavframe.cpp \
     src/qmlav/src/qmlavplayer.cpp \
+    src/qmlav/src/qmlavutils.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp
 
