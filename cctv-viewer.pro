@@ -53,27 +53,15 @@ TARGET = cctv-viewer
 
 DESTDIR = bin
 
+include(src/qmlav/qmlav.pri)
+
 HEADERS += \
-    src/qmlav/src/qmlavaudioqueue.h \
-    src/qmlav/src/qmlavdecoder.h \
-    src/qmlav/src/qmlavdemuxer.h \
-    src/qmlav/src/qmlavformat.h \
-    src/qmlav/src/qmlavframe.h \
-    src/qmlav/src/qmlavplayer.h \
-    src/qmlav/src/qmlavutils.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
     src/main.cpp \
-    src/qmlav/src/qmlavaudioqueue.cpp \
-    src/qmlav/src/qmlavdecoder.cpp \
-    src/qmlav/src/qmlavdemuxer.cpp \
-    src/qmlav/src/qmlavformat.cpp \
-    src/qmlav/src/qmlavframe.cpp \
-    src/qmlav/src/qmlavplayer.cpp \
-    src/qmlav/src/qmlavutils.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp
 
