@@ -10,10 +10,9 @@ FocusScope {
 
     implicitWidth: 220
 
-    property bool open: false
+    property alias pinned: d.pinned
     property int openInterval: 300
     property int closeInterval: 2000
-    readonly property alias pinned: d.pinned
 
     states: [
         State {
@@ -42,7 +41,7 @@ FocusScope {
     QtObject {
         id: d
 
-        property bool open: root.open || d.pinned || (currentLayout().pressAndHoldIndex >= 0) ||
+        property bool open: root.pinned || d.pinned || (currentLayout().pressAndHoldIndex >= 0) ||
                             (mouseCaptureArea.containsMouse && !openTimer.running) || (mouseHoldArea.containsMouse || closeTimer.running)
         property bool pinned: false
     }

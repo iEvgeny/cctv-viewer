@@ -43,6 +43,7 @@ ApplicationWindow {
     Settings {
         id: generalSettings
 
+        property bool intro: true
         property bool singleApplication: true
     }
 
@@ -191,6 +192,20 @@ ApplicationWindow {
         SideMenu {
             height: parent.height
             anchors.right: parent.right
+
+            // Intro
+            onPinnedChanged: {
+                if (!pinned && generalSettings.intro) {
+                    generalSettings.intro = false;
+
+                    // TODO: Show help for using the sidebar
+                }
+            }
+            Component.onCompleted: {
+                if (generalSettings.intro) {
+                    pinned = true;
+                }
+            }
         }
     }
 }
