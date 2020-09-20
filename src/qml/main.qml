@@ -50,8 +50,8 @@ ApplicationWindow {
         id: rootWindowSettings
 
         category: 'RootWindow'
-        property int width: 960
-        property int height: 540
+        property int width: 1280
+        property int height: 720
         property alias fullScreen: rootWindow.fullScreen
     }
 
