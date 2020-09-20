@@ -46,6 +46,7 @@ FocusScope {
 
     Rectangle {
         color: root.color
+        border.color: "#101010"
         anchors.fill: parent
 
         VideoOutput {
