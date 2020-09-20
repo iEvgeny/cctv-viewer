@@ -1,4 +1,3 @@
-#include <signal.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
