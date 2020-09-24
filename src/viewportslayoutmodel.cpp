@@ -25,13 +25,22 @@ ViewportsLayoutModel::ViewportsLayoutModel(QObject *parent)
 
 QVariant ViewportsLayoutModel::data(const QModelIndex &index, int role) const
 {
-    QString key = roleNames().value(role);
-
     if (!hasIndex(index.row(), index.column())) {
         return QVariant();
     }
 
+    QString key = roleNames().value(role);
     return get(index.row())->property(key.toUtf8());
+}
+
+bool ViewportsLayoutModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!hasIndex(index.row(), index.column())) {
+        return false;
+    }
+
+    QString key = roleNames().value(role);
+    return get(index.row())->setProperty(key.toUtf8(), value);
 }
 
 QHash<int, QByteArray> ViewportsLayoutModel::roleNames() const

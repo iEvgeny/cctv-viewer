@@ -252,6 +252,16 @@ FocusScope {
                             d.selectionReset();
                         }
 
+                        var muteKey = QT_TR_NOOP('M', 'Shortcut');
+                        if (event.text.toUpperCase() === muteKey ||
+                            event.text.toUpperCase() === qsTr(muteKey)) {
+                            if (model.volume > 0) {
+                                model.volume = 0;
+                            } else {
+                                model.volume = 1;
+                            }
+                        }
+
                         function keyNavigationHandler(keyNavigationCallback) {
                             if (!fullScreen) {
                                 if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
