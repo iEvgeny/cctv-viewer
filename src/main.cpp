@@ -25,6 +25,8 @@ void registerQmlTypes()
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
 #if defined(APP_NAME)
     QCoreApplication::setApplicationName(QLatin1String(APP_NAME));
 #endif
@@ -40,8 +42,6 @@ int main(int argc, char *argv[])
 
     registerQmlTypes();
 
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     QTranslator translator;
@@ -50,17 +50,17 @@ int main(int argc, char *argv[])
     app.installTranslator(&translator);
     app.setWindowIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.ico")));
 
-    // NOTE: Debug
-    // Testing Right-to-left User Interfaces...
-    // (This code must be removed!!!)
-//    app.setLayoutDirection(Qt::RightToLeft);
-
     const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
+    // NOTE: Debug
+    // Testing Right-to-left User Interfaces...
+    // (This code must be removed!!!)
+//    QGuiApplication::setLayoutDirection(Qt::RightToLeft);
 
     return app.exec();
 }

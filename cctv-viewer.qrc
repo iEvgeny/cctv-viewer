@@ -1,15 +1,22 @@
 <RCC>
     <qresource prefix="/">
+        <file>qtquickcontrols2.conf</file>
+        <file>res/translations/cctv-viewer_ru.qm</file>
         <file>src/js/utils.js</file>
         <file>src/qml/main.qml</file>
+        <file>src/qml/SingleApplicationDialog.qml</file>
         <file>src/qml/Player.qml</file>
         <file>src/qml/ViewportsLayout.qml</file>
-        <file>src/qml/SideMenu.qml</file>
-        <file>res/translations/cctv-viewer_ru.qm</file>
+        <file>src/qml/SideBar.qml</file>
+        <file>src/qml/SideBarItem.qml</file>
         <file>res/icons/cctv-viewer.svg</file>
         <file>res/icons/cctv-viewer.ico</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>res/icons/pin-white.svg</file>
-        <file>src/qml/SingleApplicationDialog.qml</file>
+        <file>res/icons/menu-viewport.svg</file>
+        <file>res/icons/menu-tools.svg</file>
+        <file>res/icons/menu-settings.svg</file>
+        <file>res/icons/menu-presets.svg</file>
+        <file>res/icons/menu.svg</file>
+        <file>res/icons/menu-collapse.svg</file>
+        <file>res/icons/menu-item-collapse.svg</file>
     </qresource>
 </RCC>

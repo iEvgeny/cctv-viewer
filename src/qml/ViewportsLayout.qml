@@ -1,6 +1,6 @@
-import QtQuick 2.6
-import QtQuick.Layouts 1.3
-import QtMultimedia 5.0
+import QtQuick 2.12
+import QtQuick.Layouts 1.12
+import QtMultimedia 5.12
 import CCTV_Viewer.Models 1.0
 import '../js/utils.js' as CCTV_Viewer
 

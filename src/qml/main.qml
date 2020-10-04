@@ -1,7 +1,7 @@
-import QtQuick 2.9
-import QtQuick.Window 2.2
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.1
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
 import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
@@ -20,8 +20,8 @@ ApplicationWindow {
     property bool fullScreen: false
 
     // Right-to-left User Interfaces support
-    LayoutMirroring.enabled: CCTV_Viewer.ifRightToLeft(true)
-    LayoutMirroring.childrenInherit: CCTV_Viewer.ifRightToLeft(true)
+    LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
+    LayoutMirroring.childrenInherit: true
 
     SingleApplicationDialog {
         onVisibleChanged: {
@@ -149,7 +149,9 @@ ApplicationWindow {
     }
 
     Item {
-        anchors.fill: parent
+        height: parent.height
+        anchors.left: parent.left
+        anchors.right: sideBar.left
 
         Rectangle {
             color: 'black'
@@ -188,24 +190,26 @@ ApplicationWindow {
 
             onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
         }
+    }
 
-        SideMenu {
-            height: parent.height
-            anchors.right: parent.right
+    SideBar {
+        id: sideBar
 
-            // Intro
-            onPinnedChanged: {
-                if (!pinned && generalSettings.intro) {
-                    generalSettings.intro = false;
+        height: parent.height
+        anchors.right: parent.right
 
-                    // TODO: Show help for using the sidebar
-                }
-            }
-            Component.onCompleted: {
-                if (generalSettings.intro) {
-                    pinned = true;
-                }
-            }
-        }
+        //            // Intro
+        //            onPinnedChanged: {
+        //                if (!pinned && generalSettings.intro) {
+        //                    generalSettings.intro = false;
+
+        //                    // TODO: Show help for using the sidebar
+        //                }
+        //            }
+        //            Component.onCompleted: {
+        //                if (generalSettings.intro) {
+        //                    pinned = true;
+        //                }
+        //            }
     }
 }
