@@ -33,7 +33,7 @@ T.GroupBox {
             var obj = loadItemsState();
 
             if (open) {
-                if (!root.objectName.isEmpty() && obj[root.objectName].collapsed !== undefined) {
+                if (!root.objectName.isEmpty() && obj[root.objectName] && obj[root.objectName].collapsed !== undefined) {
                     collapsed = obj[root.objectName].collapsed;
                 }
             } else {
