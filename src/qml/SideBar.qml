@@ -97,7 +97,7 @@ FocusScope {
             Flickable {
                 id: flickable
 
-                contentHeight: Math.max(parent.height, layout.implicitHeight + footer.implicitHeight)
+                contentHeight: Math.max(parent.height, layout.implicitHeight + footer.implicitHeight + layout.verticalMargins * 2)
                 anchors.fill: parent
 
                 ColumnLayout {
@@ -107,7 +107,9 @@ FocusScope {
 
                     width: parent.width
                     anchors.top: parent.top
-                    anchors.topMargin: 7
+                    anchors.topMargin: verticalMargins
+
+                    readonly property real verticalMargins: 7
 
                     SideBarItem {
                         id: header
@@ -560,7 +562,7 @@ FocusScope {
                     title: d.compact ? qsTr('Expand') : qsTr('Collapse')
                     width: parent.width
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 7
+                    anchors.bottomMargin: layout.verticalMargins
 
                     onClicked: d.compact = !d.compact
                 }
