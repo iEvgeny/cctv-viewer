@@ -11,7 +11,7 @@ license: GPL-3.0
 
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict
-base: core18
+base: core20
 
 apps:
   cctv-viewer:
@@ -49,6 +49,7 @@ parts:
       - libavdevice-dev
       - qtdeclarative5-dev
       - qtmultimedia5-dev
+      - qttools5-dev
     stage-packages:
       - libslang2
       - libglu1-mesa

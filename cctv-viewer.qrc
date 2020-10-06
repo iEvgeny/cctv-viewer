@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
-        <file>res/translations/cctv-viewer_ru.qm</file>
+        <file>res/translations/cctv-viewer_ru_RU.qm</file>
         <file>src/js/utils.js</file>
         <file>src/qml/main.qml</file>
         <file>src/qml/SingleApplicationDialog.qml</file>

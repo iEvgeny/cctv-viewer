@@ -67,9 +67,9 @@ SOURCES += \
 
 RESOURCES += cctv-viewer.qrc
 
-DISTFILES += res/translations/cctv-viewer_ru.ts
+DISTFILES += res/translations/cctv-viewer_ru_RU.ts
 
-TRANSLATIONS += res/translations/cctv-viewer_ru.ts
+TRANSLATIONS += res/translations/cctv-viewer_ru_RU.ts
 
 OTHER_FILES += \
     $$files(src/qml/*.qml) \

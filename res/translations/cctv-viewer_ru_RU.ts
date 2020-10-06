@@ -53,94 +53,100 @@
 <context>
     <name>SideBar</name>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="115"/>
         <source>CCTV Viewer</source>
-        <translation>CCTV Viewer</translation>
+        <translation type="vanished">CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="122"/>
+        <location filename="../../src/qml/SideBar.qml" line="160"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="131"/>
+        <location filename="../../src/qml/SideBar.qml" line="169"/>
         <source>Window division</source>
         <translation>Деление окна</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="177"/>
+        <location filename="../../src/qml/SideBar.qml" line="216"/>
         <source>Error reading configuration</source>
         <translation>Ошибка чтения конфигурации</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="252"/>
+        <location filename="../../src/qml/SideBar.qml" line="291"/>
         <source>x</source>
         <translation>х</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="268"/>
+        <location filename="../../src/qml/SideBar.qml" line="307"/>
         <source>Geometry</source>
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="304"/>
+        <location filename="../../src/qml/SideBar.qml" line="344"/>
         <source>Full Screen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="317"/>
+        <location filename="../../src/qml/SideBar.qml" line="357"/>
         <source>Other</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="328"/>
+        <location filename="../../src/qml/SideBar.qml" line="369"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="341"/>
+        <location filename="../../src/qml/SideBar.qml" line="383"/>
         <source>Viewport%1</source>
         <translation>Вьюпорт%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="341"/>
+        <location filename="../../src/qml/SideBar.qml" line="383"/>
         <source> #%1</source>
         <translation> №%1</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="357"/>
+        <location filename="../../src/qml/SideBar.qml" line="399"/>
         <source>Url</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="366"/>
+        <location filename="../../src/qml/SideBar.qml" line="408"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="386"/>
+        <location filename="../../src/qml/SideBar.qml" line="428"/>
         <source>AVFormat options</source>
         <translation>Опции AVFormat</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="451"/>
+        <location filename="../../src/qml/SideBar.qml" line="494"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="506"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation type="vanished">Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="517"/>
+        <location filename="../../src/qml/SideBar.qml" line="560"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="517"/>
+        <location filename="../../src/qml/SideBar.qml" line="560"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
+    </message>
+</context>
+<context>
+    <name>SideBarItem</name>
+    <message>
+        <location filename="../../src/qml/SideBarItem.qml" line="60"/>
+        <source>Error reading configuration</source>
+        <translation type="unfinished">Ошибка чтения конфигурации</translation>
     </message>
 </context>
 <context>
