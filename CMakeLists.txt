@@ -45,7 +45,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
+set(QT_LINK_DEPENDENCIES Core Quick Multimedia)
+set(FFMPEG_LINK_DEPENDENCIES avformat avcodec avutil swscale swresample avdevice)
+
 if (ANDROID)
+    list(APPEND QT_LINK_DEPENDENCIES Svg)
+
     set(ANDROID_EXTRA_LIBS
         "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/lib/libavformat.so"
         "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/lib/libavcodec.so"
@@ -57,8 +62,9 @@ if (ANDROID)
         )
 endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Multimedia LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS Core Quick Multimedia LinguistTools REQUIRED)
+
+find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
 
 add_subdirectory(src/qmlav)
 
@@ -92,9 +98,11 @@ endif()
 
 target_compile_definitions(cctv-viewer
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(cctv-viewer
-    PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Multimedia
-    avformat avcodec avutil swscale swresample avdevice)
+
+foreach (ITEM ${QT_LINK_DEPENDENCIES})
+    target_link_libraries(cctv-viewer PRIVATE Qt${QT_VERSION_MAJOR}::${ITEM})
+endforeach()
+target_link_libraries(cctv-viewer PRIVATE ${FFMPEG_LINK_DEPENDENCIES})
 
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/res/translations")
