@@ -15,7 +15,7 @@ base: core20
 
 apps:
   cctv-viewer:
-    command: desktop-launch $SNAP/usr/bin/cctv-viewer
+    command: bin/desktop-launch $SNAP/usr/bin/cctv-viewer
     desktop: usr/share/applications/cctv-viewer.desktop
     plugs:
       - home
@@ -33,14 +33,14 @@ apps:
 parts:
   cctv-viewer:
     after: [desktop-qt5]
-    plugin: qmake
-    qt-version: qt5
-    source: https://github.com/iEvgeny/cctv-viewer.git
+    plugin: cmake
+    source: .
     override-pull: |
       snapcraftctl pull
       # Point icon to the correct location
       sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' cctv-viewer.desktop
     build-packages:
+      - build-essential
       - libavformat-dev
       - libavcodec-dev
       - libavutil-dev
@@ -53,14 +53,14 @@ parts:
     stage-packages:
       - libslang2
       - libglu1-mesa
-      - libavformat57
-      - libavcodec57
-      - libavutil55
-      - libswscale4
-      - libswresample2
-      - libavdevice57
+      - libavformat58
+      - libavcodec58
+      - libavutil56
+      - libswscale5
+      - libswresample3
+      - libavdevice58
       - libqt5multimedia5
-      - libqt5multimediaquick-p5
+      - libqt5multimediaquick5
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
       - qml-module-qtquick-controls

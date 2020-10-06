@@ -109,7 +109,9 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOUR
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR}/src ${TS_FILES})
 
 if (UNIX AND NOT ANDROID)
-    set(CMAKE_INSTALL_PREFIX "/usr/bin")
-    install(FILES "res/icons/cctv-viewer.svg" DESTINATION "usr/share/pixmaps")
+    include(GNUInstallDirs)
+    set(CMAKE_INSTALL_PREFIX "/usr")
+    install(TARGETS cctv-viewer DESTINATION "${CMAKE_INSTALL_BINDIR}")
+    install(FILES "res/icons/cctv-viewer.svg" DESTINATION "/usr/share/pixmaps")
     install(FILES "cctv-viewer.desktop" DESTINATION "/usr/share/applications")
 endif()
