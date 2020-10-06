@@ -15,11 +15,10 @@
 
 
 %:
-	dh $@ --buildsystem=qmake
+	dh $@ --buildsystem=cmake
 
 override_dh_auto_configure:
-	mkdir -p build
-	qmake -qt=5 cctv-viewer.pro
+	dh_auto_configure --buildsystem=cmake -- -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
