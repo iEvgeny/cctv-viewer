@@ -1,3 +1,10 @@
+cctv-viewer (0.1.8-0) focal; urgency=medium
+
+  * Reimplement SideBar
+  * Add CMake support
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Tue, 06 Oct 2020 18:49:43 +0300
+ 
 cctv-viewer (0.1.7-0) focal; urgency=medium
 
   * Migration to ffmpeg native (as a submodule)
