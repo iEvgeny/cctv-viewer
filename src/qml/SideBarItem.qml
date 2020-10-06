@@ -55,9 +55,11 @@ T.GroupBox {
             var obj = {};
 
             try {
-                obj = JSON.parse(sideBarSettings.itemsState);
+                if (!sideBarSettings.itemsState.isEmpty()) {
+                    obj = JSON.parse(sideBarSettings.itemsState);
+                }
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
+                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
             }
 
             return obj;
