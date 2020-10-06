@@ -62,7 +62,6 @@ if (ANDROID)
         )
 endif()
 
-
 find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
 
