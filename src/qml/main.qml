@@ -51,7 +51,7 @@ ApplicationWindow {
         id: rootWindowSettings
 
         category: 'RootWindow'
-        property int width: 1280 + sideBar.compactWidth
+        property int width: 1280 + 52 /*SideBar compact width*/
         property int height: 720
         property alias fullScreen: rootWindow.fullScreen
     }
