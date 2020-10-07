@@ -19,6 +19,7 @@ FocusScope {
     onFocusChanged: {
         if (!focus) {
             d.open = false;
+            delayOpenningTimer.stop();
         }
     }
 
@@ -81,6 +82,18 @@ FocusScope {
 
             onContainsMouseChanged: {
                 if (containsMouse) {
+                    delayOpenningTimer.start();
+                } else {
+                    delayOpenningTimer.stop();
+                }
+            }
+
+            Timer {
+                id: delayOpenningTimer
+
+                interval: 150
+
+                onTriggered: {
                     d.open = true;
                     rootSideBar.forceActiveFocus();
                 }

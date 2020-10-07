@@ -87,13 +87,13 @@ T.GroupBox {
             if (!holdClickTimer.running) {
                 rootSideBar.open = true;
                 d.collapsed = root.contentHeight > 0 ? !d.collapsed : true;
-                mouseHoverTimer.stop();
+                delayOpenningTimer.stop();
             }
         }
 
-        onHoveredChanged: hovered && d.collapsed ? mouseHoverTimer.start() : mouseHoverTimer.stop()
+        onHoveredChanged: hovered && d.collapsed ? delayOpenningTimer.start() : delayOpenningTimer.stop()
         Timer {
-            id: mouseHoverTimer
+            id: delayOpenningTimer
 
             interval: 500
 
