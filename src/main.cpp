@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     const QString locale = QLocale::system().name();
     translator.load(QLatin1String("cctv-viewer_") + locale, QLatin1String(":/res/translations/"));
     app.installTranslator(&translator);
-    app.setWindowIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.ico")));
+    app.setWindowIcon(QIcon(QLatin1String(":/res/icons/cctv-viewer.svg")));
 
     const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
