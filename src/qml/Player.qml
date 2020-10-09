@@ -80,7 +80,7 @@ FocusScope {
             avFormatOptions: {
                 var avFormatOptions = root.avFormatOptions;
 
-                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.fromJSON('defaultAVFormatOptions'));
+                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.toJSValue('defaultAVFormatOptions'));
 
                 return avFormatOptions;
             }

@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.3
 Dialog {
     title: qsTr('Warning!')
     modality: Qt.ApplicationModal
-    standardButtons: Dialog.Ok
+    standardButtons: StandardButton.Ok
 
     property bool singleApplication: !checkBox.checked
 

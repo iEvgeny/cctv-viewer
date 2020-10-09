@@ -226,7 +226,7 @@ FocusScope {
                                                     arr = JSON.parse(model);
                                                 }
                                             } catch(err) {
-                                                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
+                                                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
                                             }
 
                                             if (arr instanceof Array) {
@@ -444,14 +444,14 @@ FocusScope {
                                     }
 
                                     TextField {
-                                        text: viewportFrame.enabled ? getString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
+                                        text: viewportFrame.enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
                                         selectByMouse: true
 
                                         Layout.fillWidth: true
 
                                         onEditingFinished: {
-                                            var options = parseString(text);
-                                            var defaultAVFormatOptions = layoutsCollectionSettings.fromJSON('defaultAVFormatOptions');
+                                            var options = CCTV_Viewer.parseOptions(text);
+                                            var defaultAVFormatOptions = layoutsCollectionSettings.toJSValue('defaultAVFormatOptions');
 
                                             if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
                                                 for (var key in options) {
@@ -467,33 +467,9 @@ FocusScope {
                                             }
                                         }
 
-                                        function parseString(str) {
-                                            var obj = {};
-                                            var regexp = /-([a-z0-9_]+)\s([a-z0-9_.]+)/g;
-                                            var pairs = str.match(regexp);
-
-                                            if (Array.isArray(pairs)) {
-                                                for (var i = 0; i < pairs.length; ++i) {
-                                                    var arr = pairs[i].split(/\s/);
-                                                    obj[arr[0].slice(1)] = arr[1];
-                                                }
-                                            }
-
-                                            return obj;
-                                        }
-
-                                        function getString(options) {
-                                            var str = '';
-
-                                            Object.assignDefault(options, layoutsCollectionSettings.fromJSON('defaultAVFormatOptions'));
-
-                                            for (var key in options) {
-                                                if (typeof options[key] === 'string' || typeof options[key] === 'number') {
-                                                    str += '-%1 %2 '.arg(key).arg(options[key]);
-                                                }
-                                            }
-
-                                            return str.trim();
+                                        function getOptionsString(options) {
+                                            Object.assignDefault(options, layoutsCollectionSettings.toJSValue('defaultAVFormatOptions'));
+                                            return CCTV_Viewer.stringifyOptions(options);
                                         }
 
                                     }
@@ -557,12 +533,14 @@ FocusScope {
                             }
                         }
                     }
-                    //                        SideBarItem {
-                    //                            icon: 'qrc:/res/icons/menu-settings.svg'
-                    //                            title: qsTr('Settings')
+                    SideBarItem {
+                        icon: 'qrc:/res/icons/menu-settings.svg'
+                        title: qsTr('Settings')
 
-                    //                            Layout.fillWidth: true
-                    //                        }
+                        Layout.fillWidth: true
+
+                        onClicked: settingsDialog.open()
+                    }
                 }
 
                 SideBarItem {

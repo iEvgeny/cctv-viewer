@@ -1,4 +1,31 @@
 // Helpers
+function parseOptions(str) {
+    var obj = {};
+    var regexp = /-([a-z0-9_]+)\s([a-z0-9_.]+)/g;
+    var pairs = str.match(regexp);
+
+    if (Array.isArray(pairs)) {
+        for (var i = 0; i < pairs.length; ++i) {
+            var arr = pairs[i].split(/\s/);
+            obj[arr[0].slice(1)] = arr[1];
+        }
+    }
+
+    return obj;
+}
+
+function stringifyOptions(obj) {
+    var str = '';
+
+    for (var key in obj) {
+        if (typeof obj[key] === 'string' || typeof obj[key] === 'number') {
+            str += '-%1 %2 '.arg(key).arg(obj[key]);
+        }
+    }
+
+    return str.trim();
+}
+
 function ifLeftToRight(leftToRight, rightToLeft) {
     if (rightToLeft === undefined) {
         leftToRight = false;

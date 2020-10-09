@@ -4,10 +4,6 @@
 <context>
     <name>Player</name>
     <message>
-        <source>Error reading configuration</source>
-        <translation type="vanished">Ошибка чтения конфигурации</translation>
-    </message>
-    <message>
         <location filename="../../src/qml/Player.qml" line="91"/>
         <source>No media!</source>
         <translation>Нет медиаисточника!</translation>
@@ -53,10 +49,6 @@
 <context>
     <name>SideBar</name>
     <message>
-        <source>CCTV Viewer</source>
-        <translation type="vanished">CCTV Viewer</translation>
-    </message>
-    <message>
         <location filename="../../src/qml/SideBar.qml" line="173"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
@@ -68,8 +60,8 @@
     </message>
     <message>
         <location filename="../../src/qml/SideBar.qml" line="229"/>
-        <source>Error reading configuration</source>
-        <translation>Ошибка чтения конфигурации</translation>
+        <source>Error reading configuration!</source>
+        <translation>Ошибка чтения конфигурации!</translation>
     </message>
     <message>
         <location filename="../../src/qml/SideBar.qml" line="304"/>
@@ -144,72 +136,9 @@
 <context>
     <name>SideBarItem</name>
     <message>
-        <source>Error reading configuration</source>
-        <translation type="obsolete">Ошибка чтения конфигурации</translation>
-    </message>
-    <message>
         <location filename="../../src/qml/SideBarItem.qml" line="62"/>
         <source>Error reading configuration!</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
-    <name>SideMenu</name>
-    <message>
-        <source>Settings</source>
-        <translation type="vanished">Настройки</translation>
-    </message>
-    <message>
-        <source>Window division</source>
-        <translation type="vanished">Деление окна</translation>
-    </message>
-    <message>
-        <source>Error reading configuration</source>
-        <translation type="vanished">Ошибка чтения конфигурации</translation>
-    </message>
-    <message>
-        <source>x</source>
-        <translation type="vanished">х</translation>
-    </message>
-    <message>
-        <source>Geometry</source>
-        <translation type="vanished">Геметрия</translation>
-    </message>
-    <message>
-        <source>Full Screen</source>
-        <translation type="vanished">Полноэкранный режим</translation>
-    </message>
-    <message>
-        <source>Merging cells</source>
-        <translation type="vanished">Объединение ячеек</translation>
-    </message>
-    <message>
-        <source>Mute</source>
-        <translation type="vanished">Отключение звука</translation>
-    </message>
-    <message>
-        <source>Tools</source>
-        <translation type="vanished">Инструменты</translation>
-    </message>
-    <message>
-        <source>/^[1-9]x[1-9]$/</source>
-        <translation type="vanished">/^[1-9]х[1-9]$/</translation>
-    </message>
-    <message>
-        <source>Viewport%1</source>
-        <translation type="vanished">Вьюпорт%1</translation>
-    </message>
-    <message>
-        <source> #%1</source>
-        <translation type="vanished"> №%1</translation>
-    </message>
-    <message>
-        <source>AVFormat options</source>
-        <translation type="vanished">Опции AVFormat</translation>
-    </message>
-    <message>
-        <source>Presets</source>
-        <translation type="vanished">Пресеты</translation>
+        <translation>Ошибка чтения конфигурации!</translation>
     </message>
 </context>
 <context>
@@ -246,13 +175,6 @@
     </message>
 </context>
 <context>
-    <name>ViewportsLayoutsCollection</name>
-    <message>
-        <source>Error reading configuration.</source>
-        <translation type="vanished">Ошибка чтения конфигурации.</translation>
-    </message>
-</context>
-<context>
     <name>main</name>
     <message>
         <location filename="../../src/qml/main.qml" line="13"/>
@@ -260,22 +182,10 @@
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <source>Warning!</source>
-        <translation type="vanished">Внимание!</translation>
-    </message>
-    <message>
-        <source>The application is already running!</source>
-        <translation type="vanished">Приложение уже запущено!</translation>
-    </message>
-    <message>
-        <source>Allow running multiple application instances</source>
-        <translation type="vanished">Разрешить запуск нескольких экземпляров приложения</translation>
-    </message>
-    <message>
         <location filename="../../src/qml/main.qml" line="92"/>
         <location filename="../../src/qml/main.qml" line="144"/>
-        <source>Error reading configuration</source>
-        <translation>Ошибка чтения конфигурации</translation>
+        <source>Error reading configuration!</source>
+        <translation>Ошибка чтения конфигурации!</translation>
     </message>
 </context>
 </TS>

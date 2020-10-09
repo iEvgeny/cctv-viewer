@@ -23,21 +23,18 @@ ApplicationWindow {
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
     LayoutMirroring.childrenInherit: true
 
-    SingleApplicationDialog {
-        onVisibleChanged: {
-            if (!visible) {
-                if (singleApplication) {
-                    Qt.quit();
-                } else {
-                    generalSettings.singleApplication = false;
-                }
-            }
-        }
-        Component.onCompleted: {
-            if (generalSettings.singleApplication && SingleApplication.isRunning()) {
-                open();
-            }
-        }
+    Binding {
+        target: rootWindowSettings
+        property: 'width'
+        value: rootWindow.width
+        when: !rootWindow.fullScreen
+    }
+
+    Binding {
+        target: rootWindowSettings
+        property: 'height'
+        value: rootWindow.height
+        when: !rootWindow.fullScreen
     }
 
     Settings {
@@ -56,20 +53,6 @@ ApplicationWindow {
         property alias fullScreen: rootWindow.fullScreen
     }
 
-    Binding {
-        target: rootWindowSettings
-        property: 'width'
-        value: rootWindow.width
-        when: !rootWindow.fullScreen
-    }
-
-    Binding {
-        target: rootWindowSettings
-        property: 'height'
-        value: rootWindow.height
-        when: !rootWindow.fullScreen
-    }
-
     Settings {
         id: layoutsCollectionSettings
 
@@ -83,13 +66,13 @@ ApplicationWindow {
             'probesize': 500000 // 500 KB
         })
 
-        function fromJSON(key) {
+        function toJSValue(key) {
             var obj = {};
 
             try {
                 obj = JSON.parse(layoutsCollectionSettings[String(key)]);
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
+                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
             }
 
             return obj;
@@ -141,7 +124,7 @@ ApplicationWindow {
                     fromJSValue(JSON.parse(models));
                 }
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration'));
+                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
             }
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
@@ -211,5 +194,26 @@ ApplicationWindow {
         //                    pinned = true;
         //                }
         //            }
+    }
+
+    SingleApplicationDialog {
+        onVisibleChanged: {
+            if (!visible) {
+                if (singleApplication) {
+                    Qt.quit();
+                } else {
+                    generalSettings.singleApplication = false;
+                }
+            }
+        }
+        Component.onCompleted: {
+            if (generalSettings.singleApplication && SingleApplication.isRunning()) {
+                open();
+            }
+        }
+    }
+
+    SettingsDialog {
+        id: settingsDialog
     }
 }
