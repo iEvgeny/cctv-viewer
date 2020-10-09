@@ -255,10 +255,12 @@ FocusScope {
                         var muteKey = QT_TR_NOOP('M', 'Shortcut');
                         if (event.text.toUpperCase() === muteKey ||
                             event.text.toUpperCase() === qsTr(muteKey)) {
-                            if (model.volume > 0) {
-                                model.volume = 0;
-                            } else {
-                                model.volume = 1;
+                            if (viewport.hasAudio) {
+                                if (model.volume > 0) {
+                                    model.volume = 0;
+                                } else {
+                                    model.volume = 1;
+                                }
                             }
                         }
 
