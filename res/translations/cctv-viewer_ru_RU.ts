@@ -47,6 +47,34 @@
     </message>
 </context>
 <context>
+    <name>SettingsDialog</name>
+    <message>
+        <location filename="../../src/qml/SettingsDialog.qml" line="8"/>
+        <source>Settings</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SettingsDialog.qml" line="23"/>
+        <source>General</source>
+        <translation>Общее</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SettingsDialog.qml" line="30"/>
+        <source>Allow running multiple application instances</source>
+        <translation>Разрешить запуск нескольких экземпляров приложения</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SettingsDialog.qml" line="35"/>
+        <source>Viewports</source>
+        <translation>Вьюпорты</translation>
+    </message>
+    <message>
+        <location filename="../../src/qml/SettingsDialog.qml" line="43"/>
+        <source>Default AVFormat options</source>
+        <translation>Опции AVFormat по умолчанию</translation>
+    </message>
+</context>
+<context>
     <name>SideBar</name>
     <message>
         <location filename="../../src/qml/SideBar.qml" line="173"/>
@@ -114,21 +142,22 @@
         <translation>Опции AVFormat</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="507"/>
+        <location filename="../../src/qml/SideBar.qml" line="483"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
     <message>
+        <location filename="../../src/qml/SideBar.qml" line="538"/>
         <source>Settings</source>
-        <translation type="vanished">Настройки</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="573"/>
+        <location filename="../../src/qml/SideBar.qml" line="551"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../../src/qml/SideBar.qml" line="573"/>
+        <location filename="../../src/qml/SideBar.qml" line="551"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
     </message>
@@ -182,8 +211,8 @@
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../../src/qml/main.qml" line="92"/>
-        <location filename="../../src/qml/main.qml" line="144"/>
+        <location filename="../../src/qml/main.qml" line="75"/>
+        <location filename="../../src/qml/main.qml" line="127"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
