@@ -14,14 +14,10 @@ greaterThan(VER_PAT, 0) {
 
 APP_NAME = "CCTV Viewer"
 ORG_NAME = "T171RU"
-ORG_DOMAIN = "a71.ru"
+ORG_DOMAIN = "cctv-viewer.org"
 
-DEFINES += VER_MAJ=$${VER_MAJ} \
-           VER_MIN=$${VER_MIN} \
-           VER_PAT=$${VER_PAT} \
-           \"REL_STATUS=\\\"$${REL_STATUS}\\\"\" \
+DEFINES += \"APP_NAME=\\\"$${APP_NAME}\\\"\" \
            \"APP_VERSION=\\\"$${VERSION}\\\"\" \
-           \"APP_NAME=\\\"$${APP_NAME}\\\"\" \
            \"ORG_NAME=\\\"$${ORG_NAME}\\\"\" \
            \"ORG_DOMAIN=\\\"$${ORG_DOMAIN}\\\"\"
 

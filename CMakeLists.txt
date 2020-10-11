@@ -7,7 +7,7 @@ set(REL_STATUS "alpha")
 
 set(APP_NAME "CCTV Viewer")
 set(ORG_NAME "T171RU")
-set(ORG_DOMAIN "a71.ru")
+set(ORG_DOMAIN "cctv-viewer.org")
 
 set(VERSION "${VER_MAJ}.${VER_MIN}")
 
