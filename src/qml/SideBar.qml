@@ -14,6 +14,8 @@ FocusScope {
     property alias open: d.open
     property alias compact: d.compact
 
+    readonly property alias compactWidth: d.compactWidth
+
     onFocusChanged: {
         if (!focus) {
             d.open = false;
@@ -34,8 +36,8 @@ FocusScope {
         property bool compact: true
 
         // Constants
-        readonly property real compactWidth: 52
-        readonly property real expandedWidth: 250
+        readonly property real compactWidth: 48
+        readonly property real expandedWidth: 230
     }
 
     Settings {

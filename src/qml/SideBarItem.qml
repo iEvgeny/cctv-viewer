@@ -12,7 +12,7 @@ T.GroupBox {
     spacing: 6
     padding: contentHeight > 0 ? 12 : 0
     topPadding: implicitLabelHeight + padding
-    implicitWidth: Math.max(implicitLabelHeight , contentWidth + leftPadding + rightPadding)
+    implicitWidth: Math.max(implicitLabelWidth , contentWidth + leftPadding + rightPadding)
     implicitHeight: d.collapsed ? implicitLabelHeight : Math.max(implicitLabelHeight, contentHeight + topPadding + bottomPadding)
 
     property url icon: ''
@@ -121,8 +121,8 @@ T.GroupBox {
                 implicitWidth: icon.width
                 implicitHeight: icon.height
 
-                Layout.leftMargin: control.padding
-                Layout.rightMargin: control.padding
+                Layout.leftMargin: iconMargins()
+                Layout.rightMargin: iconMargins()
 
                 Image {
                     id: icon
@@ -137,6 +137,10 @@ T.GroupBox {
                     source: icon
                     color: root.color
                     cached: true
+                }
+
+                function iconMargins() {
+                    return (rootSideBar.compactWidth - icon.width - control.leftPadding - control.rightPadding) / 2;
                 }
             }
 
