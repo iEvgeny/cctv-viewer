@@ -49,7 +49,7 @@ ApplicationWindow {
         id: rootWindowSettings
 
         category: 'RootWindow'
-        property int width: 1280 + 52 /*SideBar compact width*/
+        property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
         property alias fullScreen: rootWindow.fullScreen
     }
@@ -145,8 +145,8 @@ ApplicationWindow {
         StackLayout {
             id: stackLayout
 
+            visible: false
             currentIndex: -1
-            visible: !(generalSettings.singleApplication && SingleApplication.isRunning())
             anchors.fill: parent
 
             onCurrentIndexChanged: layoutsCollectionSettings.currentIndex = currentIndex
@@ -204,12 +204,16 @@ ApplicationWindow {
                     Qt.quit();
                 } else {
                     generalSettings.singleApplication = false;
+                    stackLayout.visible = true;
                 }
             }
         }
+
         Component.onCompleted: {
             if (generalSettings.singleApplication && SingleApplication.isRunning()) {
                 open();
+            } else {
+                stackLayout.visible = true;
             }
         }
     }
