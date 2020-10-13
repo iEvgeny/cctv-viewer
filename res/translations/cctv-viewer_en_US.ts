@@ -132,6 +132,10 @@
         <source>Collapse</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select viewport!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBarItem</name>

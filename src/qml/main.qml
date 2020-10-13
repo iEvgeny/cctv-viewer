@@ -167,10 +167,8 @@ ApplicationWindow {
             visible: stackLayout.count > 1
             currentIndex: stackLayout.currentIndex
             count: stackLayout.count
-            anchors {
-                bottom: parent.bottom
-                horizontalCenter: parent.horizontalCenter
-            }
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
 
             onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
         }

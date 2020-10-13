@@ -134,10 +134,10 @@ T.GroupBox {
                 }
 
                 ColorOverlay {
-                    anchors.fill: icon
                     source: icon
                     color: root.color
                     cached: true
+                    anchors.fill: icon
                 }
 
                 function iconMargins() {
@@ -178,9 +178,9 @@ T.GroupBox {
                 }
 
                 ColorOverlay {
-                    anchors.fill: iconCollapse
                     source: iconCollapse
                     color: root.color
+                    anchors.fill: iconCollapse
 
                     transform: Rotation {
                         angle: !d.collapsed ? 0 : control.mirrored ? -90 : 90

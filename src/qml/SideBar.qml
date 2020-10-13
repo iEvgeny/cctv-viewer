@@ -120,6 +120,7 @@ FocusScope {
                     spacing: 0
 
                     width: parent.width
+
                     anchors.top: parent.top
                     anchors.topMargin: verticalMargins
 
@@ -403,15 +404,25 @@ FocusScope {
                         Frame {
                             id: viewportFrame
 
-                            // Enabled only when one of the viewports is active.
-                            enabled: currentLayout().focusIndex >= 0
+                            hoverEnabled: true
                             anchors.fill: parent
 
+                            ToolTip {
+                                delay: 500
+                                visible: !viewportLayout.enabled && viewportFrame.hovered
+                                text: qsTr('Select viewport!')
+                                anchors.centerIn: parent
+                            }
+
                             ColumnLayout {
+                                id: viewportLayout
+
+                                // Enabled only when one of the viewports is active.
+                                enabled: currentLayout().focusIndex >= 0
                                 anchors.fill: parent
 
                                 TextField {
-                                    text: viewportFrame.enabled ? currentModel().get(currentLayout().focusIndex).url : ''
+                                    text: enabled ? currentModel().get(currentLayout().focusIndex).url : ''
                                     placeholderText: qsTr('Url')
                                     selectByMouse: true
 
@@ -447,7 +458,7 @@ FocusScope {
                                     }
 
                                     TextField {
-                                        text: viewportFrame.enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
+                                        text: enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
                                         selectByMouse: true
 
                                         Layout.fillWidth: true
