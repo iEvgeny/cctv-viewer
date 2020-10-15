@@ -8,37 +8,39 @@ import '../js/utils.js' as CCTV_Viewer
 FocusScope {
     id: rootSideBar
 
-    implicitWidth: rootWindow.fullScreen && d.compact ? 0 :
-                   d.compact ? d.compactWidth : container.implicitWidth
+    enum State {
+        Compact,
+        Popup,
+        Expanded
+    }
+
+    implicitWidth: rootWindow.fullScreen && state !== SideBar.Expanded ? 0 :
+                   state === SideBar.Expanded ? container.implicitWidth : compactWidth
     implicitHeight: flickable.contentHeight
 
-    property alias open: d.open
-    property alias compact: d.compact
+    property int state: SideBar.Compact
 
-    readonly property alias compactWidth: d.compactWidth
+    // Constants
+    readonly property real compactWidth: 48
+    readonly property real expandedWidth: 230
 
     onFocusChanged: {
-        if (!focus) {
-            d.open = false;
+        if (!focus && state === SideBar.Popup) {
+            state = SideBar.Compact;
             delayOpenningTimer.stop();
         }
     }
-
     Keys.onPressed: {
-        if (event.key === Qt.Key_Escape) {
-            d.open = false;
+        if (event.key === Qt.Key_Escape && state === SideBar.Popup) {
+            state = SideBar.Compact;
         }
     }
+    Component.onCompleted: {
+        state = sideBarSettings.compact ? SideBar.Compact : SideBar.Expanded;
 
-    resources: QtObject {
-        id: d
-
-        property bool open: false
-        property bool compact: true
-
-        // Constants
-        readonly property real compactWidth: 48
-        readonly property real expandedWidth: 230
+        rootSideBar.stateChanged.connect(() => {
+            sideBarSettings.compact = (state !== SideBar.Expanded);
+        });
     }
 
     Settings {
@@ -46,7 +48,7 @@ FocusScope {
 
         category: 'SideBar'
 
-        property alias compact: d.compact
+        property bool compact: false
 
         // Items settings
         property string windowDivision
@@ -56,13 +58,13 @@ FocusScope {
     Item {
         id: container
 
-        opacity: rootWindow.fullScreen && !d.open && d.compact ? 0 : 1
-        implicitWidth: !d.open && d.compact ? d.compactWidth : d.expandedWidth
+        opacity: rootWindow.fullScreen && rootSideBar.state === SideBar.Compact ? 0 : 1
+        implicitWidth: rootSideBar.state === SideBar.Compact ? compactWidth : expandedWidth
         implicitHeight: rootSideBar.height
         anchors.right: parent.right
 
         Behavior on opacity {
-            enabled: !rootWindow.fullScreen || d.compact && rootSideBar.focus
+            enabled: !rootWindow.fullScreen || rootSideBar.state !== SideBar.Compact
 
             PropertyAnimation {
                 easing.type: Easing.Linear
@@ -95,8 +97,10 @@ FocusScope {
                 interval: 150
 
                 onTriggered: {
-                    d.open = true;
-                    rootSideBar.forceActiveFocus();
+                    if (rootSideBar.state === SideBar.Compact) {
+                        rootSideBar.state = SideBar.Popup
+                        rootSideBar.forceActiveFocus();
+                    }
                 }
             }
 
@@ -217,7 +221,7 @@ FocusScope {
                                         Component.onCompleted: {
                                             fromJSValue(sideBarSettings.windowDivision);
 
-                                            divisionModel.dataChanged.connect(function () {
+                                            divisionModel.dataChanged.connect(() => {
                                                 sideBarSettings.windowDivision = JSON.stringify(toJSValue());
                                             });
                                         }
@@ -561,13 +565,19 @@ FocusScope {
                     id: footer
 
                     icon: 'qrc:/res/icons/menu-collapse.svg'
-                    mirrorIcon: mirrored ^ d.compact
-                    title: d.compact ? qsTr('Expand') : qsTr('Collapse')
+                    mirrorIcon: rootSideBar.state !== SideBar.Expanded ^ mirrored
+                    title: rootSideBar.state !== SideBar.Expanded ? qsTr('Expand') : qsTr('Collapse')
                     width: parent.width
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: layout.verticalMargins
 
-                    onClicked: d.compact = !d.compact
+                    onClicked: {
+                        if (rootSideBar.state !== SideBar.Expanded) {
+                            rootSideBar.state = SideBar.Expanded
+                        } else {
+                            rootSideBar.state = SideBar.Compact
+                        }
+                    }
                 }
             }
         }

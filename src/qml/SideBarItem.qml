@@ -9,46 +9,73 @@ import '../js/utils.js' as CCTV_Viewer
 T.GroupBox {
     id: root
 
+    enum State {
+        Compact,
+        Collapsed,
+        Expanded
+    }
+
     clip: true
     spacing: 6
     padding: contentHeight > 0 ? 12 : 0
-    topPadding: implicitLabelHeight + padding
-    implicitWidth: Math.max(implicitLabelWidth , contentWidth + leftPadding + rightPadding)
-    implicitHeight: d.collapsed ? implicitLabelHeight : Math.max(implicitLabelHeight, contentHeight + topPadding + bottomPadding)
+    topPadding: header.implicitHeight + padding
+    implicitWidth: Math.max(header.implicitWidth, contentWidth + leftPadding + rightPadding)
+    implicitHeight: state !== SideBarItem.Expanded ? header.implicitHeight : Math.max(header.implicitHeight, contentHeight + topPadding + bottomPadding)
 
     property url icon: ''
     property bool mirrorIcon: false
     property color color: 'white'
 
-    property alias collapsed: d.collapsed
+    property int state: SideBarItem.Compact
 
     signal clicked()
+
+    onStateChanged: {
+        if (root.state !== SideBarItem.Compact) {
+            var obj = d.loadItemsState();
+
+            if (!root.objectName.isEmpty()) {
+                obj[root.objectName] = { collapsed: root.state === SideBarItem.Collapsed };
+                sideBarSettings.itemsState = JSON.stringify(obj);
+            }
+
+            if (rootSideBar.state === SideBar.Compact) {
+                rootSideBar.state = SideBar.Popup;
+            }
+        }
+    }
+
+    Behavior on implicitHeight {
+        PropertyAnimation {
+            id: collapseAnimaton
+
+            duration: 150
+            easing.type: Easing.InSine
+        }
+    }
 
     resources: QtObject {
         id: d
 
-        property bool open: rootSideBar.open || !rootSideBar.compact
-        property bool collapsed: true
+        property int rootState: rootSideBar.state
 
-        onOpenChanged: {
-            var obj = loadItemsState();
-
-            if (open) {
-                if (!root.objectName.isEmpty() && obj[root.objectName] && obj[root.objectName].collapsed !== undefined) {
-                    collapsed = obj[root.objectName].collapsed;
-                }
+        onRootStateChanged: {
+            if (rootState === SideBar.Compact) {
+                root.state = SideBarItem.Compact;
             } else {
-                collapsed = true;
+                var obj = d.loadItemsState();
+
+                if (!root.objectName.isEmpty() && obj[root.objectName] && obj[root.objectName].collapsed !== undefined) {
+                    root.state = obj[root.objectName].collapsed ? SideBarItem.Collapsed : SideBarItem.Expanded;
+                } else {
+                    root.state = SideBarItem.Collapsed;
+                }
             }
         }
-        onCollapsedChanged: {
-            var obj = loadItemsState();
 
-            if (open) {
-                if (!root.objectName.isEmpty()) {
-                    obj[root.objectName] = { collapsed: collapsed };
-                    sideBarSettings.itemsState = JSON.stringify(obj);
-                }
+        function setContentChildrenVisible(visible) {
+            for (var key in root.contentChildren) {
+                root.contentChildren[key].visible = visible;
             }
         }
 
@@ -67,42 +94,46 @@ T.GroupBox {
         }
     }
 
-    Behavior on implicitHeight {
-        PropertyAnimation {
-            id: collapseAnimaton
+    background: Rectangle {
+        id: background
 
-            duration: 150
-            easing.type: Easing.InSine
-        }
+        color: Qt.darker(containerBackground.color, 0.6)
+        visible: root.state === SideBarItem.Expanded || collapseAnimaton.running
+        anchors.fill: parent
+
+        onVisibleChanged: d.setContentChildrenVisible(visible)
     }
 
     label: Button {
-        id: control
+        id: header
 
         hoverEnabled: true
-        width: parent.width
+        width: root.width
 
         onClicked: {
             root.clicked();
 
             if (!holdClickTimer.running) {
-                rootSideBar.open = true;
-                d.collapsed = root.contentHeight > 0 ? !d.collapsed : true;
+                if (root.contentHeight > 0) {
+                    if (root.state !== SideBarItem.Expanded) {
+                        root.state = SideBarItem.Expanded;
+                    } else {
+                        root.state = SideBarItem.Collapsed;
+                    }
+                }
                 delayOpenningTimer.stop();
             }
         }
 
-        onHoveredChanged: hovered && d.collapsed ? delayOpenningTimer.start() : delayOpenningTimer.stop()
+        onHoveredChanged: hovered && root.state !== SideBarItem.Expanded ? delayOpenningTimer.start() : delayOpenningTimer.stop()
         Timer {
             id: delayOpenningTimer
 
             interval: 500
 
             onTriggered: {
-                if (root.contentHeight > 0) {
-                    rootSideBar.open = true;
-                    d.collapsed = false;
-
+                if (root.contentHeight > 0 ) {
+                    root.state = SideBarItem.Expanded;
                     holdClickTimer.start();
                 }
             }
@@ -141,7 +172,7 @@ T.GroupBox {
                 }
 
                 function iconMargins() {
-                    return (rootSideBar.compactWidth - icon.width - control.leftPadding - control.rightPadding) / 2;
+                    return (rootSideBar.compactWidth - icon.width - header.leftPadding - header.rightPadding) / 2;
                 }
             }
 
@@ -151,11 +182,11 @@ T.GroupBox {
                 font.pointSize: 12
                 font.weight: Font.Medium
                 verticalAlignment: Text.AlignVCenter
-                opacity: d.open ? 1 : 0
+                opacity: root.state !== SideBarItem.Compact ? 1 : 0
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.leftMargin: control.padding
+                Layout.leftMargin: header.padding
 
                 Behavior on opacity {
                     PropertyAnimation {
@@ -168,7 +199,7 @@ T.GroupBox {
             Item {
                 implicitWidth: iconCollapse.width
                 implicitHeight: iconCollapse.height
-                opacity: d.open && root.contentHeight > 0 ? 1 : 0
+                opacity: root.state !== SideBarItem.Compact && root.contentHeight > 0 ? 1 : 0
 
                 Image {
                     id: iconCollapse
@@ -183,7 +214,7 @@ T.GroupBox {
                     anchors.fill: iconCollapse
 
                     transform: Rotation {
-                        angle: !d.collapsed ? 0 : control.mirrored ? -90 : 90
+                        angle: root.state !== SideBarItem.Collapsed ? 0 : header.mirrored ? -90 : 90
                         origin.x: iconCollapse.width / 2
                         origin.y: iconCollapse.height / 2
                     }
@@ -196,7 +227,7 @@ T.GroupBox {
                 id: headerBackground
 
                 color: '#17a9ca'
-                visible: control.hovered || !d.collapsed || collapseAnimaton.running
+                visible: header.hovered || root.state === SideBarItem.Expanded || collapseAnimaton.running
                 opacity: visible ? 1 : 0
                 anchors.fill: parent
 
@@ -212,8 +243,8 @@ T.GroupBox {
                 id: visualFocus
 
                 color: 'transparent'
-                border.color: control.palette.highlight
-                border.width: control.visualFocus ? 2 : 0
+                border.color: header.palette.highlight
+                border.width: header.visualFocus ? 2 : 0
                 anchors.fill: parent
             }
 
@@ -223,25 +254,9 @@ T.GroupBox {
                 color: root.color
                 width: 4
                 height: root.height
-                visible: control.hovered
+                visible: header.hovered
                 anchors.right: parent.right
             }
-        }
-    }
-
-    background: Rectangle {
-        id: background
-
-        color: Qt.darker(containerBackground.color, 0.6)
-        visible: !d.collapsed || collapseAnimaton.running
-        anchors.fill: parent
-
-        onVisibleChanged: setContentChildrenVisible(visible)
-    }
-
-    function setContentChildrenVisible(visible) {
-        for (var key in contentChildren) {
-            contentChildren[key].visible = visible;
         }
     }
 }
