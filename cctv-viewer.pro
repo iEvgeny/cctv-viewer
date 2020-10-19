@@ -113,9 +113,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: {
     target.path = /usr/bin
     icon.path = /usr/share/pixmaps
-    icon.files += res/icons/$${TARGET}.svg
+    icon.files += images/cctv-viewer.svg
     desktop.path = /usr/share/applications
-    desktop.files += $${TARGET}.desktop
+    desktop.files += cctv-viewer.desktop
 }
 !isEmpty(target.path): INSTALLS += target
 !isEmpty(icon.path): INSTALLS += icon

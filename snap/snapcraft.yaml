@@ -6,7 +6,7 @@ description: |
   video streams. Designed for easy grid-based layout video streaming.
   Based on QtAV and ffmpeg.
 
-icon: res/icons/cctv-viewer.svg
+icon: images/cctv-viewer.svg
 license: GPL-3.0
 
 grade: devel # must be 'stable' to release into candidate/stable channels
