@@ -3,6 +3,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
+import CCTV_Viewer.Themes 1.0
 import CCTV_Viewer.Utils 1.0
 
 FocusScope {
@@ -279,6 +280,11 @@ FocusScope {
 
                                                 onClicked: currentModel().size = str2size(size)
                                                 onPressAndHold: divisionTextField.edit()
+
+                                                ToolTip.delay: Compact.toolTipDelay
+                                                ToolTip.timeout: Compact.toolTipTimeout
+                                                ToolTip.visible: hovered
+                                                ToolTip.text: qsTr('Press and hold to enter edit mode')
                                             }
 
                                             TextField {
@@ -412,7 +418,7 @@ FocusScope {
                             anchors.fill: parent
 
                             ToolTip {
-                                delay: 500
+                                delay: Compact.toolTipDelay
                                 visible: !viewportLayout.enabled && viewportFrame.hovered
                                 text: qsTr('Select viewport!')
                                 anchors.centerIn: parent
@@ -536,6 +542,11 @@ FocusScope {
                                                 deleteMode = !deleteMode;
                                             }
                                         }
+
+                                        ToolTip.delay: Compact.toolTipDelay
+                                        ToolTip.timeout: Compact.toolTipTimeout
+                                        ToolTip.visible: hovered
+                                        ToolTip.text: deleteMode ? qsTr('Press and hold to exit delete mode') : qsTr('Press and hold to enter delete mode')
                                     }
                                 }
 

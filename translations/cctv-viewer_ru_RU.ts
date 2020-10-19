@@ -6,13 +6,13 @@
     <message>
         <location filename="../src/ApplicationWindow.qml" line="13"/>
         <source>CCTV Viewer</source>
-        <translation type="unfinished">CCTV Viewer</translation>
+        <translation>CCTV Viewer</translation>
     </message>
     <message>
         <location filename="../src/ApplicationWindow.qml" line="75"/>
         <location filename="../src/ApplicationWindow.qml" line="127"/>
         <source>Error reading configuration!</source>
-        <translation type="unfinished">Ошибка чтения конфигурации!</translation>
+        <translation>Ошибка чтения конфигурации!</translation>
     </message>
 </context>
 <context>
@@ -91,92 +91,107 @@
 <context>
     <name>SideBar</name>
     <message>
-        <location filename="../src/SideBar.qml" line="181"/>
+        <location filename="../src/SideBar.qml" line="182"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="190"/>
+        <location filename="../src/SideBar.qml" line="191"/>
         <source>Window division</source>
         <translation>Деление окна</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="237"/>
+        <location filename="../src/SideBar.qml" line="238"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="312"/>
+        <location filename="../src/SideBar.qml" line="287"/>
+        <source>Press and hold to enter edit mode</source>
+        <translation>Нажмите и удерживайте, чтобы войти в режим редактирования</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="318"/>
         <source>x</source>
         <translation>х</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="328"/>
+        <location filename="../src/SideBar.qml" line="334"/>
         <source>Geometry</source>
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="365"/>
+        <location filename="../src/SideBar.qml" line="371"/>
         <source>Full Screen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="378"/>
+        <location filename="../src/SideBar.qml" line="384"/>
         <source>Other</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="390"/>
+        <location filename="../src/SideBar.qml" line="396"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="404"/>
+        <location filename="../src/SideBar.qml" line="410"/>
         <source>Viewport%1</source>
         <translation>Вьюпорт%1</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="404"/>
+        <location filename="../src/SideBar.qml" line="410"/>
         <source> #%1</source>
         <translation> №%1</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="430"/>
+        <location filename="../src/SideBar.qml" line="436"/>
         <source>Url</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="417"/>
+        <location filename="../src/SideBar.qml" line="549"/>
+        <source>Press and hold to enter delete mode</source>
+        <translation>Нажмите и удерживайте, чтобы войти в режим удаления</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="423"/>
         <source>Select viewport!</source>
         <translation>Выберите вьюпорт!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="439"/>
+        <location filename="../src/SideBar.qml" line="445"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="459"/>
+        <location filename="../src/SideBar.qml" line="465"/>
         <source>AVFormat options</source>
         <translation>Опции AVFormat</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="501"/>
+        <location filename="../src/SideBar.qml" line="507"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="556"/>
+        <location filename="../src/SideBar.qml" line="549"/>
+        <source>Press and hold to exit delete mode</source>
+        <translation>Нажмите и удерживайте, чтобы выйти из режима удаления</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="567"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="569"/>
+        <location filename="../src/SideBar.qml" line="580"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="569"/>
+        <location filename="../src/SideBar.qml" line="580"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
     </message>
@@ -184,7 +199,7 @@
 <context>
     <name>SideBarItem</name>
     <message>
-        <location filename="../src/SideBarItem.qml" line="89"/>
+        <location filename="../src/SideBarItem.qml" line="90"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
@@ -220,17 +235,6 @@
         <source>M</source>
         <comment>Shortcut</comment>
         <translation>Ь</translation>
-    </message>
-</context>
-<context>
-    <name>main</name>
-    <message>
-        <source>CCTV Viewer</source>
-        <translation type="vanished">CCTV Viewer</translation>
-    </message>
-    <message>
-        <source>Error reading configuration!</source>
-        <translation type="vanished">Ошибка чтения конфигурации!</translation>
     </message>
 </context>
 </TS>

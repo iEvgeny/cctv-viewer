@@ -147,6 +147,18 @@
         <source>Select viewport!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Press and hold to enter delete mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press and hold to enter edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press and hold to exit delete mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBarItem</name>
