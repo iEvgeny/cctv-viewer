@@ -48,7 +48,7 @@ FocusScope {
 
         category: 'SideBar'
 
-        property bool compact: false
+        property bool compact: true
 
         // Items settings
         property string windowDivision
