@@ -3,7 +3,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
-import '../js/utils.js' as CCTV_Viewer
+import CCTV_Viewer.Utils 1.0
 
 FocusScope {
     id: rootSideBar
@@ -133,7 +133,7 @@ FocusScope {
                     SideBarItem {
                         id: header
 
-                        icon: 'qrc:/res/icons/menu.svg'
+                        icon: 'qrc:/images/menu.svg'
                         title: Qt.application.name
 
                         Layout.fillWidth: true
@@ -177,7 +177,7 @@ FocusScope {
 
                     SideBarItem {
                         objectName: 'tools'
-                        icon: 'qrc:/res/icons/menu-tools.svg'
+                        icon: 'qrc:/images/menu-tools.svg'
                         title: qsTr('Tools')
 
                         Layout.fillWidth: true
@@ -234,7 +234,7 @@ FocusScope {
                                                     arr = JSON.parse(model);
                                                 }
                                             } catch(err) {
-                                                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
+                                                Utils.log_error(qsTr('Error reading configuration!'));
                                             }
 
                                             if (arr instanceof Array) {
@@ -400,7 +400,7 @@ FocusScope {
                     }
                     SideBarItem {
                         objectName: 'viewport'
-                        icon: 'qrc:/res/icons/menu-viewport.svg'
+                        icon: 'qrc:/images/menu-viewport.svg'
                         title: qsTr('Viewport%1').arg(currentLayout().focusIndex >= 0 ? qsTr(' #%1').arg(currentLayout().focusIndex + 1) : '')
 
                         Layout.fillWidth: true
@@ -468,7 +468,7 @@ FocusScope {
                                         Layout.fillWidth: true
 
                                         onEditingFinished: {
-                                            var options = CCTV_Viewer.parseOptions(text);
+                                            var options = Utils.parseOptions(text);
                                             var defaultAVFormatOptions = layoutsCollectionSettings.toJSValue('defaultAVFormatOptions');
 
                                             if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
@@ -487,7 +487,7 @@ FocusScope {
 
                                         function getOptionsString(options) {
                                             Object.assignDefault(options, layoutsCollectionSettings.toJSValue('defaultAVFormatOptions'));
-                                            return CCTV_Viewer.stringifyOptions(options);
+                                            return Utils.stringifyOptions(options);
                                         }
 
                                     }
@@ -497,7 +497,7 @@ FocusScope {
                     }
                     SideBarItem {
                         objectName: 'presets'
-                        icon: 'qrc:/res/icons/menu-presets.svg'
+                        icon: 'qrc:/images/menu-presets.svg'
                         title: qsTr('Presets')
 
                         Layout.fillWidth: true
@@ -552,7 +552,7 @@ FocusScope {
                         }
                     }
                     SideBarItem {
-                        icon: 'qrc:/res/icons/menu-settings.svg'
+                        icon: 'qrc:/images/menu-settings.svg'
                         title: qsTr('Settings')
 
                         Layout.fillWidth: true
@@ -564,7 +564,7 @@ FocusScope {
                 SideBarItem {
                     id: footer
 
-                    icon: 'qrc:/res/icons/menu-collapse.svg'
+                    icon: 'qrc:/images/menu-collapse.svg'
                     mirrorIcon: rootSideBar.state !== SideBar.Expanded ^ mirrored
                     title: rootSideBar.state !== SideBar.Expanded ? qsTr('Expand') : qsTr('Collapse')
                     width: parent.width

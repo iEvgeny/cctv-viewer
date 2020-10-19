@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Templates 2.12 as T
 import QtGraphicalEffects 1.12
-import '../js/utils.js' as CCTV_Viewer
+import CCTV_Viewer.Themes 1.0
+import CCTV_Viewer.Utils 1.0
 
 T.Page {
     id: root
@@ -17,7 +18,7 @@ T.Page {
 
     clip: true
     spacing: 0
-    padding: contentHeight > 0 ? 12 : 0
+    padding: contentHeight > 0 ? Compact.contentPadding : 0
     implicitWidth: Math.max(header.implicitWidth, contentWidth + leftPadding + rightPadding)
     implicitHeight: state !== SideBarItem.Expanded ? header.implicitHeight : header.implicitHeight + contentHeight + topPadding + bottomPadding
 
@@ -86,7 +87,7 @@ T.Page {
                     obj = JSON.parse(sideBarSettings.itemsState);
                 }
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr('Error reading configuration!'));
             }
 
             return obj;
@@ -203,7 +204,7 @@ T.Page {
                 Image {
                     id: iconCollapse
 
-                    source: 'qrc:/res/icons/menu-item-collapse.svg'
+                    source: 'qrc:/images/menu-item-collapse.svg'
                     visible: false
                 }
 

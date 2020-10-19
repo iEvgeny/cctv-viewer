@@ -1,0 +1,2 @@
+module Themes
+singleton Compact 1.0 Compact.qml

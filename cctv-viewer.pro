@@ -63,16 +63,16 @@ SOURCES += \
 
 RESOURCES += cctv-viewer.qrc
 
-TRANSLATIONS += $$files(res/translations/*.ts)
+TRANSLATIONS += $$files(translations/*.ts)
 
 OTHER_FILES += \
-    $$files(src/qml/*.qml) \
+    $$files(src/*.qml) \
     3rd/prebuild_ffmpeg.sh
 
-win32:RC_FILE = res/win32.rc
+win32:RC_FILE = win32.rc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = $$PWD/src/imports
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =

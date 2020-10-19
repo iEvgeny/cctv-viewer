@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.3
-import '../js/utils.js' as CCTV_Viewer
+import CCTV_Viewer.Utils 1.0
 
 Dialog {
     title: qsTr('Settings')
@@ -74,6 +74,6 @@ Dialog {
         generalSettings.singleApplication = !singleApplicationCheckBox.checked;
 
         // Default AVFormat options
-        layoutsCollectionSettings.defaultAVFormatOptions = JSON.stringify(CCTV_Viewer.parseOptions(defaultAVFormatOptions.text));
+        layoutsCollectionSettings.defaultAVFormatOptions = JSON.stringify(Utils.parseOptions(defaultAVFormatOptions.text));
     }
 }

@@ -2,8 +2,8 @@ import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtMultimedia 5.12
+import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
-import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
     id: root
@@ -366,12 +366,12 @@ FocusScope {
                         property int bottomIndex: spanningIndex(viewport.column + viewport.cursorColumnOffset,
                                                                 Number(viewport.row + viewport.rowSpan).clamp(0, root.size.height - 1))
 
-                        property int rightIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
+                        property int rightIndex: spanningIndex(Utils.ifLeftToRight(
                                                                Number(viewport.column + viewport.columnSpan).clamp(0, root.size.width - 1),
                                                                Number(viewport.column - 1).clamp(0, root.size.width - 1)),
                                                                viewport.row + viewport.cursorRowOffset)
 
-                        property int leftIndex: spanningIndex(CCTV_Viewer.ifLeftToRight(
+                        property int leftIndex: spanningIndex(Utils.ifLeftToRight(
                                                               Number(viewport.column - 1).clamp(0, root.size.width - 1),
                                                               Number(viewport.column + viewport.columnSpan).clamp(0, root.size.width - 1)),
                                                               viewport.row + viewport.cursorRowOffset)

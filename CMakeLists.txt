@@ -67,7 +67,7 @@ find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} Lingu
 
 add_subdirectory(src/qmlav)
 
-file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/res/translations/*.ts")
+file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     qt5_add_resources(RESOURCES cctv-viewer.qrc)
@@ -85,6 +85,8 @@ set(PROJ_FILES
     ${QMLAV_FILES}
     ${TS_FILES}
     )
+
+set(QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/imports" CACHE STRING "Additional import path used to resolve QML modules in Qt Creator's code model")
 
 if (ANDROID)
     add_library(cctv-viewer SHARED ${PROJ_FILES})
@@ -104,7 +106,7 @@ endforeach()
 target_link_libraries(cctv-viewer PRIVATE ${FFMPEG_LINK_DEPENDENCIES})
 
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)
-set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/res/translations")
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/translations")
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 
 if (UNIX AND NOT ANDROID)

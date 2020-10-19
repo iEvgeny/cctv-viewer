@@ -6,9 +6,8 @@ import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
 import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
-import '../js/utils.js' as CCTV_Viewer
 
-ApplicationWindow {
+Window {
     id: rootWindow
 
     title: qsTr('CCTV Viewer')
@@ -73,7 +72,7 @@ ApplicationWindow {
             try {
                 obj = JSON.parse(layoutsCollectionSettings[String(key)]);
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr('Error reading configuration!'));
             }
 
             return obj;
@@ -125,7 +124,7 @@ ApplicationWindow {
                     fromJSValue(JSON.parse(models));
                 }
             } catch(err) {
-                CCTV_Viewer.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr('Error reading configuration!'));
             }
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;

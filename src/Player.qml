@@ -1,7 +1,7 @@
+import QtQml 2.12
 import QtQuick 2.12
 import QtMultimedia 5.12
 import CCTV_Viewer.Multimedia 1.0
-import '../js/utils.js' as CCTV_Viewer
 
 FocusScope {
     id: root
