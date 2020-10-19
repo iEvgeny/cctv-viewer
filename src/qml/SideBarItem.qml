@@ -6,7 +6,7 @@ import QtQuick.Templates 2.12 as T
 import QtGraphicalEffects 1.12
 import '../js/utils.js' as CCTV_Viewer
 
-T.GroupBox {
+T.Page {
     id: root
 
     enum State {
@@ -16,11 +16,10 @@ T.GroupBox {
     }
 
     clip: true
-    spacing: 6
+    spacing: 0
     padding: contentHeight > 0 ? 12 : 0
-    topPadding: header.implicitHeight + padding
     implicitWidth: Math.max(header.implicitWidth, contentWidth + leftPadding + rightPadding)
-    implicitHeight: state !== SideBarItem.Expanded ? header.implicitHeight : Math.max(header.implicitHeight, contentHeight + topPadding + bottomPadding)
+    implicitHeight: state !== SideBarItem.Expanded ? header.implicitHeight : header.implicitHeight + contentHeight + topPadding + bottomPadding
 
     property url icon: ''
     property bool mirrorIcon: false
@@ -104,7 +103,7 @@ T.GroupBox {
         onVisibleChanged: d.setContentChildrenVisible(visible)
     }
 
-    label: Button {
+    header: Button {
         id: header
 
         hoverEnabled: true
