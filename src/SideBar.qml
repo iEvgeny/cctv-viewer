@@ -47,7 +47,7 @@ FocusScope {
     Settings {
         id: sideBarSettings
 
-        category: 'SideBar'
+        category: "SideBar"
 
         property bool compact: true
 
@@ -134,7 +134,7 @@ FocusScope {
                     SideBarItem {
                         id: header
 
-                        icon: 'qrc:/images/menu.svg'
+                        icon: "qrc:/images/menu.svg"
                         title: Qt.application.name
 
                         Layout.fillWidth: true
@@ -143,8 +143,8 @@ FocusScope {
                             anchors.fill: parent
 
                             Text {
-                                text: String('&gt;&gt; <a href="https://github.com/iEvgeny/cctv-viewer" style="color: white;">Version %2</a> &lt;&lt;').arg(Qt.application.version)
-                                color: 'white'
+                                text: String("&gt;&gt; <a href=\"https://github.com/iEvgeny/cctv-viewer\" style=\"color: white;\">Version %2</a> &lt;&lt;").arg(Qt.application.version)
+                                color: "white"
                                 font.pointSize: rootWindow.font.pointSize * 1.05
                                 textFormat: Text.RichText
                                 horizontalAlignment: Text.AlignHCenter
@@ -177,9 +177,9 @@ FocusScope {
                     }
 
                     SideBarItem {
-                        objectName: 'tools'
-                        icon: 'qrc:/images/menu-tools.svg'
-                        title: qsTr('Tools')
+                        objectName: "tools"
+                        icon: "qrc:/images/menu-tools.svg"
+                        title: qsTr("Tools")
 
                         Layout.fillWidth: true
 
@@ -187,8 +187,8 @@ FocusScope {
                             anchors.fill: parent
 
                             GroupBox {
-                                title: qsTr('Window division')
-                                palette.windowText: 'white'
+                                title: qsTr("Window division")
+                                palette.windowText: "white"
 
                                 // Disable controls when one of the viewports is in full-screen mode.
                                 enabled: !(currentLayout().fullScreenIndex >= 0)
@@ -203,16 +203,16 @@ FocusScope {
                                         id: divisionModel
 
                                         ListElement {
-                                            size: '1x1'
+                                            size: "1x1"
                                         }
                                         ListElement {
-                                            size: '2x2'
+                                            size: "2x2"
                                         }
                                         ListElement {
-                                            size: '3x3'
+                                            size: "3x3"
                                         }
                                         ListElement {
-                                            size: '4x4'
+                                            size: "4x4"
                                         }
 
                                         Component.onCompleted: {
@@ -231,7 +231,7 @@ FocusScope {
                                                     arr = JSON.parse(model);
                                                 }
                                             } catch(err) {
-                                                Utils.log_error(qsTr('Error reading configuration!'));
+                                                Utils.log_error(qsTr("Error reading configuration!"));
                                             }
 
                                             if (arr instanceof Array) {
@@ -280,7 +280,7 @@ FocusScope {
                                                 ToolTip.delay: Compact.toolTipDelay
                                                 ToolTip.timeout: Compact.toolTipTimeout
                                                 ToolTip.visible: hovered
-                                                ToolTip.text: qsTr('Press and hold to enter edit mode')
+                                                ToolTip.text: qsTr("Press and hold to enter edit mode")
                                             }
 
                                             TextField {
@@ -311,10 +311,10 @@ FocusScope {
                                             }
 
                                             function str2size(str) {
-                                                var separatorTr = qsTr('x');
-                                                var regexp = new RegExp('^[1-9][x%1][1-9]$'.arg(separatorTr));
+                                                var separatorTr = qsTr("x");
+                                                var regexp = new RegExp("^[1-9][x%1][1-9]$".arg(separatorTr));
                                                 if (regexp.test(str)) {
-                                                    var size = str.split(new RegExp('[x%1]'.arg(separatorTr)));
+                                                    var size = str.split(new RegExp("[x%1]".arg(separatorTr)));
                                                     return Qt.size(size[0], size[1]);
                                                 }
 
@@ -326,8 +326,8 @@ FocusScope {
                             }
 
                             GroupBox {
-                                title: qsTr('Geometry')
-                                palette.windowText: 'white'
+                                title: qsTr("Geometry")
+                                palette.windowText: "white"
 
                                 Layout.fillWidth: true
 
@@ -338,7 +338,7 @@ FocusScope {
                                     anchors.fill: parent
 
                                     Button {
-                                        text: '16:9'
+                                        text: "16:9"
                                         highlighted: currentModel().aspectRatio === Qt.size(16, 9)
 
                                         Layout.fillWidth: true
@@ -349,7 +349,7 @@ FocusScope {
                                         }
                                     }
                                     Button {
-                                        text: '4:3'
+                                        text: "4:3"
                                         highlighted: currentModel().aspectRatio === Qt.size(4, 3)
 
                                         Layout.fillWidth: true
@@ -360,7 +360,7 @@ FocusScope {
                                         }
                                     }
                                     Button {
-                                        text: qsTr('Full Screen')
+                                        text: qsTr("Full Screen")
                                         highlighted: rootWindow.fullScreen
 
                                         Layout.columnSpan: 2
@@ -372,8 +372,8 @@ FocusScope {
                             }
 
                             GroupBox {
-                                title: qsTr('Other')
-                                palette.windowText: 'white'
+                                title: qsTr("Other")
+                                palette.windowText: "white"
 
                                 Layout.fillWidth: true
 
@@ -381,7 +381,7 @@ FocusScope {
                                     anchors.fill: parent
 
                                     Button {
-                                        text: qsTr('Merging cells')
+                                        text: qsTr("Merging cells")
                                         enabled: currentLayout().mergeCells(true)
 
                                         Layout.fillWidth: true
@@ -393,9 +393,9 @@ FocusScope {
                         }
                     }
                     SideBarItem {
-                        objectName: 'viewport'
-                        icon: 'qrc:/images/menu-viewport.svg'
-                        title: qsTr('Viewport%1').arg(currentLayout().focusIndex >= 0 ? qsTr(' #%1').arg(currentLayout().focusIndex + 1) : '')
+                        objectName: "viewport"
+                        icon: "qrc:/images/menu-viewport.svg"
+                        title: qsTr("Viewport%1").arg(currentLayout().focusIndex >= 0 ? qsTr(" #%1").arg(currentLayout().focusIndex + 1) : "")
 
                         Layout.fillWidth: true
 
@@ -408,7 +408,7 @@ FocusScope {
                             ToolTip {
                                 delay: Compact.toolTipDelay
                                 visible: !viewportLayout.enabled && viewportFrame.hovered
-                                text: qsTr('Select viewport!')
+                                text: qsTr("Select viewport!")
                                 anchors.centerIn: parent
                             }
 
@@ -420,8 +420,8 @@ FocusScope {
                                 anchors.fill: parent
 
                                 TextField {
-                                    text: enabled ? currentModel().get(currentLayout().focusIndex).url : ''
-                                    placeholderText: qsTr('Url')
+                                    text: enabled ? currentModel().get(currentLayout().focusIndex).url : ""
+                                    placeholderText: qsTr("Url")
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
@@ -430,7 +430,7 @@ FocusScope {
                                 }
 
                                 Button {
-                                    text: qsTr('Mute')
+                                    text: qsTr("Mute")
                                     enabled: currentLayout().focusIndex >= 0 ? currentLayout().get(currentLayout().focusIndex).hasAudio : false
                                     highlighted: currentLayout().focusIndex >= 0 && currentModel().get(currentLayout().focusIndex).volume <= 0
 
@@ -450,20 +450,20 @@ FocusScope {
                                     Layout.fillWidth: true
 
                                     Text {
-                                        text: qsTr('AVFormat options')
-                                        color: 'white'
+                                        text: qsTr("AVFormat options")
+                                        color: "white"
                                         font.pointSize: rootWindow.font.pointSize * 1.05
                                     }
 
                                     TextField {
-                                        text: enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ''
+                                        text: enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ""
                                         selectByMouse: true
 
                                         Layout.fillWidth: true
 
                                         onEditingFinished: {
                                             var options = Utils.parseOptions(text);
-                                            var defaultAVFormatOptions = layoutsCollectionSettings.toJSValue('defaultAVFormatOptions');
+                                            var defaultAVFormatOptions = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
 
                                             if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
                                                 for (var key in options) {
@@ -480,7 +480,7 @@ FocusScope {
                                         }
 
                                         function getOptionsString(options) {
-                                            Object.assignDefault(options, layoutsCollectionSettings.toJSValue('defaultAVFormatOptions'));
+                                            Object.assignDefault(options, layoutsCollectionSettings.toJSValue("defaultAVFormatOptions"));
                                             return Utils.stringifyOptions(options);
                                         }
 
@@ -490,9 +490,9 @@ FocusScope {
                         }
                     }
                     SideBarItem {
-                        objectName: 'presets'
-                        icon: 'qrc:/images/menu-presets.svg'
-                        title: qsTr('Presets')
+                        objectName: "presets"
+                        icon: "qrc:/images/menu-presets.svg"
+                        title: qsTr("Presets")
 
                         Layout.fillWidth: true
 
@@ -508,7 +508,7 @@ FocusScope {
                                 Repeater {
                                     model: layoutsCollectionModel.count
                                     delegate: Button {
-                                        text: deleteMode ? '➖' : index + 1
+                                        text: deleteMode ? "➖" : index + 1
                                         highlighted: stackLayout.currentIndex === index
 
                                         property bool deleteMode: false
@@ -534,14 +534,14 @@ FocusScope {
                                         ToolTip.delay: Compact.toolTipDelay
                                         ToolTip.timeout: Compact.toolTipTimeout
                                         ToolTip.visible: hovered
-                                        ToolTip.text: deleteMode ? qsTr('Press and hold to exit delete mode') : qsTr('Press and hold to enter delete mode')
+                                        ToolTip.text: deleteMode ? qsTr("Press and hold to exit delete mode") : qsTr("Press and hold to enter delete mode")
                                     }
                                 }
 
                                 Button {
                                     id: addButton
 
-                                    text: '➕'
+                                    text: "➕"
 
                                     Layout.fillWidth: true
 
@@ -551,8 +551,8 @@ FocusScope {
                         }
                     }
                     SideBarItem {
-                        icon: 'qrc:/images/menu-settings.svg'
-                        title: qsTr('Settings')
+                        icon: "qrc:/images/menu-settings.svg"
+                        title: qsTr("Settings")
 
                         Layout.fillWidth: true
 
@@ -563,9 +563,9 @@ FocusScope {
                 SideBarItem {
                     id: footer
 
-                    icon: 'qrc:/images/menu-collapse.svg'
+                    icon: "qrc:/images/menu-collapse.svg"
                     mirrorIcon: rootSideBar.state !== SideBar.Expanded ^ mirrored
-                    title: rootSideBar.state !== SideBar.Expanded ? qsTr('Expand') : qsTr('Collapse')
+                    title: rootSideBar.state !== SideBar.Expanded ? qsTr("Expand") : qsTr("Collapse")
                     width: parent.width
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: layout.verticalMargins

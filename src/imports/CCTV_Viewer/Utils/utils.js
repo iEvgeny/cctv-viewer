@@ -15,11 +15,11 @@ function parseOptions(str) {
 }
 
 function stringifyOptions(obj) {
-    var str = '';
+    var str = "";
 
     for (var key in obj) {
-        if (typeof obj[key] === 'string' || typeof obj[key] === 'number') {
-            str += '-%1 %2 '.arg(key).arg(obj[key]);
+        if (typeof obj[key] === "string" || typeof obj[key] === "number") {
+            str += "-%1 %2 ".arg(key).arg(obj[key]);
         }
     }
 
@@ -44,13 +44,13 @@ function ifRightToLeft(rightToLeft, leftToRight) {
 
 // Objects
 // NOTE: Shallow, not recursive "cloning"!
-Object.defineProperty(Object, 'assignDefault', {
+Object.defineProperty(Object, "assignDefault", {
                           enumerable: false,
                           configurable: true,
                           writable: true,
                           value: function(target) {
                               if (!(target instanceof Object)) {
-                                  throw new TypeError('Cannot convert first argument to object');
+                                  throw new TypeError("Cannot convert first argument to object");
                               }
 
                               for (var i = 1; i < arguments.length; ++i) {
@@ -77,10 +77,10 @@ String.prototype.isEmpty = function() {
 };
 
 String.prototype.leadingChars = function(fieldWidth, fillChar) {
-    var chars = '';
+    var chars = "";
 
     if (fillChar === undefined) {
-        fillChar = ' ';
+        fillChar = " ";
     }
 
     for (var i = 0; i < fieldWidth - this.length; ++i) {
@@ -114,5 +114,5 @@ function log_info(message) {
 }
 
 function log_error(message) {
-    console.log('ERROR: ' + message);
+    console.log("ERROR: " + message);
 }

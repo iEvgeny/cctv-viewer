@@ -22,9 +22,9 @@ T.Page {
     implicitWidth: Math.max(header.implicitWidth, contentWidth + leftPadding + rightPadding)
     implicitHeight: state !== SideBarItem.Expanded ? header.implicitHeight : header.implicitHeight + contentHeight + topPadding + bottomPadding
 
-    property url icon: ''
+    property url icon: ""
     property bool mirrorIcon: false
-    property color color: 'white'
+    property color color: "white"
 
     property int state: SideBarItem.Compact
 
@@ -87,7 +87,7 @@ T.Page {
                     obj = JSON.parse(sideBarSettings.itemsState);
                 }
             } catch(err) {
-                Utils.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr("Error reading configuration!"));
             }
 
             return obj;
@@ -193,7 +193,7 @@ T.Page {
                 Image {
                     id: iconCollapse
 
-                    source: 'qrc:/images/menu-item-collapse.svg'
+                    source: "qrc:/images/menu-item-collapse.svg"
                     visible: false
                 }
 
@@ -215,7 +215,7 @@ T.Page {
             Rectangle {
                 id: headerBackground
 
-                color: '#17a9ca'
+                color: "#17a9ca"
                 visible: header.hovered || root.state === SideBarItem.Expanded || collapseAnimaton.running
                 opacity: visible ? 1 : 0
                 anchors.fill: parent
@@ -231,7 +231,7 @@ T.Page {
             Rectangle {
                 id: visualFocus
 
-                color: 'transparent'
+                color: "transparent"
                 border.color: header.palette.highlight
                 border.width: header.visualFocus ? 2 : 0
                 anchors.fill: parent

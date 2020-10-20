@@ -10,7 +10,7 @@ import CCTV_Viewer.Models 1.0
 ApplicationWindow {
     id: rootWindow
 
-    title: qsTr('CCTV Viewer')
+    title: qsTr("CCTV Viewer")
 
     visible: true
     visibility: rootWindow.fullScreen ? Window.FullScreen : Window.Windowed
@@ -25,14 +25,14 @@ ApplicationWindow {
 
     Binding {
         target: rootWindowSettings
-        property: 'width'
+        property: "width"
         value: rootWindow.width
         when: !rootWindow.fullScreen
     }
 
     Binding {
         target: rootWindowSettings
-        property: 'height'
+        property: "height"
         value: rootWindow.height
         when: !rootWindow.fullScreen
     }
@@ -47,7 +47,7 @@ ApplicationWindow {
     Settings {
         id: rootWindowSettings
 
-        category: 'RootWindow'
+        category: "RootWindow"
         property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
         property alias fullScreen: rootWindow.fullScreen
@@ -56,14 +56,14 @@ ApplicationWindow {
     Settings {
         id: layoutsCollectionSettings
 
-        category: 'ViewportsLayoutsCollection'
+        category: "ViewportsLayoutsCollection"
 
         property int currentIndex
         property string models
         property string collection  // DEPRECATED: Old property
         property string defaultAVFormatOptions: JSON.stringify({
-            'analyzeduration': 0, // 0 µs
-            'probesize': 500000 // 500 KB
+            "analyzeduration": 0, // 0 µs
+            "probesize": 500000 // 500 KB
         })
 
         function toJSValue(key) {
@@ -72,7 +72,7 @@ ApplicationWindow {
             try {
                 obj = JSON.parse(layoutsCollectionSettings[String(key)]);
             } catch(err) {
-                Utils.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr("Error reading configuration!"));
             }
 
             return obj;
@@ -105,13 +105,13 @@ ApplicationWindow {
         onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
         Component.onCompleted: {
             // Demo stream
-            get(0).get(0).url = 'rtmp://live.a71.ru/demo/0';
+            get(0).get(0).url = "rtmp://live.a71.ru/demo/0";
 
             layoutsCollectionModel.changed.connect(function () {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
             });
 
-            var models = '';
+            var models = "";
             if (!layoutsCollectionSettings.models.isEmpty()) {
                 models = layoutsCollectionSettings.models;
             } else {
@@ -124,7 +124,7 @@ ApplicationWindow {
                     fromJSValue(JSON.parse(models));
                 }
             } catch(err) {
-                Utils.log_error(qsTr('Error reading configuration!'));
+                Utils.log_error(qsTr("Error reading configuration!"));
             }
 
             stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
@@ -137,7 +137,7 @@ ApplicationWindow {
         anchors.right: sideBar.left
 
         Rectangle {
-            color: 'black'
+            color: "black"
             anchors.fill: parent
         }
 

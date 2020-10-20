@@ -6,7 +6,7 @@ import CCTV_Viewer.Multimedia 1.0
 FocusScope {
     id: root
 
-    property string color: 'black'
+    property string color: "black"
     property var avFormatOptions: ({})
 
     property alias loops: qmlAvPlayer.loops
@@ -67,7 +67,7 @@ FocusScope {
         Text {
             id: message
 
-            color: 'white'
+            color: "white"
             visible: qmlAvPlayer.status !== MediaPlayer.Buffered
             anchors.centerIn: parent
         }
@@ -80,7 +80,7 @@ FocusScope {
             avFormatOptions: {
                 var avFormatOptions = root.avFormatOptions;
 
-                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.toJSValue('defaultAVFormatOptions'));
+                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.toJSValue("defaultAVFormatOptions"));
 
                 return avFormatOptions;
             }
@@ -88,26 +88,26 @@ FocusScope {
             onStatusChanged: {
                 switch (status) {
                 case MediaPlayer.NoMedia:
-                    message.text = qsTr('No media!');
+                    message.text = qsTr("No media!");
                     break;
                 case MediaPlayer.Loading:
-                    message.text = qsTr('Loading...');
+                    message.text = qsTr("Loading...");
                     break;
                 case MediaPlayer.Loaded:
-                    message.text = qsTr('Loaded');
+                    message.text = qsTr("Loaded");
                     break;
                 case MediaPlayer.Buffering:
                     break;
                 case MediaPlayer.Stalled:
-                    message.text = qsTr('Stalled');
+                    message.text = qsTr("Stalled");
                     break;
                 case MediaPlayer.Buffered:
                     break;
                 case MediaPlayer.EndOfMedia:
-                    message.text = qsTr('End of media');
+                    message.text = qsTr("End of media");
                     break;
                 case MediaPlayer.InvalidMedia:
-                    message.text = qsTr('Invalid media!');
+                    message.text = qsTr("Invalid media!");
                     break;
                 case MediaPlayer.UnknownStatus:
                     break;
@@ -115,7 +115,7 @@ FocusScope {
             }
 
             onBufferProgressChanged: {
-                message.text = qsTr('Buffering %1\%').arg(Math.round(bufferProgress * 100));
+                message.text = qsTr("Buffering %1\%").arg(Math.round(bufferProgress * 100));
             }
         }
     }

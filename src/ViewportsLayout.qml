@@ -10,7 +10,7 @@ FocusScope {
 
     property var size: model.size
     property var model: ViewportsLayoutModel {}
-    property string color: 'black'
+    property string color: "black"
 
     readonly property alias fullScreenIndex: d.fullScreenIndex
     readonly property alias focusIndex: d.focusIndex
@@ -199,7 +199,7 @@ FocusScope {
 
                     states: [
                         State {
-                            name: 'fullScreen'
+                            name: "fullScreen"
                             when: viewport.fullScreen
 
                             PropertyChanges {
@@ -222,7 +222,7 @@ FocusScope {
                         Transition {
                             ParallelAnimation {
                                 PropertyAnimation {
-                                    properties: 'x, y, z, width, height'
+                                    properties: "x, y, z, width, height"
                                     easing.type: Easing.Linear
                                     duration: 250
                                 }
@@ -231,13 +231,13 @@ FocusScope {
                     ]
 
                     onVisibleChanged: fullScreen = false
-                    onFullScreenChanged: d2.setCurrentIndex('fullScreenIndex', fullScreen)
+                    onFullScreenChanged: d2.setCurrentIndex("fullScreenIndex", fullScreen)
                     onFocusChanged: {
-                        d2.setCurrentIndex('focusIndex', focus);
-                        d2.setCurrentIndex('pressAndHoldIndex', false);
+                        d2.setCurrentIndex("focusIndex", focus);
+                        d2.setCurrentIndex("pressAndHoldIndex", false);
                         fullScreen = false;
                     }
-                    onActiveFocusChanged: d2.setCurrentIndex('activeFocusIndex', activeFocus)
+                    onActiveFocusChanged: d2.setCurrentIndex("activeFocusIndex", activeFocus)
                     onSelectedChanged: {
                         if (!selected) {
                             cursorColumnOffset = 0;
@@ -246,14 +246,14 @@ FocusScope {
                     }
 
                     Keys.onPressed: {
-                        var fullScreenKey = QT_TR_NOOP('F', 'Shortcut');
+                        var fullScreenKey = QT_TR_NOOP("F", "Shortcut");
                         if (event.text.toUpperCase() === fullScreenKey ||
                             event.text.toUpperCase() === qsTr(fullScreenKey)) {
                             fullScreen = (root.size.width > 1 && root.size.height > 1) ? !fullScreen : false;
                             d.selectionReset();
                         }
 
-                        var muteKey = QT_TR_NOOP('M', 'Shortcut');
+                        var muteKey = QT_TR_NOOP("M", "Shortcut");
                         if (event.text.toUpperCase() === muteKey ||
                             event.text.toUpperCase() === qsTr(muteKey)) {
                             if (viewport.hasAudio) {
@@ -421,12 +421,12 @@ FocusScope {
                     Rectangle {
                         id: selectionRect
 
-                        color: 'transparent'
+                        color: "transparent"
                         anchors.fill: parent
 
                         states: [
                             State {
-                                name: 'multiselect'
+                                name: "multiselect"
                                 when: root.multiselect && viewport.selected
 
                                 PropertyChanges {
@@ -440,19 +440,19 @@ FocusScope {
                     Rectangle {
                         id: selectionFrame
 
-                        color: 'transparent'
-                        border.color: 'transparent'
+                        color: "transparent"
+                        border.color: "transparent"
                         anchors.fill: parent
 
                         states: [
                             State {
-                                name: 'active'
+                                name: "active"
                                 when: viewport.activeFocus
 
                                 PropertyChanges {
                                     target: selectionFrame
                                     border.width: 1
-                                    border.color: '#00dd00'
+                                    border.color: "#00dd00"
                                 }
                             }
                         ]
@@ -469,7 +469,7 @@ FocusScope {
                                 d.selectionReset();
                             }
                         }
-                        onPressAndHold: d2.setCurrentIndex('pressAndHoldIndex', true)
+                        onPressAndHold: d2.setCurrentIndex("pressAndHoldIndex", true)
                         onDoubleClicked: {
                             viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
                             d.selectionReset();
