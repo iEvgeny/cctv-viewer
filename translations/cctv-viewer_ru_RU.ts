@@ -108,7 +108,8 @@
     <message>
         <location filename="../src/SideBar.qml" line="287"/>
         <source>Press and hold to enter edit mode</source>
-        <translation>Нажмите и удерживайте, чтобы войти в режим редактирования</translation>
+        <translation>Нажмите и удерживайте,
+чтобы войти в режим редактирования</translation>
     </message>
     <message>
         <location filename="../src/SideBar.qml" line="318"/>
@@ -153,7 +154,8 @@
     <message>
         <location filename="../src/SideBar.qml" line="549"/>
         <source>Press and hold to enter delete mode</source>
-        <translation>Нажмите и удерживайте, чтобы войти в режим удаления</translation>
+        <translation>Нажмите и удерживайте,
+чтобы войти в режим удаления</translation>
     </message>
     <message>
         <location filename="../src/SideBar.qml" line="423"/>
@@ -178,7 +180,8 @@
     <message>
         <location filename="../src/SideBar.qml" line="549"/>
         <source>Press and hold to exit delete mode</source>
-        <translation>Нажмите и удерживайте, чтобы выйти из режима удаления</translation>
+        <translation>Нажмите и удерживайте,
+чтобы выйти из режима удаления</translation>
     </message>
     <message>
         <location filename="../src/SideBar.qml" line="567"/>

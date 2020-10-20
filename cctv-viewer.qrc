@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
         <file>translations/cctv-viewer_ru_RU.qm</file>
-        <file>src/ApplicationWindow.qml</file>
+        <file>src/RootWindow.qml</file>
         <file>src/SingleApplicationDialog.qml</file>
         <file>src/SettingsDialog.qml</file>
         <file>src/Player.qml</file>
@@ -27,5 +27,6 @@
         <file alias="Compact/GroupBox.qml">src/imports/CCTV_Viewer/Themes/Compact/GroupBox.qml</file>
         <file alias="Compact/TextField.qml">src/imports/CCTV_Viewer/Themes/Compact/TextField.qml</file>
         <file alias="Compact/CheckBox.qml">src/imports/CCTV_Viewer/Themes/Compact/CheckBox.qml</file>
+        <file alias="Compact/ToolTip.qml">src/imports/CCTV_Viewer/Themes/Compact/ToolTip.qml</file>
     </qresource>
 </RCC>

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     app.setWindowIcon(QIcon(QLatin1String(":/images/cctv-viewer.svg")));
 
     engine.addImportPath(":/src/imports");
-    const QUrl url(QStringLiteral("qrc:/src/ApplicationWindow.qml"));
+    const QUrl url(QStringLiteral("qrc:/src/RootWindow.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
             QCoreApplication::exit(-1);

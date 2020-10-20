@@ -40,39 +40,35 @@ import QtQuick.Controls.impl 2.12
 import QtQuick.Templates 2.12 as T
 import CCTV_Viewer.Themes 1.0
 
-T.GroupBox {
+T.ToolTip {
     id: control
 
+    x: parent ? (parent.width - implicitWidth) / 2 : 0
+    y: -implicitHeight - 3
+
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentWidth + leftPadding + rightPadding,
-                            implicitLabelWidth + leftPadding + rightPadding)
+                            text.contentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             contentHeight + topPadding + bottomPadding)
+                             text.contentHeight + topPadding + bottomPadding)
 
-    spacing: Compact.spacing
-    padding: Compact.contentPadding
-    topPadding: padding + (implicitLabelWidth > 0 ? implicitLabelHeight + spacing : 0)
+    margins: 6
+    padding: 6
 
-    label: Text {
-        topPadding: 1
-        bottomPadding: -Math.min(topPadding, control.spacing)
-        x: Compact.radius
-        width: control.width - Compact.radius * 2
+    closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 
-        text: control.title
-        font.pointSize: control.font.pointSize * 1.05
-        color: control.palette.windowText
-        elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
+    contentItem: Text {
+        id: text
+
+        text: control.text
+        font: control.font
+        horizontalAlignment: Text.AlignHCenter
+        wrapMode: Text.Wrap
+        color: control.palette.toolTipText
     }
 
     background: Rectangle {
         radius: Compact.radius
-        y: control.topPadding - control.bottomPadding
-        width: parent.width
-        height: parent.height - control.topPadding + control.bottomPadding
-
-        color: "transparent"
-        border.color: control.palette.mid
+        border.color: control.palette.dark
+        color: control.palette.toolTipBase
     }
 }

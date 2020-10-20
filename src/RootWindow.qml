@@ -7,7 +7,7 @@ import Qt.labs.settings 1.0
 import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
 
-Window {
+ApplicationWindow {
     id: rootWindow
 
     title: qsTr('CCTV Viewer')

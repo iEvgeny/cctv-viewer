@@ -108,7 +108,7 @@ FocusScope {
             Rectangle {
                 id: containerBackground
 
-                color: '#343434'
+                color: rootWindow.palette.dark
                 width: container.width
                 height: container.height
             }
@@ -145,7 +145,7 @@ FocusScope {
                             Text {
                                 text: String('&gt;&gt; <a href="https://github.com/iEvgeny/cctv-viewer" style="color: white;">Version %2</a> &lt;&lt;').arg(Qt.application.version)
                                 color: 'white'
-                                font.pixelSize: 14
+                                font.pointSize: rootWindow.font.pointSize * 1.05
                                 textFormat: Text.RichText
                                 horizontalAlignment: Text.AlignHCenter
                                 width: parent.width
@@ -187,12 +187,8 @@ FocusScope {
                             anchors.fill: parent
 
                             GroupBox {
-                                label: Text {
-                                    text: qsTr('Window division')
-                                    color: 'white'
-                                    font.pixelSize: 14
-                                    anchors.left: parent.left
-                                }
+                                title: qsTr('Window division')
+                                palette.windowText: 'white'
 
                                 // Disable controls when one of the viewports is in full-screen mode.
                                 enabled: !(currentLayout().fullScreenIndex >= 0)
@@ -330,12 +326,8 @@ FocusScope {
                             }
 
                             GroupBox {
-                                label: Text {
-                                    text: qsTr('Geometry')
-                                    color: 'white'
-                                    font.pixelSize: 14
-                                    anchors.left: parent.left
-                                }
+                                title: qsTr('Geometry')
+                                palette.windowText: 'white'
 
                                 Layout.fillWidth: true
 
@@ -380,12 +372,8 @@ FocusScope {
                             }
 
                             GroupBox {
-                                label: Text {
-                                    text: qsTr('Other')
-                                    color: 'white'
-                                    font.pixelSize: 14
-                                    anchors.left: parent.left
-                                }
+                                title: qsTr('Other')
+                                palette.windowText: 'white'
 
                                 Layout.fillWidth: true
 
@@ -464,7 +452,7 @@ FocusScope {
                                     Text {
                                         text: qsTr('AVFormat options')
                                         color: 'white'
-                                        font.pixelSize: 14
+                                        font.pointSize: rootWindow.font.pointSize * 1.05
                                     }
 
                                     TextField {

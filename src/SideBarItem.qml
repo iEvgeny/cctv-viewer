@@ -54,7 +54,7 @@ T.Page {
         }
     }
 
-    resources: QtObject {
+    QtObject {
         id: d
 
         property int rootState: rootSideBar.state
@@ -92,16 +92,6 @@ T.Page {
 
             return obj;
         }
-    }
-
-    background: Rectangle {
-        id: background
-
-        color: Qt.darker(containerBackground.color, 0.6)
-        visible: root.state === SideBarItem.Expanded || collapseAnimaton.running
-        anchors.fill: parent
-
-        onVisibleChanged: d.setContentChildrenVisible(visible)
     }
 
     header: Button {
@@ -179,8 +169,7 @@ T.Page {
             Text {
                 text: root.title
                 color: root.color
-                font.pointSize: 12
-                font.weight: Font.Medium
+                font.pointSize: rootWindow.font.pointSize * 1.2
                 verticalAlignment: Text.AlignVCenter
                 opacity: root.state !== SideBarItem.Compact ? 1 : 0
 
@@ -258,5 +247,14 @@ T.Page {
                 anchors.right: parent.right
             }
         }
+    }
+
+    background: Rectangle {
+        id: background
+
+        color: Qt.lighter(containerBackground.color, 1.6)
+        visible: root.state === SideBarItem.Expanded || collapseAnimaton.running
+
+        onVisibleChanged: d.setContentChildrenVisible(visible)
     }
 }
