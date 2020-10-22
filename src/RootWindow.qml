@@ -4,8 +4,8 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
-import CCTV_Viewer.Utils 1.0
 import CCTV_Viewer.Models 1.0
+import CCTV_Viewer.Utils 1.0
 
 ApplicationWindow {
     id: rootWindow
@@ -79,6 +79,23 @@ ApplicationWindow {
         }
     }
 
+    Shortcut {
+        sequence: "M"
+        onActivated: {
+            if (Utils.currentLayout().focusIndex >= 0) {
+                var item = Utils.currentModel().get(Utils.currentLayout().focusIndex);
+                var viewport = Utils.currentLayout().get(Utils.currentLayout().focusIndex);
+
+                if (viewport.hasAudio) {
+                    if (item.volume > 0) {
+                        item.volume = 0;
+                    } else {
+                        item.volume = 1;
+                    }
+                }
+            }
+        }
+    }
     Shortcut {
         sequence: StandardKey.FullScreen
         onActivated: rootWindow.fullScreen = !rootWindow.fullScreen

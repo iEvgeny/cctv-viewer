@@ -191,7 +191,7 @@ FocusScope {
                                 palette.windowText: "white"
 
                                 // Disable controls when one of the viewports is in full-screen mode.
-                                enabled: !(currentLayout().fullScreenIndex >= 0)
+                                enabled: !(Utils.currentLayout().fullScreenIndex >= 0)
 
                                 Layout.fillWidth: true
 
@@ -270,11 +270,11 @@ FocusScope {
                                             Button {
                                                 text: size
                                                 highlighted: {
-                                                    currentModel().size === str2size(size);
+                                                    Utils.currentModel().size === str2size(size);
                                                 }
                                                 anchors.fill: parent
 
-                                                onClicked: currentModel().size = str2size(size)
+                                                onClicked: Utils.currentModel().size = str2size(size)
                                                 onPressAndHold: divisionTextField.edit()
 
                                                 ToolTip.delay: Compact.toolTipDelay
@@ -339,24 +339,24 @@ FocusScope {
 
                                     Button {
                                         text: "16:9"
-                                        highlighted: currentModel().aspectRatio === Qt.size(16, 9)
+                                        highlighted: Utils.currentModel().aspectRatio === Qt.size(16, 9)
 
                                         Layout.fillWidth: true
 
                                         onClicked: {
-                                            currentModel().aspectRatio = Qt.size(16, 9);
-                                            setRootWindowRatio(currentModel().aspectRatio);
+                                            Utils.currentModel().aspectRatio = Qt.size(16, 9);
+                                            setRootWindowRatio(Utils.currentModel().aspectRatio);
                                         }
                                     }
                                     Button {
                                         text: "4:3"
-                                        highlighted: currentModel().aspectRatio === Qt.size(4, 3)
+                                        highlighted: Utils.currentModel().aspectRatio === Qt.size(4, 3)
 
                                         Layout.fillWidth: true
 
                                         onClicked: {
-                                            currentModel().aspectRatio = Qt.size(4, 3);
-                                            setRootWindowRatio(currentModel().aspectRatio);
+                                            Utils.currentModel().aspectRatio = Qt.size(4, 3);
+                                            setRootWindowRatio(Utils.currentModel().aspectRatio);
                                         }
                                     }
                                     Button {
@@ -382,11 +382,11 @@ FocusScope {
 
                                     Button {
                                         text: qsTr("Merging cells")
-                                        enabled: currentLayout().mergeCells(true)
+                                        enabled: Utils.currentLayout().mergeCells(true)
 
                                         Layout.fillWidth: true
 
-                                        onClicked: currentLayout().mergeCells()
+                                        onClicked: Utils.currentLayout().mergeCells()
                                     }
                                 }
                             }
@@ -395,7 +395,7 @@ FocusScope {
                     SideBarItem {
                         objectName: "viewport"
                         icon: "qrc:/images/menu-viewport.svg"
-                        title: qsTr("Viewport%1").arg(currentLayout().focusIndex >= 0 ? qsTr(" #%1").arg(currentLayout().focusIndex + 1) : "")
+                        title: qsTr("Viewport%1").arg(Utils.currentLayout().focusIndex >= 0 ? qsTr(" #%1").arg(Utils.currentLayout().focusIndex + 1) : "")
 
                         Layout.fillWidth: true
 
@@ -416,31 +416,31 @@ FocusScope {
                                 id: viewportLayout
 
                                 // Enabled only when one of the viewports is active.
-                                enabled: currentLayout().focusIndex >= 0
+                                enabled: Utils.currentLayout().focusIndex >= 0
                                 anchors.fill: parent
 
                                 TextField {
-                                    text: enabled ? currentModel().get(currentLayout().focusIndex).url : ""
+                                    text: enabled ? Utils.currentModel().get(Utils.currentLayout().focusIndex).url : ""
                                     placeholderText: qsTr("Url")
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
 
-                                    onEditingFinished: currentModel().get(currentLayout().focusIndex).url = text
+                                    onEditingFinished: Utils.currentModel().get(Utils.currentLayout().focusIndex).url = text
                                 }
 
                                 Button {
                                     text: qsTr("Mute")
-                                    enabled: currentLayout().focusIndex >= 0 ? currentLayout().get(currentLayout().focusIndex).hasAudio : false
-                                    highlighted: currentLayout().focusIndex >= 0 && currentModel().get(currentLayout().focusIndex).volume <= 0
+                                    enabled: Utils.currentLayout().focusIndex >= 0 ? Utils.currentLayout().get(Utils.currentLayout().focusIndex).hasAudio : false
+                                    highlighted: Utils.currentLayout().focusIndex >= 0 && Utils.currentModel().get(Utils.currentLayout().focusIndex).volume <= 0
 
                                     Layout.fillWidth: true
 
                                     onClicked: {
-                                        if (currentModel().get(currentLayout().focusIndex).volume > 0) {
-                                            currentModel().get(currentLayout().focusIndex).volume = 0;
+                                        if (Utils.currentModel().get(Utils.currentLayout().focusIndex).volume > 0) {
+                                            Utils.currentModel().get(Utils.currentLayout().focusIndex).volume = 0;
                                         } else {
-                                            currentModel().get(currentLayout().focusIndex).volume = 1;
+                                            Utils.currentModel().get(Utils.currentLayout().focusIndex).volume = 1;
                                         }
                                     }
                                 }
@@ -456,7 +456,7 @@ FocusScope {
                                     }
 
                                     TextField {
-                                        text: enabled ? getOptionsString(currentModel().get(currentLayout().focusIndex).avFormatOptions) : ""
+                                        text: enabled ? getOptionsString(Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions) : ""
                                         selectByMouse: true
 
                                         Layout.fillWidth: true
@@ -468,14 +468,14 @@ FocusScope {
                                             if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
                                                 for (var key in options) {
                                                     if (defaultAVFormatOptions[key] === undefined || String(defaultAVFormatOptions[key]) !== String(options[key])) {
-                                                        currentModel().get(currentLayout().focusIndex).avFormatOptions = options;
+                                                        Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = options;
                                                         return;
                                                     }
                                                 }
 
-                                                currentModel().get(currentLayout().focusIndex).avFormatOptions = {};
+                                                Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = {};
                                             } else {
-                                                currentModel().get(currentLayout().focusIndex).avFormatOptions = options;
+                                                Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = options;
                                             }
                                         }
 
@@ -582,17 +582,9 @@ FocusScope {
         }
     }
 
-    function currentModel() {
-        return layoutsCollectionModel.get(stackLayout.currentIndex);
-    }
-
-    function currentLayout() {
-        return swipeViewRepeater.itemAt(stackLayout.currentIndex);
-    }
-
     function setRootWindowRatio(ratio) {
-        var horzRatio = currentModel().size.width * ratio.width;
-        var vertRatio = currentModel().size.height * ratio.height;
+        var horzRatio = Utils.currentModel().size.width * ratio.width;
+        var vertRatio = Utils.currentModel().size.height * ratio.height;
         var pixels = Math.round((rootWindow.width - rootSideBar.width) / horzRatio);
 
         if (!rootWindow.fullScreen) {

@@ -1,4 +1,12 @@
 // Helpers
+function currentModel() {
+    return layoutsCollectionModel.get(stackLayout.currentIndex);
+}
+
+function currentLayout() {
+    return swipeViewRepeater.itemAt(stackLayout.currentIndex);
+}
+
 function parseOptions(str) {
     var obj = {};
     var regexp = /-([a-z0-9_]+)\s([a-z0-9_.]+)/g;
