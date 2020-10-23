@@ -145,7 +145,11 @@ FocusScope {
                     d.fullScreenIndex = -1;
                 }
                 if (d.focusIndex) {
-                    d.focusIndex = -1;
+                    if (count == 1) {
+                        d.focusIndex = 0;
+                    } else {
+                        d.focusIndex = -1;
+                    }
                 }
                 if (d.activeFocusIndex) {
                     d.activeFocusIndex = -1;
