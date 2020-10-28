@@ -67,8 +67,7 @@ FocusScope {
         Behavior on opacity {
             enabled: !rootWindow.fullScreen || rootSideBar.state !== SideBar.Compact
 
-            PropertyAnimation {
-                easing.type: Easing.Linear
+            OpacityAnimator {
                 duration: 1500
             }
         }

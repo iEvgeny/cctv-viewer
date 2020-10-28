@@ -178,7 +178,7 @@ T.Page {
                 Layout.leftMargin: header.padding
 
                 Behavior on opacity {
-                    PropertyAnimation {
+                    OpacityAnimator {
                         duration: 100
                         easing.type: Easing.InExpo
                     }
@@ -221,9 +221,8 @@ T.Page {
                 anchors.fill: parent
 
                 Behavior on opacity {
-                    PropertyAnimation {
+                    OpacityAnimator {
                         duration: 100
-                        easing.type: Easing.Linear
                     }
                 }
             }
