@@ -54,8 +54,8 @@
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="75"/>
-        <location filename="../src/RootWindow.qml" line="144"/>
+        <location filename="../src/RootWindow.qml" line="76"/>
+        <location filename="../src/RootWindow.qml" line="145"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
@@ -83,7 +83,12 @@
         <translation>Вьюпорты</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.qml" line="43"/>
+        <location filename="../src/SettingsDialog.qml" line="45"/>
+        <source>Show preset indicator</source>
+        <translation>Показать индикатор текущего пресета</translation>
+    </message>
+    <message>
+        <location filename="../src/SettingsDialog.qml" line="49"/>
         <source>Default AVFormat options</source>
         <translation>Опции AVFormat по умолчанию</translation>
     </message>

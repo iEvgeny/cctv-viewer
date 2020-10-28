@@ -39,6 +39,12 @@ Dialog {
             ColumnLayout {
                 width: parent.width
 
+                CheckBox {
+                    id: presetIndicatorCheckBox
+
+                    text: qsTr("Show preset indicator")
+                }
+
                 Label {
                     text: qsTr("Default AVFormat options")
                 }
@@ -58,6 +64,9 @@ Dialog {
         // Single application
         singleApplicationCheckBox.checked = !generalSettings.singleApplication;
 
+        // Preset indicator
+        presetIndicatorCheckBox.checked = layoutsCollectionSettings.presetIndicator;
+
         // Default AVFormat options
         defaultAVFormatOptions.text = "";
         var options = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
@@ -72,6 +81,9 @@ Dialog {
     function saveSettings() {
         // Single application
         generalSettings.singleApplication = !singleApplicationCheckBox.checked;
+
+        // Preset indicator
+        layoutsCollectionSettings.presetIndicator = presetIndicatorCheckBox.checked;
 
         // Default AVFormat options
         layoutsCollectionSettings.defaultAVFormatOptions = JSON.stringify(Utils.parseOptions(defaultAVFormatOptions.text));

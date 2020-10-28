@@ -61,6 +61,7 @@ ApplicationWindow {
         property int currentIndex
         property string models
         property string collection  // DEPRECATED: Old property
+        property bool presetIndicator: true
         property string defaultAVFormatOptions: JSON.stringify({
             "analyzeduration": 0, // 0 µs
             "probesize": 500000 // 500 KB
@@ -180,7 +181,7 @@ ApplicationWindow {
 
         PageIndicator {
             interactive: true
-            visible: stackLayout.count > 1
+            visible: layoutsCollectionSettings.presetIndicator && stackLayout.count > 1
             currentIndex: stackLayout.currentIndex
             count: stackLayout.count
             anchors.bottom: parent.bottom
