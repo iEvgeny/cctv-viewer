@@ -201,10 +201,6 @@ void ViewportsLayoutModel::fromJSValue(const QVariantMap &model)
             int height = val.toMap().value("height").toInt();
             setSize(QSize(width, height));
         }
-    } else if (model.contains("division")) {
-        // Old property
-        int size = model.value("division").toInt();
-        setSize(QSize(size, size));
     }
 
     if (model.contains("aspectRatio")) {
@@ -213,20 +209,11 @@ void ViewportsLayoutModel::fromJSValue(const QVariantMap &model)
             int width = val.toMap().value("width").toInt();
             int height = val.toMap().value("height").toInt();
             setAspectRatio(QSize(width, height));
-        } else if (val.canConvert(QMetaType::QString)) {
-            // Old format
-            QStringList strList = val.toString().split(':');
-            if (strList.size() == 2) {
-                setAspectRatio(QSize(strList.at(0).toInt(), strList.at(1).toInt()));
-            }
         }
     }
 
     if (model.contains("items")) {
         val = model.value("items");
-    } else if (model.contains("model")) {
-        // Old property
-        val = model.value("model");
     }
     if (val.canConvert(QMetaType::QVariantList)) {
         QVariantList items = val.toList();

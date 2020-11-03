@@ -60,7 +60,6 @@ ApplicationWindow {
 
         property int currentIndex
         property string models
-        property string collection  // DEPRECATED: Old property
         property bool presetIndicator: true
         property string defaultAVFormatOptions: JSON.stringify({
             "analyzeduration": 0, // 0 µs
@@ -129,17 +128,9 @@ ApplicationWindow {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
             });
 
-            var models = "";
-            if (!layoutsCollectionSettings.models.isEmpty()) {
-                models = layoutsCollectionSettings.models;
-            } else {
-                // Use old property
-                models = layoutsCollectionSettings.collection;
-            }
-
             try {
-                if (!models.isEmpty()) {
-                    fromJSValue(JSON.parse(models));
+                if (!layoutsCollectionSettings.models.isEmpty()) {
+                    fromJSValue(JSON.parse(layoutsCollectionSettings.models));
                 }
             } catch(err) {
                 Utils.log_error(qsTr("Error reading configuration!"));
