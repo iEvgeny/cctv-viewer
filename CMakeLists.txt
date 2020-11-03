@@ -6,7 +6,7 @@ set(VER_PAT 8)
 set(REL_STATUS "alpha")
 
 set(APP_NAME "CCTV Viewer")
-set(ORG_NAME "T171RU")
+set(ORG_NAME "CCTV Viewer")
 set(ORG_DOMAIN "cctv-viewer.org")
 
 set(VERSION "${VER_MAJ}.${VER_MIN}")

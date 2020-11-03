@@ -13,7 +13,7 @@ greaterThan(VER_PAT, 0) {
 }
 
 APP_NAME = "CCTV Viewer"
-ORG_NAME = "T171RU"
+ORG_NAME = "CCTV Viewer"
 ORG_DOMAIN = "cctv-viewer.org"
 
 DEFINES += \"APP_NAME=\\\"$${APP_NAME}\\\"\" \
