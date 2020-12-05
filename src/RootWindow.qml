@@ -42,7 +42,7 @@ ApplicationWindow {
 
         property bool intro: true
         property bool singleApplication: true
-        property bool autoCollapseSidebar: true
+        property bool autoCollapseSidebar: true   
     }
 
     Settings {

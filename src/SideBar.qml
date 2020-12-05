@@ -113,8 +113,7 @@ FocusScope {
                 onTriggered: {
                     if (generalSettings.autoCollapseSidebar &&
                         rootSideBar.state === SideBar.Popup) {
-                        rootSideBar.state = SideBar.Compact
-                        //rootSideBar.forceActiveFocus();
+                        rootSideBar.state = SideBar.Compact;                        
                     }
                 }
             }

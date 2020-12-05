@@ -33,7 +33,7 @@ Dialog {
                 CheckBox {
                     id: autoCollapseSidebarCheckBox
 
-                    text: qsTr("Automatically collapse sidebar")
+                    text: qsTr("Automatically collapse sidebar") 
                 }
             }
         }
