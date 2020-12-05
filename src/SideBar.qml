@@ -86,8 +86,10 @@ FocusScope {
             onContainsMouseChanged: {
                 if (containsMouse) {
                     delayOpenningTimer.start();
+                    delayAutoCloseTimer.stop();
                 } else {
                     delayOpenningTimer.stop();
+                    delayAutoCloseTimer.start();
                 }
             }
 
@@ -100,6 +102,19 @@ FocusScope {
                     if (rootSideBar.state === SideBar.Compact) {
                         rootSideBar.state = SideBar.Popup
                         rootSideBar.forceActiveFocus();
+                    }
+                }
+            }
+            Timer {
+                id: delayAutoCloseTimer
+
+                interval: 1500
+
+                onTriggered: {
+                    if (generalSettings.autoCollapseSidebar &&
+                        rootSideBar.state === SideBar.Popup) {
+                        rootSideBar.state = SideBar.Compact
+                        //rootSideBar.forceActiveFocus();
                     }
                 }
             }
