@@ -23,11 +23,18 @@ Dialog {
             title: qsTr("General")
 
             Layout.fillWidth: true
+            ColumnLayout {
+                 width: parent.width
+                CheckBox {
+                    id: singleApplicationCheckBox
 
-            CheckBox {
-                id: singleApplicationCheckBox
+                    text: qsTr("Allow running multiple application instances")
+                }
+                CheckBox {
+                    id: autoCollapseSidebarCheckBox
 
-                text: qsTr("Allow running multiple application instances")
+                    text: qsTr("Automatically collapse sidebar") 
+                }
             }
         }
 
@@ -63,7 +70,10 @@ Dialog {
     function loadSettings() {
         // Single application
         singleApplicationCheckBox.checked = !generalSettings.singleApplication;
-
+        
+        //Auto collapse sidebar option
+        autoCollapseSidebarCheckBox.checked = generalSettings.autoCollapseSidebar;
+        
         // Preset indicator
         presetIndicatorCheckBox.checked = layoutsCollectionSettings.presetIndicator;
 
@@ -81,7 +91,10 @@ Dialog {
     function saveSettings() {
         // Single application
         generalSettings.singleApplication = !singleApplicationCheckBox.checked;
-
+        
+        //Auto collapse sidebar option
+        generalSettings.autoCollapseSidebar = autoCollapseSidebarCheckBox.checked;
+        
         // Preset indicator
         layoutsCollectionSettings.presetIndicator = presetIndicatorCheckBox.checked;
 
