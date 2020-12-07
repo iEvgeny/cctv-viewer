@@ -42,7 +42,6 @@ ApplicationWindow {
 
         property bool intro: true
         property bool singleApplication: true
-        property bool autoCollapseSidebar: true   
     }
 
     Settings {
@@ -52,6 +51,7 @@ ApplicationWindow {
         property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
         property alias fullScreen: rootWindow.fullScreen
+        property bool sidebarAutoCollapse: true
     }
 
     Settings {

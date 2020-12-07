@@ -76,6 +76,10 @@
         <source>Show preset indicator</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Automatically collapse sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBar</name>
