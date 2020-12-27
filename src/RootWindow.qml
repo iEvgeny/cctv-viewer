@@ -122,8 +122,9 @@ ApplicationWindow {
 
         onCountChanged: stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1)
         Component.onCompleted: {
-            // Demo stream
+            // Demo streams
             get(0).get(0).url = "rtmp://live.a71.ru/demo/0";
+            get(0).get(1).url = "rtmp://live.a71.ru/demo/1";
 
             layoutsCollectionModel.changed.connect(function () {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
