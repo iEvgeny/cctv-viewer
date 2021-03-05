@@ -69,6 +69,7 @@ parts:
       - libavdevice58
       - libqt5multimedia5
       - libqt5multimediaquick5
+      - qtwayland5
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
       - qml-module-qtquick-controls
