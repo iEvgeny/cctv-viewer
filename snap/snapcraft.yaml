@@ -32,7 +32,6 @@ apps:
       - x11
       - wayland
       - opengl
-      - pulseaudio
       - audio-playback
       - unity7  # Possibly unneeded
       - removable-media
