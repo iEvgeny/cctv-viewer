@@ -31,12 +31,15 @@ apps:
       - desktop-legacy
       - x11
       - wayland
-      - mir
       - opengl
+      - pulseaudio
       - audio-playback
       - unity7  # Possibly unneeded
       - removable-media
       - network
+      - avahi-control
+      - screen-inhibit-control
+      - camera
 
 parts:
   cctv-viewer:
