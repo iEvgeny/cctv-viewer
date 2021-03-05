@@ -12,6 +12,7 @@ license: GPL-3.0
 grade: stable
 confinement: strict
 base: core20
+compression: lzo
 
 architectures:
   - build-on: amd64
