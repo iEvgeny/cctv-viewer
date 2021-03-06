@@ -71,6 +71,7 @@ parts:
       - libswresample3
       - libavdevice58
       - libqt5multimedia5
+      - libqt5multimedia5-plugins
       - libqt5multimediaquick5
       - qtwayland5
       - qml-module-qtquick-layouts
