@@ -97,6 +97,17 @@ ApplicationWindow {
             }
         }
     }
+    // Shortcuts for the first 9 presets (Alt + 1, Alt + 2, ..., Alt + 9)
+    Repeater {
+        model: Math.min(stackLayout.count, 9)
+
+        Item {
+            Shortcut {
+                sequence: "Alt+" + (index + 1)
+                onActivated: stackLayout.currentIndex = index
+            }
+        }
+    }
     Shortcut {
         sequence: StandardKey.FullScreen
         onActivated: rootWindow.fullScreen = !rootWindow.fullScreen
