@@ -55,7 +55,7 @@
     </message>
     <message>
         <location filename="../src/RootWindow.qml" line="76"/>
-        <location filename="../src/RootWindow.qml" line="146"/>
+        <location filename="../src/RootWindow.qml" line="149"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>

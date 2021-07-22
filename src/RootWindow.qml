@@ -149,7 +149,7 @@ ApplicationWindow {
                 Utils.log_error(qsTr("Error reading configuration!"));
             }
 
-            stackLayout.currentIndex = layoutsCollectionSettings.currentIndex;
+            stackLayout.currentIndex = layoutsCollectionSettings.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
         }
     }
 
