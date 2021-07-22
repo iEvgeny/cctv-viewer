@@ -132,7 +132,7 @@ normalize:
             item = new ViewportsLayoutItem(this);
             QQmlEngine::setContextForObject(item, engine->rootContext());
 
-            connect(item, &ViewportsLayoutItem::changed, [=] {
+            connect(item, &ViewportsLayoutItem::changed, this, [=] {
                 for (int i = 0; i < m_items.size(); ++i) {
                     if (item == m_items.at(i)) {
                         QModelIndex index = createIndex(i, 0);
