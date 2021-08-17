@@ -30,7 +30,7 @@ if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VER
 
 QT += qml quick multimedia
 
-CONFIG += c++11 warn_on debug_and_release
+CONFIG += c++17 warn_on debug_and_release
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
