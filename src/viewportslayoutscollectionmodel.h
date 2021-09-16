@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <QQmlEngine>
+
 #include "viewportslayoutmodel.h"
 
 class ViewportsLayoutsCollectionModel : public QAbstractListModel

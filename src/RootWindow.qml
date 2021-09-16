@@ -4,6 +4,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
+import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Models 1.0
 import CCTV_Viewer.Utils 1.0
 
@@ -40,6 +41,7 @@ ApplicationWindow {
     Settings {
         id: generalSettings
 
+        fileName: Context.config.fileName
         property bool intro: true
         property bool singleApplication: true
     }
@@ -47,6 +49,7 @@ ApplicationWindow {
     Settings {
         id: rootWindowSettings
 
+        fileName: Context.config.fileName
         category: "RootWindow"
         property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
@@ -57,6 +60,7 @@ ApplicationWindow {
     Settings {
         id: layoutsCollectionSettings
 
+        fileName: Context.config.fileName
         category: "ViewportsLayoutsCollection"
 
         property int currentIndex
@@ -149,7 +153,12 @@ ApplicationWindow {
                 Utils.log_error(qsTr("Error reading configuration!"));
             }
 
-            stackLayout.currentIndex = layoutsCollectionSettings.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
+            // TODO: Temporary implementation
+            if (Context.config.currentIndex >= 0) {
+                stackLayout.currentIndex = Context.config.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
+            } else {
+                stackLayout.currentIndex = layoutsCollectionSettings.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
+            }
         }
     }
 

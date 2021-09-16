@@ -4,7 +4,9 @@
 #include <QTranslator>
 
 #include "qmlav/src/qmlavplayer.h"
+#include "context.h"
 #include "singleapplication.h"
+#include "context.h"
 #include "viewportslayoutscollectionmodel.h"
 
 void registerQmlTypes()
@@ -15,6 +17,13 @@ void registerQmlTypes()
         Q_UNUSED(scriptEngine)
 
         return new SingleApplication();
+    });
+    qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Core", 1, 0, "Context",
+                                                [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        Q_UNUSED(engine)
+        Q_UNUSED(scriptEngine)
+
+        return new Context();
     });
 
     qmlRegisterType<QmlAVPlayer>("CCTV_Viewer.Multimedia", 1, 0, "QmlAVPlayer");
@@ -68,6 +77,8 @@ int main(int argc, char *argv[])
     translator.load(QLatin1String("cctv-viewer_") + locale, QLatin1String(":/translations/"));
     app.installTranslator(&translator);
     app.setWindowIcon(QIcon(QLatin1String(":/images/cctv-viewer.svg")));
+
+    Context::init();
 
     engine.addImportPath(":/src/imports");
     const QUrl url(QStringLiteral("qrc:/src/RootWindow.qml"));

@@ -52,11 +52,16 @@ DESTDIR = bin
 include(src/qmlav/qmlav.pri)
 
 HEADERS += \
+    src/config.h \
+    src/context.h \
+    src/global.h \
     src/singleapplication.h \
     src/viewportslayoutmodel.h \
     src/viewportslayoutscollectionmodel.h
 
 SOURCES += \
+    src/config.cpp \
+    src/context.cpp \
     src/main.cpp \
     src/viewportslayoutmodel.cpp \
     src/viewportslayoutscollectionmodel.cpp

@@ -78,7 +78,11 @@ endif()
 
 set(PROJ_FILES
     src/main.cpp
+    src/global.h
     src/singleapplication.h
+    src/config.h src/config.cpp
+    src/context.h src/context.cpp
+    src/context.cpp src/context.h
     src/viewportslayoutmodel.cpp src/viewportslayoutmodel.h
     src/viewportslayoutscollectionmodel.cpp src/viewportslayoutscollectionmodel.h
     ${RESOURCES}

@@ -3,6 +3,7 @@ import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import Qt.labs.settings 1.0
+import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Themes 1.0
 import CCTV_Viewer.Utils 1.0
 
@@ -47,6 +48,7 @@ FocusScope {
     Settings {
         id: sideBarSettings
 
+        fileName: Context.config.fileName
         category: "SideBar"
 
         property bool compact: true

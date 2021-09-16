@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>Context</name>
+    <message>
+        <source>Path to the config file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Index of the current preset.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CCTV Viewer - viewer and mounter video streams.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Player</name>
     <message>
         <source>No media!</source>

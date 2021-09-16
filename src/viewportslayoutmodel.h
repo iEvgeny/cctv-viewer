@@ -5,13 +5,7 @@
 #include <QtCore>
 #include <QQmlEngine>
 
-#define Q_PROPERTY_WRITE_IMPL(type, name, write, notify) \
-    void write(const type &var) { \
-        if (m_##name == var) \
-            return; \
-        m_##name = var; \
-        emit notify(var); \
-    }
+#include "global.h"
 
 // TODO: Reimplement this with QSize/QRect as a span property
 class ViewportsLayoutItem : public QObject
