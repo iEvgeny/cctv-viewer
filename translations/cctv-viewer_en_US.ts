@@ -15,6 +15,10 @@
         <source>CCTV Viewer - viewer and mounter video streams.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force full-screen mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Player</name>

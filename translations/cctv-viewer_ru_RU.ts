@@ -14,7 +14,12 @@
         <translation>Индекс текущего пресета.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="30"/>
+        <location filename="../src/context.cpp" line="14"/>
+        <source>Force full-screen mode.</source>
+        <translation>Принудительный полноэкранный режим.</translation>
+    </message>
+    <message>
+        <location filename="../src/context.cpp" line="33"/>
         <source>CCTV Viewer - viewer and mounter video streams.</source>
         <translation>CCTV Viewer - просмотрщик и компоновщик видеопотоков.</translation>
     </message>

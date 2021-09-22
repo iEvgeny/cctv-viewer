@@ -14,11 +14,9 @@ ApplicationWindow {
     title: qsTr("CCTV Viewer")
 
     visible: true
-    visibility: rootWindow.fullScreen ? Window.FullScreen : Window.Windowed
+    visibility: Context.config.fullScreen ? Window.FullScreen : Window.Windowed
     width: rootWindowSettings.width
     height: rootWindowSettings.height
-
-    property bool fullScreen: false
 
     // Right-to-left User Interfaces support
     LayoutMirroring.enabled: Qt.application.layoutDirection == Qt.RightToLeft
@@ -28,14 +26,14 @@ ApplicationWindow {
         target: rootWindowSettings
         property: "width"
         value: rootWindow.width
-        when: !rootWindow.fullScreen
+        when: !Context.config.fullScreen
     }
 
     Binding {
         target: rootWindowSettings
         property: "height"
         value: rootWindow.height
-        when: !rootWindow.fullScreen
+        when: !Context.config.fullScreen
     }
 
     Settings {
@@ -53,8 +51,15 @@ ApplicationWindow {
         category: "RootWindow"
         property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
-        property alias fullScreen: rootWindow.fullScreen
+        property bool fullScreen: Context.config.fullScreen
         property bool sidebarAutoCollapse: true
+
+        Component.onCompleted: {
+            // Do not initialize variable state if option "-f" is set
+            if (!Context.config.fullScreen) {
+                Context.config.fullScreen = rootWindowSettings.fullScreen;
+            }
+        }
     }
 
     Settings {
@@ -114,7 +119,7 @@ ApplicationWindow {
     }
     Shortcut {
         sequence: StandardKey.FullScreen
-        onActivated: rootWindow.fullScreen = !rootWindow.fullScreen
+        onActivated: Context.config.fullScreen = !Context.config.fullScreen
     }
     Shortcut {
         sequence: StandardKey.Quit

@@ -11,9 +11,11 @@ void Context::init()
 {
     QCommandLineOption configOption({{"c", "config"}, tr("Path to the config file."), "config"});
     QCommandLineOption presetOption({{"p", "preset"}, tr("Index of the current preset."), "preset"});
+    QCommandLineOption fullScreenOption({{"f", "full-screen"}, tr("Force full-screen mode.")});
 
     parseCommandLineOptions({configOption,
-                            presetOption});
+                            presetOption,
+                            fullScreenOption});
 
     if (m_commandLineParser.isSet(configOption)) {
         m_config = new Config(m_commandLineParser.value(configOption));
@@ -23,6 +25,7 @@ void Context::init()
     if (m_commandLineParser.isSet(presetOption)) {
         m_config->setCurrentIndex(m_commandLineParser.value(presetOption).toUInt());
     }
+    m_config->setFullScreen(m_commandLineParser.isSet(fullScreenOption));
 }
 
  void Context::parseCommandLineOptions(const QList<QCommandLineOption> &options)

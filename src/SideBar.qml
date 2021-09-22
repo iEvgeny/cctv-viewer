@@ -16,7 +16,7 @@ FocusScope {
         Expanded
     }
 
-    implicitWidth: rootWindow.fullScreen && state !== SideBar.Expanded ? 0 :
+    implicitWidth: Context.config.fullScreen && state !== SideBar.Expanded ? 0 :
                    state === SideBar.Expanded ? container.implicitWidth : compactWidth
     implicitHeight: flickable.contentHeight
 
@@ -61,13 +61,13 @@ FocusScope {
     Item {
         id: container
 
-        opacity: rootWindow.fullScreen && rootSideBar.state === SideBar.Compact ? 0 : 1
+        opacity: Context.config.fullScreen && rootSideBar.state === SideBar.Compact ? 0 : 1
         implicitWidth: rootSideBar.state === SideBar.Compact ? compactWidth : expandedWidth
         implicitHeight: rootSideBar.height
         anchors.right: parent.right
 
         Behavior on opacity {
-            enabled: !rootWindow.fullScreen || rootSideBar.state !== SideBar.Compact
+            enabled: !Context.config.fullScreen || rootSideBar.state !== SideBar.Compact
 
             OpacityAnimator {
                 duration: 1500
@@ -379,12 +379,12 @@ FocusScope {
                                     }
                                     Button {
                                         text: qsTr("Full Screen")
-                                        highlighted: rootWindow.fullScreen
+                                        highlighted: Context.config.fullScreen
 
                                         Layout.columnSpan: 2
                                         Layout.fillWidth: true
 
-                                        onClicked: rootWindow.fullScreen = !rootWindow.fullScreen
+                                        onClicked: Context.config.fullScreen = !Context.config.fullScreen
                                     }
                                 }
                             }
@@ -605,7 +605,7 @@ FocusScope {
         var vertRatio = Utils.currentModel().size.height * ratio.height;
         var pixels = Math.round((rootWindow.width - rootSideBar.width) / horzRatio);
 
-        if (!rootWindow.fullScreen) {
+        if (!Context.config.fullScreen) {
             rootWindow.width = horzRatio * pixels + rootSideBar.width;
             rootWindow.height = vertRatio * pixels;
         }
