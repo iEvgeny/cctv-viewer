@@ -51,14 +51,16 @@ ApplicationWindow {
         category: "RootWindow"
         property int width: 1280 + 48 /*SideBar compact width*/
         property int height: 720
-        property bool fullScreen: Context.config.fullScreen
+        property bool fullScreen
         property bool sidebarAutoCollapse: true
 
         Component.onCompleted: {
-            // Do not initialize variable state if option "-f" is set
+            // Do not initialize "fullScreen" if option "-f" is set
             if (!Context.config.fullScreen) {
                 Context.config.fullScreen = rootWindowSettings.fullScreen;
             }
+
+            rootWindowSettings.fullScreen = Qt.binding(function() { return Context.config.fullScreen; });
         }
     }
 
@@ -158,12 +160,9 @@ ApplicationWindow {
                 Utils.log_error(qsTr("Error reading configuration!"));
             }
 
-            // TODO: Temporary implementation
-            if (Context.config.currentIndex >= 0) {
-                stackLayout.currentIndex = Context.config.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
-            } else {
-                stackLayout.currentIndex = layoutsCollectionSettings.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
-            }
+            // Force initialize "currentIndex" if option "-p" is set
+            var currentIndex = (Context.config.currentIndex >= 0) ? Context.config.currentIndex : layoutsCollectionSettings.currentIndex;
+            stackLayout.currentIndex = currentIndex.clamp(0, layoutsCollectionModel.count - 1);
         }
     }
 
