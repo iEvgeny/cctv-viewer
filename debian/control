@@ -22,6 +22,7 @@ Package: cctv-viewer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
          libqt5multimedia5-plugins,
+         qtwayland5,
          qml-module-qtquick-layouts,
          qml-module-qtqml-models2,
          qml-module-qtquick-controls,
