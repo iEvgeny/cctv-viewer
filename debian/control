@@ -21,6 +21,7 @@ Vcs-Browser: https://github.com/iEvgeny/cctv-viewer
 Package: cctv-viewer
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
+         libqt5multimedia5-plugins,
          qml-module-qtquick-layouts,
          qml-module-qtqml-models2,
          qml-module-qtquick-controls,
