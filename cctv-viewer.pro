@@ -24,6 +24,9 @@ DEFINES += \"APP_NAME=\\\"$${APP_NAME}\\\"\" \
 # Check Qt version
 QT_MIN_MAJOR_VERSION = 5
 QT_MIN_MINOR_VERSION = 12
+if (greaterThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION})) {
+    error("The $${APP_NAME} build with Qt $${QT_VERSION} is not supported. Use the CMake build system.")
+}
 if (lessThan(QT_MAJOR_VERSION, $${QT_MIN_MAJOR_VERSION}) | lessThan(QT_MINOR_VERSION, $${QT_MIN_MINOR_VERSION})) {
     error("Cannot build $${APP_NAME} with Qt $${QT_VERSION}. Use at least Qt $${QT_MIN_MAJOR_VERSION}.$${QT_MIN_MINOR_VERSION}.0")
 }

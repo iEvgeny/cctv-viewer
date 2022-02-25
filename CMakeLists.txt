@@ -32,6 +32,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Disable use of C++ API deprecated in Qt 5.15
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+
 # QtCreator supports the following variables for Android, which are identical to qmake Android variables.
 # Check https://doc.qt.io/qt/deployment-android.html for more information.
 # They need to be set before the find_package(...) calls below.
@@ -70,7 +73,11 @@ add_subdirectory(src/qmlav)
 file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    qt5_add_resources(RESOURCES cctv-viewer.qrc)
+    if (${QT_VERSION_MAJOR} GREATER 5)
+        qt_add_resources(RESOURCES cctv-viewer.qrc)
+    else()
+        qt5_add_resources(RESOURCES cctv-viewer.qrc)
+    endif()
 else()
     find_package(Qt5QuickCompiler REQUIRED)
     qtquick_compiler_add_resources(RESOURCES cctv-viewer.qrc)
@@ -111,7 +118,11 @@ target_link_libraries(cctv-viewer PRIVATE ${FFMPEG_LINK_DEPENDENCIES})
 
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/translations")
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+if (${QT_VERSION_MAJOR} GREATER 5)
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+else()
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+endif()
 
 if (UNIX AND NOT ANDROID)
     include(GNUInstallDirs)
