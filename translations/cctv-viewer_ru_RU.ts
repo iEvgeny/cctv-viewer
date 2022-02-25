@@ -21,10 +21,10 @@
     <message>
         <location filename="../src/context.cpp" line="15"/>
         <source>Kiosk mode functionality.</source>
-        <translation type="unfinished"></translation>
+        <translation>Функционал режима киоска.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="35"/>
+        <location filename="../src/context.cpp" line="36"/>
         <source>CCTV Viewer - viewer and mounter video streams.</source>
         <translation>CCTV Viewer - просмотрщик и компоновщик видеопотоков.</translation>
     </message>
