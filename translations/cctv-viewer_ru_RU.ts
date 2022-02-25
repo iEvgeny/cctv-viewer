@@ -19,7 +19,12 @@
         <translation>Принудительный полноэкранный режим.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="33"/>
+        <location filename="../src/context.cpp" line="15"/>
+        <source>Kiosk mode functionality.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/context.cpp" line="35"/>
         <source>CCTV Viewer - viewer and mounter video streams.</source>
         <translation>CCTV Viewer - просмотрщик и компоновщик видеопотоков.</translation>
     </message>
@@ -77,8 +82,8 @@
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="80"/>
-        <location filename="../src/RootWindow.qml" line="153"/>
+        <location filename="../src/RootWindow.qml" line="86"/>
+        <location filename="../src/RootWindow.qml" line="159"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>

@@ -12,10 +12,12 @@ void Context::init()
     QCommandLineOption configOption({{"c", "config"}, tr("Path to the config file."), "config"});
     QCommandLineOption presetOption({{"p", "preset"}, tr("Index of the current preset."), "preset"});
     QCommandLineOption fullScreenOption({{"f", "full-screen"}, tr("Force full-screen mode.")});
+    QCommandLineOption kioskModeOption({{"k", "kiosk"}, tr("Kiosk mode functionality.")});
 
     parseCommandLineOptions({configOption,
                             presetOption,
-                            fullScreenOption});
+                            fullScreenOption,
+                            kioskModeOption});
 
     if (m_commandLineParser.isSet(configOption)) {
         m_config = new Config(m_commandLineParser.value(configOption));
@@ -26,6 +28,7 @@ void Context::init()
         m_config->setCurrentIndex(m_commandLineParser.value(presetOption).toUInt());
     }
     m_config->setFullScreen(m_commandLineParser.isSet(fullScreenOption));
+    m_config->setKioskMode(m_commandLineParser.isSet(kioskModeOption));
 }
 
  void Context::parseCommandLineOptions(const QList<QCommandLineOption> &options)

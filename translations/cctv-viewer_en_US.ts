@@ -19,6 +19,10 @@
         <source>Force full-screen mode.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Kiosk mode functionality.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Player</name>

@@ -40,7 +40,6 @@ ApplicationWindow {
         id: generalSettings
 
         fileName: Context.config.fileName
-        property bool intro: true
         property bool singleApplication: true
     }
 
@@ -208,25 +207,18 @@ ApplicationWindow {
         }
     }
 
-    SideBar {
+
+    Loader {
         id: sideBar
 
         height: parent.height
         anchors.right: parent.right
 
-        //            // Intro
-        //            onPinnedChanged: {
-        //                if (!pinned && generalSettings.intro) {
-        //                    generalSettings.intro = false;
-
-        //                    // TODO: Show help for using the sidebar
-        //                }
-        //            }
-        //            Component.onCompleted: {
-        //                if (generalSettings.intro) {
-        //                    pinned = true;
-        //                }
-        //            }
+        Component.onCompleted: {
+            if (!Context.config.kioskMode) {
+                source = "SideBar.qml";
+            }
+        }
     }
 
     SingleApplicationDialog {
