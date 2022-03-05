@@ -109,7 +109,7 @@ ApplicationWindow {
     }
     // Shortcuts for the first 9 presets (Alt + 1, Alt + 2, ..., Alt + 9)
     Repeater {
-        model: Math.min(stackLayout.count, 9)
+        model: Context.config.kioskMode ? 0 : Math.min(stackLayout.count, 9)
 
         Item {
             Shortcut {
