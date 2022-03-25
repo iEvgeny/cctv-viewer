@@ -1,7 +1,11 @@
 #include "viewportslayoutmodel.h"
 
 ViewportsLayoutItem::ViewportsLayoutItem(QObject *parent)
-    : QObject(parent), m_rowSpan(1), m_columnSpan(1), m_visible(Visible::Visible), m_volume(0.0)
+    : QObject(parent),
+      m_rowSpan(1),
+      m_columnSpan(1),
+      m_visible(Visible::Visible),
+      m_volume(0.0)
 {
     const QMetaObject* metaObject = this->metaObject();
     QMetaMethod changedMethod = QMetaMethod::fromSignal(&ViewportsLayoutItem::changed);

@@ -23,7 +23,7 @@ FocusScope {
     QtObject {
         id: d
 
-        property var layoutRatio: (model.aspectRatio.width * model.size.width) / (model.aspectRatio.height * model.size.height);
+        property real layoutRatio: (model.aspectRatio.width * model.size.width) / (model.aspectRatio.height * model.size.height);
         property int fullScreenIndex: -1
         property int focusIndex: -1
         property int activeFocusIndex: -1
@@ -106,7 +106,8 @@ FocusScope {
             var column = columnFromIndex(index);
             var row = rowFromIndex(index);
 
-            if (column >= selectionLeft() && column < selectionRight() &&
+            if (get(index).visible &&
+                    column >= selectionLeft() && column < selectionRight() &&
                     row >= selectionTop() && row < selectionBottom()) {
                 return true;
             }
@@ -509,7 +510,21 @@ FocusScope {
         }
     }
 
-    Keys.onPressed: d.keyModifiers = event.modifiers
+    Keys.onPressed: {
+        d.keyModifiers = event.modifiers;
+
+        switch (event.key) {
+        case Qt.Key_Delete:
+            for (var i = 0; i < root.size.width * root.size.height; ++i) {
+                if (root.get(i).selected) {
+                    model.get(i).url = "";
+                    model.get(i).volume = 0;
+                    model.get(i).avFormatOptions = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
+                }
+            }
+            break;
+        }
+    }
     Keys.onReleased: d.keyModifiers = event.modifiers
 
     function get(index) {
