@@ -3,7 +3,7 @@
 #include <QQuickWindow>
 #include <QTranslator>
 
-#include "qmlav/src/qmlavplayer.h"
+#include "qmlavplayer.h"
 #include "context.h"
 #include "singleapplication.h"
 #include "context.h"

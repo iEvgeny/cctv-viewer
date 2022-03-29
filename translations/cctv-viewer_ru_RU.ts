@@ -266,7 +266,7 @@
 <context>
     <name>ViewportsLayout</name>
     <message>
-        <location filename="../src/ViewportsLayout.qml" line="261"/>
+        <location filename="../src/ViewportsLayout.qml" line="254"/>
         <source>F</source>
         <comment>Shortcut</comment>
         <translation>А</translation>

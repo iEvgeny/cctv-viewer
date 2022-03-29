@@ -68,8 +68,6 @@ endif()
 find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
 
-add_subdirectory(src/qmlav)
-
 file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -93,20 +91,23 @@ set(PROJ_FILES
     src/viewportslayoutmodel.cpp src/viewportslayoutmodel.h
     src/viewportslayoutscollectionmodel.cpp src/viewportslayoutscollectionmodel.h
     ${RESOURCES}
-    ${QMLAV_FILES}
     ${TS_FILES}
     )
 
 set(QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/imports" CACHE STRING "Additional import path used to resolve QML modules in Qt Creator's code model")
 
+add_subdirectory(src/qmlav)
+
 if (ANDROID)
-    add_library(cctv-viewer SHARED ${PROJ_FILES})
+    add_library(cctv-viewer SHARED ${PROJ_FILES} ${QMLAV_FILES})
 
     target_include_directories(cctv-viewer PRIVATE "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/include")
     target_link_directories(cctv-viewer PRIVATE "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/lib")
 else()
-    add_executable(cctv-viewer ${PROJ_FILES})
+    add_executable(cctv-viewer ${PROJ_FILES} ${QMLAV_FILES})
 endif()
+
+target_include_directories(cctv-viewer PRIVATE ${QMLAV_INCLUDE})
 
 target_compile_definitions(cctv-viewer
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
