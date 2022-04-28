@@ -21,15 +21,15 @@ FocusScope {
     implicitHeight: flickable.contentHeight
 
     property int state: SideBar.Compact
+    property int currentViewportIndex: Utils.currentLayout().focusIndex
 
     // Constants
     readonly property real compactWidth: 48
     readonly property real expandedWidth: 230
 
-    onFocusChanged: {
-        if (!focus && state === SideBar.Popup) {
-            state = SideBar.Compact;
-            delayOpenningTimer.stop();
+    onCurrentViewportIndexChanged: {
+        if (rootSideBar.currentViewportIndex < 0  && state === SideBar.Popup) {
+            rootSideBar.forceActiveFocus();
         }
     }
     Keys.onPressed: {
@@ -278,7 +278,10 @@ FocusScope {
 
                                             Layout.fillWidth: true
 
-                                            Keys.onEscapePressed: divisionTextField.cancel()
+                                            Keys.onEscapePressed: {
+                                                event.accepted = divisionTextField.visible;
+                                                divisionTextField.cancel();
+                                            }
                                             Keys.onPressed: {
                                                 if (event.key === Qt.Key_F2) {
                                                     divisionTextField.edit();
@@ -413,7 +416,7 @@ FocusScope {
                     SideBarItem {
                         objectName: "viewport"
                         icon: "qrc:/images/menu-viewport.svg"
-                        title: qsTr("Viewport%1").arg(Utils.currentLayout().focusIndex >= 0 ? qsTr(" #%1").arg(Utils.currentLayout().focusIndex + 1) : "")
+                        title: qsTr("Viewport%1").arg(currentViewportIndex >= 0 ? qsTr(" #%1").arg(currentViewportIndex + 1) : "")
 
                         Layout.fillWidth: true
 
@@ -424,7 +427,6 @@ FocusScope {
                             anchors.fill: parent
 
                             ToolTip {
-                                delay: Compact.toolTipDelay
                                 visible: !viewportLayout.enabled && viewportFrame.hovered
                                 text: qsTr("Select viewport!")
                                 anchors.centerIn: parent
@@ -433,32 +435,32 @@ FocusScope {
                             ColumnLayout {
                                 id: viewportLayout
 
-                                // Enabled only when one of the viewports is active.
-                                enabled: Utils.currentLayout().focusIndex >= 0
+                                // Enabled only when any of the viewports are active.
+                                enabled: rootSideBar.currentViewportIndex >= 0
                                 anchors.fill: parent
 
                                 TextField {
-                                    text: enabled ? Utils.currentModel().get(Utils.currentLayout().focusIndex).url : ""
+                                    text: enabled ? Utils.currentModel().get(currentViewportIndex).url : ""
                                     placeholderText: qsTr("Url")
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
 
-                                    onEditingFinished: Utils.currentModel().get(Utils.currentLayout().focusIndex).url = text
+                                    onEditingFinished: Utils.currentModel().get(currentViewportIndex).url = text
                                 }
 
                                 Button {
                                     text: qsTr("Mute")
-                                    enabled: Utils.currentLayout().focusIndex >= 0 ? Utils.currentLayout().get(Utils.currentLayout().focusIndex).hasAudio : false
-                                    highlighted: Utils.currentLayout().focusIndex >= 0 && Utils.currentModel().get(Utils.currentLayout().focusIndex).volume <= 0
+                                    enabled: currentViewportIndex >= 0 ? Utils.currentLayout().get(currentViewportIndex).hasAudio : false
+                                    highlighted: currentViewportIndex >= 0 && Utils.currentModel().get(currentViewportIndex).volume <= 0
 
                                     Layout.fillWidth: true
 
                                     onClicked: {
-                                        if (Utils.currentModel().get(Utils.currentLayout().focusIndex).volume > 0) {
-                                            Utils.currentModel().get(Utils.currentLayout().focusIndex).volume = 0;
+                                        if (Utils.currentModel().get(currentViewportIndex).volume > 0) {
+                                            Utils.currentModel().get(currentViewportIndex).volume = 0;
                                         } else {
-                                            Utils.currentModel().get(Utils.currentLayout().focusIndex).volume = 1;
+                                            Utils.currentModel().get(currentViewportIndex).volume = 1;
                                         }
                                     }
                                 }
@@ -474,7 +476,7 @@ FocusScope {
                                     }
 
                                     TextField {
-                                        text: enabled ? getOptionsString(Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions) : ""
+                                        text: enabled ? getOptionsString(Utils.currentModel().get(currentViewportIndex).avFormatOptions) : ""
                                         selectByMouse: true
 
                                         Layout.fillWidth: true
@@ -486,14 +488,14 @@ FocusScope {
                                             if (Object.keys(options).length == Object.keys(defaultAVFormatOptions).length) {
                                                 for (var key in options) {
                                                     if (defaultAVFormatOptions[key] === undefined || String(defaultAVFormatOptions[key]) !== String(options[key])) {
-                                                        Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = options;
+                                                        Utils.currentModel().get(currentViewportIndex).avFormatOptions = options;
                                                         return;
                                                     }
                                                 }
 
-                                                Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = {};
+                                                Utils.currentModel().get(currentViewportIndex).avFormatOptions = {};
                                             } else {
-                                                Utils.currentModel().get(Utils.currentLayout().focusIndex).avFormatOptions = options;
+                                                Utils.currentModel().get(currentViewportIndex).avFormatOptions = options;
                                             }
                                         }
 
@@ -518,8 +520,6 @@ FocusScope {
                             anchors.fill: parent
 
                             GridLayout {
-                                id: presetsLayout
-
                                 columns: 4
                                 anchors.fill: parent
 
@@ -531,7 +531,10 @@ FocusScope {
 
                                         property bool deleteMode: false
 
-                                        Keys.onEscapePressed: deleteMode = false
+                                        Keys.onEscapePressed: {
+                                            event.accepted = deleteMode;
+                                            deleteMode = false;
+                                        }
                                         Keys.onDeletePressed: deleteMode = true
 
                                         Layout.fillWidth: true

@@ -54,6 +54,8 @@ T.ToolTip {
     margins: 6
     padding: 6
 
+    delay: Compact.toolTipDelay
+    timeout: Compact.toolTipTimeout
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent | T.Popup.CloseOnReleaseOutsideParent
 
     contentItem: Text {

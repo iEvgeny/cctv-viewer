@@ -10,5 +10,5 @@ QtObject {
     readonly property real contentPadding: 10
 
     readonly property int toolTipDelay: 500
-    readonly property int toolTipTimeout: 5000
+    readonly property int toolTipTimeout: 3000
 }
