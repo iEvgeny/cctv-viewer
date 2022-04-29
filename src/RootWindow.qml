@@ -71,7 +71,9 @@ ApplicationWindow {
 
         property int currentIndex
         property string models
+        // TODO: Move to "View"
         property bool presetIndicator: true
+        // TODO: Move to "Viewport"
         property string defaultAVFormatOptions: JSON.stringify({
             "analyzeduration": 0, // 0 µs
             "probesize": 500000 // 500 KB
@@ -88,6 +90,15 @@ ApplicationWindow {
 
             return obj;
         }
+    }
+
+    Settings {
+        id: viewportSettings
+
+        fileName: Context.config.fileName
+        category: "Viewport"
+
+        property bool unmuteWhenFullScreen: false
     }
 
     Shortcut {

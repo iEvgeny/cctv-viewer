@@ -452,7 +452,7 @@ FocusScope {
                                 Button {
                                     text: qsTr("Mute")
                                     enabled: currentViewportIndex >= 0 ? Utils.currentLayout().get(currentViewportIndex).hasAudio : false
-                                    highlighted: currentViewportIndex >= 0 && Utils.currentModel().get(currentViewportIndex).volume <= 0
+                                    highlighted: !(currentViewportIndex >= 0 && Utils.currentModel().get(currentViewportIndex).volume > 0 || viewportSettings.unmuteWhenFullScreen && Utils.currentLayout().fullScreenIndex >= 0)
 
                                     Layout.fillWidth: true
 

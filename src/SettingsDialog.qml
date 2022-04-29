@@ -43,7 +43,7 @@ Dialog {
         }
 
         GroupBox {
-            title: qsTr("Viewports")
+            title: qsTr("View")
 
             Layout.fillWidth: true
 
@@ -54,6 +54,22 @@ Dialog {
                     id: presetIndicatorCheckBox
 
                     text: qsTr("Show preset indicator")
+                }
+            }
+        }
+
+        GroupBox {
+            title: qsTr("Viewport")
+
+            Layout.fillWidth: true
+
+            ColumnLayout {
+                width: parent.width
+
+                CheckBox {
+                    id: unmuteWhenFullScreenCheckBox
+
+                    text: qsTr("Unmute when the viewport is in full screen mode")
                 }
 
                 Label {
@@ -72,16 +88,14 @@ Dialog {
     }
 
     function loadSettings() {
-        // Single application
         singleApplicationCheckBox.checked = !generalSettings.singleApplication;
         
-        // Auto collapse sidebar option
         sidebarAutoCollapseCheckBox.checked = rootWindowSettings.sidebarAutoCollapse;
         
-        // Preset indicator
         presetIndicatorCheckBox.checked = layoutsCollectionSettings.presetIndicator;
 
-        // Default AVFormat options
+        unmuteWhenFullScreenCheckBox.checked = viewportSettings.unmuteWhenFullScreen;
+
         defaultAVFormatOptions.text = "";
         var options = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
         for (var key in options) {
@@ -93,16 +107,14 @@ Dialog {
     }
 
     function saveSettings() {
-        // Single application
         generalSettings.singleApplication = !singleApplicationCheckBox.checked;
         
-        // Auto collapse sidebar option
         rootWindowSettings.sidebarAutoCollapse = sidebarAutoCollapseCheckBox.checked;
         
-        // Preset indicator
         layoutsCollectionSettings.presetIndicator = presetIndicatorCheckBox.checked;
 
-        // Default AVFormat options
+        viewportSettings.unmuteWhenFullScreen = unmuteWhenFullScreenCheckBox.checked;
+
         layoutsCollectionSettings.defaultAVFormatOptions = JSON.stringify(Utils.parseOptions(defaultAVFormatOptions.text));
     }
 }

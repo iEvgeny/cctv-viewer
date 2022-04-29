@@ -88,10 +88,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Viewports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default AVFormat options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -101,6 +97,18 @@
     </message>
     <message>
         <source>Automatically collapse sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Viewport</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unmute when the viewport is in full screen mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
