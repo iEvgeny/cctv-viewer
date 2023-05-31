@@ -106,7 +106,7 @@ FocusScope {
             var column = columnFromIndex(index);
             var row = rowFromIndex(index);
 
-            if (get(index).visible &&
+            if (get(index) !== undefined && get(index).visible &&
                     column >= selectionLeft() && column < selectionRight() &&
                     row >= selectionTop() && row < selectionBottom()) {
                 return true;
