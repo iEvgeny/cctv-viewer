@@ -73,7 +73,7 @@ Dialog {
                 }
 
                 Label {
-                    text: qsTr("Default AVFormat options")
+                    text: qsTr("Default FFmpeg options")
                 }
 
                 TextField {

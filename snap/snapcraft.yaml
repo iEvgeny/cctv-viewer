@@ -52,6 +52,8 @@ parts:
       sed -i.bak -i -e 's|Icon=cctv-viewer|Icon=/usr/share/pixmaps/cctv-viewer.svg|g' cctv-viewer.desktop
     build-packages:
       - build-essential
+      - libva-dev
+      - libglx-dev
       - libavformat-dev
       - libavcodec-dev
       - libavutil-dev
@@ -61,7 +63,10 @@ parts:
       - qtdeclarative5-dev
       - qtmultimedia5-dev
       - qttools5-dev
+      - libgtest-dev
     stage-packages:
+      - libva
+      - libegl1
       - libslang2
       - libglu1-mesa
       - libavformat58

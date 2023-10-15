@@ -405,7 +405,7 @@ FocusScope {
                             color: root.color
                             source: viewport.url
                             volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
-                            avFormatOptions: viewport.avFormatOptions
+                            avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
                             anchors.fill: parent
                         }

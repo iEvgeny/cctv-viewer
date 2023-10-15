@@ -470,7 +470,7 @@ FocusScope {
                                     Layout.fillWidth: true
 
                                     Text {
-                                        text: qsTr("AVFormat options")
+                                        text: qsTr("FFmpeg options")
                                         color: "white"
                                         font.pointSize: rootWindow.font.pointSize * 1.05
                                     }

@@ -36,12 +36,12 @@ public:
     QVariantMap avFormatOptions() const { return m_avFormatOptions; }
 
 public slots:
-    Q_PROPERTY_WRITE_IMPL(QString, url, setUrl, urlChanged)
-    Q_PROPERTY_WRITE_IMPL(int, rowSpan, setRowSpan, rowSpanChanged)
-    Q_PROPERTY_WRITE_IMPL(int, columnSpan, setColumnSpan, columnSpanChanged)
-    Q_PROPERTY_WRITE_IMPL(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged)
-    Q_PROPERTY_WRITE_IMPL(QVariant, volume, setVolume, volumeChanged)
-    Q_PROPERTY_WRITE_IMPL(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged)
+    PROPERTY_WRITE_IMPL(QString, url, setUrl, urlChanged)
+    PROPERTY_WRITE_IMPL(int, rowSpan, setRowSpan, rowSpanChanged)
+    PROPERTY_WRITE_IMPL(int, columnSpan, setColumnSpan, columnSpanChanged)
+    PROPERTY_WRITE_IMPL(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged)
+    PROPERTY_WRITE_IMPL(QVariant, volume, setVolume, volumeChanged)
+    PROPERTY_WRITE_IMPL(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged)
 
 signals:
     void changed();

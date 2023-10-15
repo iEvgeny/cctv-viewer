@@ -4,27 +4,32 @@
 <context>
     <name>Context</name>
     <message>
-        <location filename="../src/context.cpp" line="12"/>
+        <location filename="../src/context.cpp" line="11"/>
         <source>Path to the config file.</source>
         <translation>Путь к файлу конфигурации.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="13"/>
+        <location filename="../src/context.cpp" line="12"/>
         <source>Index of the current preset.</source>
         <translation>Индекс текущего пресета.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="14"/>
+        <location filename="../src/context.cpp" line="13"/>
         <source>Force full-screen mode.</source>
         <translation>Принудительный полноэкранный режим.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="15"/>
+        <location filename="../src/context.cpp" line="14"/>
         <source>Kiosk mode functionality.</source>
         <translation>Функционал режима киоска.</translation>
     </message>
     <message>
-        <location filename="../src/context.cpp" line="36"/>
+        <location filename="../src/context.cpp" line="15"/>
+        <source>Log level [%1...%2].</source>
+        <translation>Уровень логгирования [%1...%2].</translation>
+    </message>
+    <message>
+        <location filename="../src/context.cpp" line="43"/>
         <source>CCTV Viewer - viewer and mounter video streams.</source>
         <translation>CCTV Viewer - просмотрщик и компоновщик видеопотоков.</translation>
     </message>
@@ -32,37 +37,37 @@
 <context>
     <name>Player</name>
     <message>
-        <location filename="../src/Player.qml" line="91"/>
+        <location filename="../src/Player.qml" line="93"/>
         <source>No media!</source>
         <translation>Нет медиаисточника!</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="94"/>
+        <location filename="../src/Player.qml" line="96"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="97"/>
+        <location filename="../src/Player.qml" line="99"/>
         <source>Loaded</source>
         <translation>Загружено</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="102"/>
+        <location filename="../src/Player.qml" line="104"/>
         <source>Stalled</source>
         <translation>Застопорено</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="107"/>
+        <location filename="../src/Player.qml" line="109"/>
         <source>End of media</source>
         <translation>Конец медиаисточника</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="110"/>
+        <location filename="../src/Player.qml" line="112"/>
         <source>Invalid media!</source>
         <translation>Недопустимый медиаисточник!</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="118"/>
+        <location filename="../src/Player.qml" line="120"/>
         <source>Buffering %1%</source>
         <translation>Буферизация %1%</translation>
     </message>
@@ -132,8 +137,12 @@
     </message>
     <message>
         <location filename="../src/SettingsDialog.qml" line="76"/>
+        <source>Default FFmpeg options</source>
+        <translation>Опции FFmpeg по умолчанию</translation>
+    </message>
+    <message>
         <source>Default AVFormat options</source>
-        <translation>Опции AVFormat по умолчанию</translation>
+        <translation type="vanished">Опции AVFormat по умолчанию</translation>
     </message>
 </context>
 <context>
@@ -200,6 +209,11 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="../src/SideBar.qml" line="473"/>
+        <source>FFmpeg options</source>
+        <translation>Опции FFmpeg</translation>
+    </message>
+    <message>
         <location filename="../src/SideBar.qml" line="558"/>
         <source>Press and hold to enter delete mode</source>
         <translation>Нажмите и удерживайте,
@@ -216,9 +230,8 @@
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="473"/>
         <source>AVFormat options</source>
-        <translation>Опции AVFormat</translation>
+        <translation type="vanished">Опции AVFormat</translation>
     </message>
     <message>
         <location filename="../src/SideBar.qml" line="515"/>

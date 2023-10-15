@@ -136,21 +136,21 @@ QQmlListProperty<ViewportsLayoutModel> ViewportsLayoutsCollectionModel::models()
 
 void ViewportsLayoutsCollectionModel::appendModel(QQmlListProperty<ViewportsLayoutModel> *list, ViewportsLayoutModel *p)
 {
-    reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->append(p);
+    reinterpret_cast<ViewportsLayoutsCollectionModel *>(list->data)->append(p);
 }
 
 int ViewportsLayoutsCollectionModel::modelsCount(QQmlListProperty<ViewportsLayoutModel> *list)
 {
-    return reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->count();
+    return reinterpret_cast<ViewportsLayoutsCollectionModel *>(list->data)->count();
 }
 
 ViewportsLayoutModel *ViewportsLayoutsCollectionModel::model(QQmlListProperty<ViewportsLayoutModel> *list, int index)
 {
-    QObject *obj = reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->get(index);
-    return reinterpret_cast<ViewportsLayoutModel*>(obj);
+    QObject *obj = reinterpret_cast<ViewportsLayoutsCollectionModel *>(list->data)->get(index);
+    return reinterpret_cast<ViewportsLayoutModel *>(obj);
 }
 
 void ViewportsLayoutsCollectionModel::clearModels(QQmlListProperty<ViewportsLayoutModel> *list)
 {
-    reinterpret_cast<ViewportsLayoutsCollectionModel*>(list->data)->clear();
+    reinterpret_cast<ViewportsLayoutsCollectionModel *>(list->data)->clear();
 }

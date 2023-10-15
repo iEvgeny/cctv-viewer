@@ -7,7 +7,8 @@ FocusScope {
     id: root
 
     property string color: "black"
-    property var avFormatOptions: ({})
+
+    property var avOptions: ({})
 
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
@@ -77,12 +78,13 @@ FocusScope {
 
             autoLoad: false
 
-            avFormatOptions: {
-                var avFormatOptions = root.avFormatOptions;
+            avOptions: {
+                var avOptions = root.avOptions;
 
-                Object.assignDefault(avFormatOptions, layoutsCollectionSettings.toJSValue("defaultAVFormatOptions"));
+                // BUG: Без этого кода значения по умолчанию не устанавливаются. Это не должно происходить в коде плеера!
+                Object.assignDefault(avOptions, layoutsCollectionSettings.toJSValue("defaultAVFormatOptions"));
 
-                return avFormatOptions;
+                return avOptions;
             }
 
             onStatusChanged: {
