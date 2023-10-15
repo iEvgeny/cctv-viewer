@@ -49,7 +49,6 @@ add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 #endif()
 
 set(QT_LINK_DEPENDENCIES Core Quick Multimedia)
-set(FFMPEG_LINK_DEPENDENCIES avformat avcodec avutil swscale swresample avdevice)
 
 if (ANDROID)
     list(APPEND QT_LINK_DEPENDENCIES Svg)
@@ -115,7 +114,7 @@ target_compile_definitions(cctv-viewer
 foreach (ITEM ${QT_LINK_DEPENDENCIES})
     target_link_libraries(cctv-viewer PRIVATE Qt${QT_VERSION_MAJOR}::${ITEM})
 endforeach()
-target_link_libraries(cctv-viewer PRIVATE ${FFMPEG_LINK_DEPENDENCIES})
+target_link_libraries(cctv-viewer PRIVATE ${QMLAV_LINK_DEPENDENCIES})
 
 set_directory_properties(PROPERTIES CLEAN_NO_CUSTOM true)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION "${CMAKE_SOURCE_DIR}/translations")

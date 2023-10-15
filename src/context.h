@@ -27,7 +27,7 @@ private:
 
 private:
     inline static Config *m_config;
-    inline static QCommandLineParser m_commandLineParser{};
+    inline static QCommandLineParser m_commandLineParser;
 };
 
 #endif // CONTEXT_H

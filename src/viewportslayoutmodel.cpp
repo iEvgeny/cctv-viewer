@@ -140,7 +140,7 @@ normalize:
                 for (int i = 0; i < m_items.size(); ++i) {
                     if (item == m_items.at(i)) {
                         QModelIndex index = createIndex(i, 0);
-                        emit reinterpret_cast<ViewportsLayoutModel*>(this)->dataChanged(index, index);
+                        emit reinterpret_cast<ViewportsLayoutModel *>(this)->dataChanged(index, index);
                     }
                 }
             });

@@ -23,6 +23,10 @@
         <source>Kiosk mode functionality.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log level [%1...%2].</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Player</name>
@@ -88,10 +92,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Default AVFormat options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show preset indicator</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,6 +109,10 @@
     </message>
     <message>
         <source>Unmute when the viewport is in full screen mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default FFmpeg options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -163,10 +167,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>AVFormat options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Presets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -196,6 +196,10 @@
     </message>
     <message>
         <source>Press and hold to exit delete mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FFmpeg options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
