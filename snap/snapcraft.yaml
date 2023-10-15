@@ -65,7 +65,7 @@ parts:
       - qttools5-dev
       - libgtest-dev
     stage-packages:
-      - libva
+      - libva2
       - libegl1
       - libslang2
       - libglu1-mesa
