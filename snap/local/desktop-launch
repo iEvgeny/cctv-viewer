@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+
+export QT_PLUGIN_PATH="$SNAP/usr/lib/$ARCH_TRIPLET/qt5/plugins"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$QT_PLUGIN_PATH/platforms"
+export QML2_IMPORT_PATH="$SNAP/usr/lib/$ARCH_TRIPLET/qt5/qml"
+
+export XCURSOR_PATH="$SNAP/share/icons" # Fix ugly cursor (Requires "gtk-common-themes" interface)
+export XKB_CONFIG_ROOT="$SNAP/usr/share/X11/xkb"
+
+export XDG_CACHE_HOME="$SNAP_USER_COMMON/.cache"
+export XDG_CONFIG_HOME="$SNAP_USER_DATA/.config"
+export XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:$SNAP/etc/xdg"
+export XDG_DATA_DIRS="$XDG_DATA_DIRS:$SNAP/usr/local/share:$SNAP/usr/share"
+
+if [[ -n "$XDG_RUNTIME_DIR" ]]; then
+    export PULSE_SERVER="unix:$XDG_RUNTIME_DIR/../pulse/native"
+fi
+
+exec "$@"

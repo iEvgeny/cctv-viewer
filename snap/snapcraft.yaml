@@ -1,49 +1,125 @@
 name: cctv-viewer
-version: '0.1.8+git'
+version: '0.1.9+git'
 summary: Viewer and mounter video streams
 description: |
   CCTV Viewer - a simple application for simultaneously viewing multiple
-  video streams. Designed for easy grid-based layout video streaming.
-  Based on QtAV and ffmpeg.
+  video streams. Designed for high performance and low latency.
+  Based on ffmpeg.
 
 icon: images/cctv-viewer.svg
 license: GPL-3.0
 
 grade: stable
 confinement: strict
-base: core20
+base: core22
 compression: lzo
 
 architectures:
   - build-on: amd64
   - build-on: arm64
   - build-on: armhf
-  #- build-on: i386 # Not supported by core20
+  #- build-on: i386 # Not supported since core20
   - build-on: ppc64el
   - build-on: s390x
 
+environment:
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET
+
+plugs:
+  graphics-core22:
+    interface: content
+    target: $SNAP/graphics
+    default-provider: mesa-core22
+  # Support for common GTK themes
+  # https://forum.snapcraft.io/t/how-to-use-the-system-gtk-theme-via-the-gtk-common-themes-snap/6235
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/share/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/share/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/share/sounds
+    default-provider: gtk-common-themes
+
+layout:
+  /usr/share/libdrm:
+    bind: $SNAP/graphics/libdrm
+  /usr/share/drirc.d:
+    symlink: $SNAP/graphics/drirc.d
+  /usr/share/X11/XErrorDB:
+    symlink: $SNAP/graphics/X11/XErrorDB
+  /usr/share/X11/locale:
+    symlink: $SNAP/graphics/X11/locale
+
 apps:
   cctv-viewer:
-    command: bin/desktop-launch $SNAP/usr/bin/cctv-viewer
+    command-chain:
+      - bin/graphics-core22-wrapper
+      - bin/desktop-launch
+    command: usr/bin/cctv-viewer
     desktop: usr/share/applications/cctv-viewer.desktop
     plugs:
-      - home
+      - audio-playback
+      - camera
       - desktop
       - desktop-legacy
-      - x11
-      - wayland
-      - opengl
-      - audio-playback
-      - unity7  # Possibly unneeded
-      - removable-media
+      - gsettings
+      - home
       - network
-      - avahi-control
+      - opengl
+      - removable-media
       - screen-inhibit-control
-      - camera
+      - unity7 # Possibly unneeded
+      - wayland
+      - x11
 
 parts:
+  # https://mir-server.io/docs/the-graphics-core22-snap-interface
+  graphics-core22:
+    after: [cctv-viewer]
+    plugin: dump
+    source: https://github.com/MirServer/graphics-core22.git
+    override-prime: |
+      craftctl default
+      ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+    prime:
+    - bin/graphics-core22-wrapper
+
+  desktop-qt5:
+    plugin: dump
+    source: snap/local
+    stage-packages:
+      - libxkbcommon0
+      - fonts-ubuntu
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      #- libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5svg5 # For loading icon themes which are svg
+      - locales-all
+      - xdg-user-dirs
+      - fcitx-frontend-qt5
+    organize:
+      desktop-launch: bin/
+
+  qt5-gtk-platform:
+    plugin: nil
+    stage-packages:
+      - qt5-gtk-platformtheme
+
+  qt5-kde-platform:
+    plugin: nil
+    stage-packages:
+      - plasma-integration # KDE Plasma Keyboard Shortcuts support
+
   cctv-viewer:
-    after: [desktop-qt5]
     plugin: cmake
     source: .
     override-pull: |
@@ -65,19 +141,25 @@ parts:
       - qttools5-dev
       - libgtest-dev
     stage-packages:
-      - libva2
-      - libegl1
-      - libslang2
-      - libglu1-mesa
-      - libavformat58
+      # Debian package dependencies
       - libavcodec58
-      - libavutil56
-      - libswscale5
-      - libswresample3
       - libavdevice58
+      - libavformat58
+      - libavutil56
+      - libc6
+      - libgcc-s1
+      - libgl1
+      - libqt5core5a
+      - libqt5gui5 # libqt5gui5-gles
       - libqt5multimedia5
+      - libqt5qml5
+      - libstdc++6
+      - libswresample3
+      - libswscale5
+      - libva-x11-2
+      - libva2
+      - libx11-6
       - libqt5multimedia5-plugins
-      - libqt5multimediaquick5
       - qtwayland5
       - qml-module-qtquick-layouts
       - qml-module-qtqml-models2
@@ -87,28 +169,7 @@ parts:
       - qml-module-qtquick-dialogs
       - qml-module-qt-labs-settings
       - qml-module-qtmultimedia
-
-  # Remote part for support of various desktop technologies
-  # Refer: https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
-  desktop-qt5:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-depth: 1
-    source-subdir: qt
-    plugin: make
-    make-parameters: ["FLAVOR=qt5"]
-    build-packages:
-      - qtbase5-dev
-      - dpkg-dev
-    stage-packages:
-      - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
-      - shared-mime-info
-      - libqt5gui5
-      - libgdk-pixbuf2.0-0
-      - libqt5svg5 # for loading icon themes which are svg
-      - try: [appmenu-qt5] # not available on core18
-      - locales-all
+    organize:
+      usr/lib/*-linux-gnu/blas/*: usr/lib/
+      usr/lib/*-linux-gnu/lapack/*: usr/lib/
+      usr/lib/*-linux-gnu/pulseaudio/*: usr/lib/
