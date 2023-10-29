@@ -1,13 +1,18 @@
 name: cctv-viewer
 version: '0.1.9+git'
+license: GPL-3.0
+
+icon: images/cctv-viewer.svg
+title: CCTV Viewer
 summary: Viewer and mounter video streams
 description: |
   CCTV Viewer - a simple application for simultaneously viewing multiple
   video streams. Designed for high performance and low latency.
   Based on ffmpeg.
-
-icon: images/cctv-viewer.svg
-license: GPL-3.0
+website: https://cctv-viewer.org
+contact: mailto:me@vragam.net
+issues: https://github.com/iEvgeny/cctv-viewer/issues
+source-code: https://github.com/iEvgeny/cctv-viewer
 
 grade: stable
 confinement: strict
