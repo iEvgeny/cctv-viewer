@@ -1,3 +1,11 @@
+cctv-viewer (0.1.9-0) jammy; urgency=medium
+
+  * Deep refactoring
+  * Hardware acceleration video decoding
+  * Experimental Zero-copy rendering for X11 systems
+
+ -- Evgeny S Maksimov <admin@vragam.net>  Mon, 30 Oct 2023 21:01:50 +0300
+
 cctv-viewer (0.1.8-0) focal; urgency=medium
 
   * Reimplement SideBar

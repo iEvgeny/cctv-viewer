@@ -35,3 +35,5 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
          qml-module-qt-labs-settings,
          qml-module-qtmultimedia
 Description: CCTV Viewer - viewer and mounter video streams.
+ A simple application for simultaneously viewing multiple video streams.
+ Designed for high performance and low latency. Based on ffmpeg.
