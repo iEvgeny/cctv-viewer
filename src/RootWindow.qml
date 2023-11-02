@@ -118,6 +118,14 @@ ApplicationWindow {
             }
         }
     }
+    Shortcut {
+        sequence: "Alt+Right"
+        onActivated: stackLayout.currentIndex = Math.min(stackLayout.currentIndex + 1, stackLayout.count - 1)
+    }
+    Shortcut {
+        sequence: "Alt+Left"
+        onActivated: stackLayout.currentIndex = Math.max(stackLayout.currentIndex - 1, 0)
+    }
     // Shortcuts for the first 9 presets (Alt + 1, Alt + 2, ..., Alt + 9)
     Repeater {
         model: Context.config.kioskMode ? 0 : Math.min(stackLayout.count, 9)
