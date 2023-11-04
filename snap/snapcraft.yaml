@@ -173,6 +173,6 @@ parts:
       - qml-module-qt-labs-settings
       - qml-module-qtmultimedia
     organize:
-      usr/lib/*-linux-gnu/blas/*: usr/lib/
-      usr/lib/*-linux-gnu/lapack/*: usr/lib/
-      usr/lib/*-linux-gnu/pulseaudio/*: usr/lib/
+      usr/lib/*-linux-*/blas/*: usr/lib/
+      usr/lib/*-linux-*/lapack/*: usr/lib/
+      usr/lib/*-linux-*/pulseaudio/*: usr/lib/
