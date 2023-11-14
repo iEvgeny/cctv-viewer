@@ -138,8 +138,13 @@ ApplicationWindow {
         }
     }
     Shortcut {
-        sequence: StandardKey.FullScreen
-        onActivated: Context.config.fullScreen = !Context.config.fullScreen
+        sequences: ["F11", StandardKey.FullScreen]
+        onActivated: toggleFullScreen()
+        onActivatedAmbiguously: toggleFullScreen()
+
+        function toggleFullScreen() {
+            Context.config.fullScreen = !Context.config.fullScreen;
+        }
     }
     Shortcut {
         sequence: StandardKey.Quit
