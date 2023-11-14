@@ -9,7 +9,7 @@ function currentLayout() {
 
 function parseOptions(str) {
     var obj = {};
-    var regexp = /-([a-z0-9_]+)\s([a-z0-9_.]+)/g;
+    var regexp = /-([a-z0-9_:]+)\s([a-z0-9_.]+)/g;
     var pairs = str.match(regexp);
 
     if (Array.isArray(pairs)) {
