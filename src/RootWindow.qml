@@ -101,6 +101,16 @@ ApplicationWindow {
         property bool unmuteWhenFullScreen: false
     }
 
+    Settings {
+        id: presetsSettings
+
+        fileName: Context.config.fileName
+        category: "Presets"
+
+        property bool carouselRunning: false
+        property int carouselInterval: 15000
+    }
+
     Shortcut {
         sequence: "M"
         onActivated: {
@@ -215,6 +225,19 @@ ApplicationWindow {
                 ViewportsLayout {
                     model: layoutModel
                     focus: true
+                }
+            }
+
+            Timer {
+                id: carouselTimer
+
+                repeat: true
+                interval: presetsSettings.carouselInterval
+                running: presetsSettings.carouselRunning
+
+                onTriggered: {
+                    // Scrolling carousel to right
+                    (stackLayout.currentIndex < layoutsCollectionModel.count - 1) ? ++stackLayout.currentIndex : stackLayout.currentIndex = 0
                 }
             }
         }

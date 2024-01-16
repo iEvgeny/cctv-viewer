@@ -88,7 +88,7 @@
     </message>
     <message>
         <location filename="../src/RootWindow.qml" line="88"/>
-        <location filename="../src/RootWindow.qml" line="178"/>
+        <location filename="../src/RootWindow.qml" line="193"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
@@ -141,8 +141,14 @@
         <translation>Опции FFmpeg по умолчанию</translation>
     </message>
     <message>
-        <source>Default AVFormat options</source>
-        <translation type="vanished">Опции AVFormat по умолчанию</translation>
+        <location filename="../src/SettingsDialog.qml" line="90"/>
+        <source>Presets</source>
+        <translation>Пресеты</translation>
+    </message>
+    <message>
+        <location filename="../src/SettingsDialog.qml" line="103"/>
+        <source>Run presets carousel with interval (sec.):</source>
+        <translation>Запустить карусель пресетов с интервалом (сек.):</translation>
     </message>
 </context>
 <context>
@@ -228,10 +234,6 @@
         <location filename="../src/SideBar.qml" line="453"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
-    </message>
-    <message>
-        <source>AVFormat options</source>
-        <translation type="vanished">Опции AVFormat</translation>
     </message>
     <message>
         <location filename="../src/SideBar.qml" line="515"/>

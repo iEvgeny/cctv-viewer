@@ -115,6 +115,14 @@
         <source>Default FFmpeg options</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Presets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run presets carousel with interval (sec.):</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBar</name>
