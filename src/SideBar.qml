@@ -158,9 +158,8 @@ FocusScope {
                             anchors.fill: parent
 
                             Text {
-                                text: String("<p><a href=\"https://cctv-viewer.org\" style=\"color: white; text-decoration: none;\">CCTV Viewer: v%1</a></p>
-                                              <p><a href=\"https://liberapay.com/iEvgeny/donate\"><img src=\"qrc:/images/liberapay.svg\" width=\"90\"></a>
-                                              <a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"90\"></a></p>").arg(Qt.application.version)
+                                text: String("<a href=\"https://cctv-viewer.org\" style=\"color: white; text-decoration: none;\">CCTV Viewer: v%1</a><br/>
+                                              <a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>").arg(Qt.application.version)
                                 color: "white"
                                 font.pointSize: rootWindow.font.pointSize * 1.05
                                 textFormat: Text.RichText
