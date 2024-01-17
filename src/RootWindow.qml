@@ -148,6 +148,10 @@ ApplicationWindow {
         }
     }
     Shortcut {
+        sequence: "Space"
+        onActivated: carouselTimer.paused = !carouselTimer.paused
+    }
+    Shortcut {
         sequences: ["F11", StandardKey.FullScreen]
         onActivated: toggleFullScreen()
         onActivatedAmbiguously: toggleFullScreen()
@@ -233,7 +237,9 @@ ApplicationWindow {
 
                 repeat: true
                 interval: presetsSettings.carouselInterval
-                running: presetsSettings.carouselRunning
+                running: presetsSettings.carouselRunning && !paused
+
+                property bool paused: false
 
                 onTriggered: {
                     // Scrolling carousel to right
