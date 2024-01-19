@@ -18,7 +18,7 @@ void registerQmlTypes()
 
         return new SingleApplication();
     });
-    qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Core", 1, 0, "Context",
+    qmlRegisterSingletonType<Context>("CCTV_Viewer.Core", 1, 0, "Context",
                                                 [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         Q_UNUSED(engine)
         Q_UNUSED(scriptEngine)
