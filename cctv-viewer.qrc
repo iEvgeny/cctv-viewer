@@ -29,5 +29,8 @@
         <file alias="Compact/CheckBox.qml">src/imports/CCTV_Viewer/Themes/Compact/CheckBox.qml</file>
         <file alias="Compact/ToolTip.qml">src/imports/CCTV_Viewer/Themes/Compact/ToolTip.qml</file>
         <file>images/github.svg</file>
+        <file>src/PresetIndicator.qml</file>
+        <file>images/play.svg</file>
+        <file>images/pause.svg</file>
     </qresource>
 </RCC>

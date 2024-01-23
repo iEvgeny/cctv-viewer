@@ -220,7 +220,12 @@ ApplicationWindow {
             currentIndex: -1
             anchors.fill: parent
 
-            onCurrentIndexChanged: layoutsCollectionSettings.currentIndex = currentIndex
+            onCurrentIndexChanged: {
+                layoutsCollectionSettings.currentIndex = currentIndex;
+                if (carouselTimer.running) {
+                    carouselTimer.restart();
+                }
+            }
 
             Repeater {
                 id: swipeViewRepeater
@@ -243,20 +248,25 @@ ApplicationWindow {
 
                 onTriggered: {
                     // Scrolling carousel to right
-                    (stackLayout.currentIndex < layoutsCollectionModel.count - 1) ? ++stackLayout.currentIndex : stackLayout.currentIndex = 0
+                    if (stackLayout.currentIndex < layoutsCollectionModel.count - 1) {
+                        ++stackLayout.currentIndex
+                    } else {
+                        stackLayout.currentIndex = 0;
+                    }
                 }
             }
         }
 
-        PageIndicator {
-            interactive: true
+        PresetIndicator {
             visible: layoutsCollectionSettings.presetIndicator && stackLayout.count > 1
-            currentIndex: stackLayout.currentIndex
             count: stackLayout.count
+            currentIndex: stackLayout.currentIndex
+            carouselState: presetsSettings.carouselRunning ? (carouselTimer.paused ? "paused" : "running") : "disabled"
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
 
             onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
+            onCarouselStateChanged: carouselTimer.paused = (carouselState === "running" ? false : true)
         }
     }
 

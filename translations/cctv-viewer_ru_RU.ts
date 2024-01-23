@@ -88,7 +88,7 @@
     </message>
     <message>
         <location filename="../src/RootWindow.qml" line="88"/>
-        <location filename="../src/RootWindow.qml" line="193"/>
+        <location filename="../src/RootWindow.qml" line="197"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
