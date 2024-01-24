@@ -149,6 +149,7 @@ ApplicationWindow {
     }
     Shortcut {
         sequence: "Space"
+        enabled: presetsSettings.carouselRunning
         onActivated: carouselTimer.paused = !carouselTimer.paused
     }
     Shortcut {
