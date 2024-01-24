@@ -267,7 +267,7 @@ ApplicationWindow {
             anchors.horizontalCenter: parent.horizontalCenter
 
             onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
-            onCarouselStateChanged: carouselTimer.paused = (carouselState === "running" ? false : true)
+            onCarouselControlClicked: carouselTimer.paused = (carouselState === "running" ? true : false)
         }
     }
 

@@ -1,4 +1,3 @@
-import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 
@@ -8,13 +7,7 @@ PageIndicator {
     interactive: true
 
     property string carouselState: "disabled"
-    Binding on carouselState {
-        id: carouselStateUpdater
-
-        when: false
-        // restoreMode: Binding.RestoreBinding // Qt6
-        function set(newValue) { value = newValue; when = true; when = false; }
-    }
+    signal carouselControlClicked()
 
     delegate: Control {
         implicitWidth: 12
@@ -34,7 +27,7 @@ PageIndicator {
             }
 
             Rectangle {
-                id: defaultView
+                id: defaultControl
                 visible: root.carouselState === "disabled" || root.currentIndex !== index
                 radius: width / 2
                 color: root.palette.dark
@@ -42,15 +35,15 @@ PageIndicator {
             }
 
             Image {
-                visible: !defaultView.visible
+                id: carouselControl
+                visible: !defaultControl.visible
                 source: root.carouselState === "running" ? "qrc:/images/pause.svg" : "qrc:/images/play.svg"
                 anchors.fill: parent
 
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
-
-                    onClicked: carouselStateUpdater.set(root.carouselState === "running" ? "paused" : "running")
+                    onClicked: root.carouselControlClicked()
                 }
             }
         }
