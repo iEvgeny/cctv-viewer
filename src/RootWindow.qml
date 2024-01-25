@@ -262,12 +262,12 @@ ApplicationWindow {
             visible: layoutsCollectionSettings.presetIndicator && stackLayout.count > 1
             count: stackLayout.count
             currentIndex: stackLayout.currentIndex
-            carouselState: presetsSettings.carouselRunning ? (carouselTimer.paused ? "paused" : "running") : "disabled"
+            carouselState: presetsSettings.carouselRunning ? (carouselTimer.paused ? PresetIndicator.Paused : PresetIndicator.Running) : PresetIndicator.Disabled
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
 
             onCurrentIndexChanged: stackLayout.currentIndex = currentIndex
-            onCarouselControlClicked: carouselTimer.paused = (carouselState === "running" ? true : false)
+            onCarouselControlClicked: carouselTimer.paused = (carouselState === PresetIndicator.Running ? true : false)
         }
     }
 

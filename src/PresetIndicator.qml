@@ -4,9 +4,15 @@ import QtQuick.Controls 2.12
 PageIndicator {
     id: root
 
+    enum CarouselState {
+        Disabled,
+        Running,
+        Paused
+    }
+
     interactive: true
 
-    property string carouselState: "disabled"
+    property int carouselState: PresetIndicator.Disabled
     signal carouselControlClicked()
 
     delegate: Control {
@@ -28,7 +34,7 @@ PageIndicator {
 
             Rectangle {
                 id: defaultControl
-                visible: root.carouselState === "disabled" || root.currentIndex !== index
+                visible: root.carouselState === PresetIndicator.Disabled || root.currentIndex !== index
                 radius: width / 2
                 color: root.palette.dark
                 anchors.fill: parent
@@ -37,11 +43,10 @@ PageIndicator {
             Image {
                 id: carouselControl
                 visible: !defaultControl.visible
-                source: root.carouselState === "running" ? "qrc:/images/pause.svg" : "qrc:/images/play.svg"
+                source: root.carouselState === PresetIndicator.Running ? "qrc:/images/pause.svg" : "qrc:/images/play.svg"
                 anchors.fill: parent
 
                 MouseArea {
-                    id: mouseArea
                     anchors.fill: parent
                     onClicked: root.carouselControlClicked()
                 }
