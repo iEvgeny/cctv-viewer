@@ -64,8 +64,8 @@ if (ANDROID)
         )
 endif()
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} LinguistTools REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} QuickCompiler LinguistTools REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} 5.12 COMPONENTS ${QT_LINK_DEPENDENCIES} QuickCompiler LinguistTools REQUIRED)
 
 file(GLOB TS_FILES "${CMAKE_SOURCE_DIR}/translations/*.ts")
 
@@ -76,7 +76,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         qt5_add_resources(RESOURCES cctv-viewer.qrc)
     endif()
 else()
-    find_package(Qt5QuickCompiler REQUIRED)
     qtquick_compiler_add_resources(RESOURCES cctv-viewer.qrc)
 endif()
 
