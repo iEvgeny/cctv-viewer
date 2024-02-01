@@ -32,6 +32,33 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(
+        -Werror
+        -pedantic-errors
+
+        -Wall
+        -Wextra
+        -Wpedantic
+
+        -Wcast-align
+        -Wcast-qual
+        # -Wconversion
+        -Wctor-dtor-privacy
+        -Wduplicated-branches
+        -Wduplicated-cond
+        -Wextra-semi
+        -Wfloat-equal
+        -Wlogical-op
+        -Wnon-virtual-dtor
+        -Wold-style-cast
+        # -Woverloaded-virtual
+        -Wredundant-decls
+        # -Wsign-conversion
+        # -Wsign-promo
+    )
+endif()
+
 # Disable use of C++ API deprecated in Qt 5.15
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
