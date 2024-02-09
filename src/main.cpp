@@ -44,25 +44,6 @@ int main(int argc, char *argv[])
 #endif
 #if defined(ORG_NAME)
     QCoreApplication::setOrganizationName(QLatin1String(ORG_NAME));
-
-    // Migration to new org. name
-    if (QSettings().allKeys().size() == 0) {
-        QStringList keys;
-        QVariantMap values;
-        QCoreApplication::setOrganizationName(QLatin1String("T171RU"));
-
-        keys = QSettings().allKeys();
-        for (int i = 0; i < keys.size(); ++i) {
-            values.insert(keys[i], QSettings().value(keys[i]));
-        }
-
-        QCoreApplication::setOrganizationName(QLatin1String(ORG_NAME));
-
-        for (int i = 0; i < keys.size(); ++i) {
-            QSettings().setValue(keys[i], values[keys[i]]);
-        }
-    }
-
 #endif
 #if defined(ORG_DOMAIN)
     QCoreApplication::setOrganizationDomain(QLatin1String(ORG_DOMAIN));
