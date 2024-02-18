@@ -12,7 +12,7 @@ class Context : public QObject
     Q_PROPERTY(Config *config READ config NOTIFY configChanged)
 
 public:
-    explicit Context(QObject *parent = nullptr) : QObject(parent) { }
+    Context(QObject *parent = nullptr) : QObject(parent) { }
     virtual ~Context();
 
     static void init();

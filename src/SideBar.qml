@@ -169,26 +169,12 @@ FocusScope {
 
                                 onLinkHovered: {
                                     if (link.length > 0) {
-                                        cursorShapeArea.setCursor(Qt.PointingHandCursor);
+                                        cursorShape.set(Qt.PointingHandCursor);
                                     } else {
-                                        cursorShapeArea.unsetCursor();
+                                        cursorShape.reset();
                                     }
                                 }
                                 onLinkActivated: Qt.openUrlExternally(link)
-
-                                MouseArea {
-                                    id: cursorShapeArea
-
-                                    acceptedButtons: Qt.NoButton
-                                    anchors.fill: parent
-
-                                    function setCursor(cursorShape) {
-                                        cursorShapeArea.cursorShape = cursorShape;
-                                    }
-                                    function unsetCursor() {
-                                        cursorShapeArea.cursorShape = Qt.ArrowCursor;
-                                    }
-                                }
                             }
                         }
                     }

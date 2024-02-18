@@ -25,8 +25,8 @@ public:
     };
     Q_ENUM(LogLevel)
 
-    explicit Config(QObject *parent = nullptr);
-    explicit Config(const QString &fileName, QObject *parent = nullptr);
+    Config(QObject *parent = nullptr);
+    Config(const QString &fileName, QObject *parent = nullptr);
 
     QString fileName() const { return m_fileName; }
     int currentIndex() const { return m_currentIndex; }

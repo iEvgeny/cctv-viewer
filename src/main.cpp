@@ -5,31 +5,30 @@
 
 #include "qmlavplayer.h"
 #include "context.h"
+#include "eventfilter.h"
 #include "singleapplication.h"
 #include "context.h"
 #include "viewportslayoutscollectionmodel.h"
 
 void registerQmlTypes()
 {
-    qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Utils", 1, 0, "SingleApplication",
-                                                [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-        Q_UNUSED(engine)
-        Q_UNUSED(scriptEngine)
-
-        return new SingleApplication();
-    });
     qmlRegisterSingletonType<Context>("CCTV_Viewer.Core", 1, 0, "Context",
-                                                [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-        Q_UNUSED(engine)
-        Q_UNUSED(scriptEngine)
-
+                                      []([[maybe_unused]] QQmlEngine *engine,
+                                         [[maybe_unused]] QJSEngine *scriptEngine) -> QObject * {
         return new Context();
+    });
+    qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Utils", 1, 0, "SingleApplication",
+                                                []([[maybe_unused]] QQmlEngine *engine,
+                                                   [[maybe_unused]] QJSEngine *scriptEngine) -> QObject * {
+        return new SingleApplication();
     });
 
     qmlRegisterType<QmlAVPlayer>("CCTV_Viewer.Multimedia", 1, 0, "QmlAVPlayer");
     qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
     qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
     qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
+
+    qmlRegisterType<EventFilter>("CCTV_Viewer.Utils", 1, 0, "EventFilter");
 }
 
 int main(int argc, char *argv[])

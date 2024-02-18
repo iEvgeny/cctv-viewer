@@ -32,5 +32,6 @@
         <file>src/PresetIndicator.qml</file>
         <file>images/play.svg</file>
         <file>images/pause.svg</file>
+        <file>src/CursorShape.qml</file>
     </qresource>
 </RCC>

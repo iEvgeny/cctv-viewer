@@ -123,6 +123,10 @@
         <source>Run presets carousel with interval (sec.):</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Hide cursor in full screen mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBar</name>

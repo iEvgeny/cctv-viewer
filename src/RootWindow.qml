@@ -75,8 +75,8 @@ ApplicationWindow {
         property bool presetIndicator: true
         // TODO: Move to "Viewport"
         property string defaultAVFormatOptions: JSON.stringify({
-            "analyzeduration": 0, // 0 µs
-            "probesize": 500000 // 500 KB
+            "analyzeduration": 0,  // 0 µs
+            "probesize": 500000  // 500 KB
         })
 
         function toJSValue(key) {
@@ -90,6 +90,15 @@ ApplicationWindow {
 
             return obj;
         }
+    }
+
+    Settings {
+        id: viewSettings
+
+        fileName: Context.config.fileName
+        category: "View"
+
+        property bool hideCursorWhenFullScreen: true
     }
 
     Settings {
@@ -108,7 +117,7 @@ ApplicationWindow {
         category: "Presets"
 
         property bool carouselRunning: false
-        property int carouselInterval: 15000
+        property int carouselInterval: 15000  // ms
     }
 
     Shortcut {
@@ -308,5 +317,12 @@ ApplicationWindow {
 
     SettingsDialog {
         id: settingsDialog
+    }
+
+    CursorShape {
+        id: cursorShape
+
+        hideTimeout: (!settingsDialog.visible && Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen) ? 3000 : 0
+        anchors.fill: parent
     }
 }

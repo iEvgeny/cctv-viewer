@@ -55,6 +55,12 @@ Dialog {
 
                     text: qsTr("Show preset indicator")
                 }
+
+                CheckBox {
+                    id: hideCursorWhenFullScreenCheckBox
+
+                    text: qsTr("Hide cursor in full screen mode")
+                }
             }
         }
 
@@ -141,6 +147,8 @@ Dialog {
         
         presetIndicatorCheckBox.checked = layoutsCollectionSettings.presetIndicator;
 
+        hideCursorWhenFullScreenCheckBox.checked = viewSettings.hideCursorWhenFullScreen;
+
         unmuteWhenFullScreenCheckBox.checked = viewportSettings.unmuteWhenFullScreen;
 
         carouselRunningCheckBox.checked = presetsSettings.carouselRunning;
@@ -162,6 +170,8 @@ Dialog {
         rootWindowSettings.sidebarAutoCollapse = sidebarAutoCollapseCheckBox.checked;
         
         layoutsCollectionSettings.presetIndicator = presetIndicatorCheckBox.checked;
+
+        viewSettings.hideCursorWhenFullScreen = hideCursorWhenFullScreenCheckBox.checked;
 
         viewportSettings.unmuteWhenFullScreen = unmuteWhenFullScreenCheckBox.checked;
 

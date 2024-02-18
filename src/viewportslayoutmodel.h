@@ -21,7 +21,7 @@ class ViewportsLayoutItem : public QObject
     Q_PROPERTY(QVariantMap avFormatOptions READ avFormatOptions WRITE setAVFormatOptions NOTIFY avFormatOptionsChanged)
 
 public:
-    explicit ViewportsLayoutItem(QObject *parent = nullptr);
+    ViewportsLayoutItem(QObject *parent = nullptr);
 
     enum class Visible {
         Visible,
