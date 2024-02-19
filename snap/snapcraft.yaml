@@ -89,8 +89,6 @@ parts:
     override-prime: |
       craftctl default
       ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
-    prime:
-    - bin/graphics-core22-wrapper
 
   desktop-qt5:
     plugin: dump
@@ -123,6 +121,7 @@ parts:
       - plasma-integration # KDE Plasma Keyboard Shortcuts support
 
   cctv-viewer:
+    after: [desktop-qt5, qt5-gtk-platform, qt5-kde-platform]
     plugin: cmake
     source: .
     override-pull: |
