@@ -89,6 +89,8 @@ parts:
     override-prime: |
       craftctl default
       ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+    prime:
+      - bin/graphics-core22-wrapper
 
   desktop-qt5:
     plugin: dump
