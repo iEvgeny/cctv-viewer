@@ -26,7 +26,7 @@ architectures:
   - build-on: ppc64el
 
 environment:
-  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
 
 plugs:
   graphics-core22:
