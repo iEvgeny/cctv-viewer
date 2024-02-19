@@ -216,7 +216,7 @@ ApplicationWindow {
     Item {
         height: parent.height
         anchors.left: parent.left
-        anchors.right: sideBar.left
+        anchors.right: sideBarLoader.left
 
         Rectangle {
             color: "black"
@@ -282,7 +282,7 @@ ApplicationWindow {
 
 
     Loader {
-        id: sideBar
+        id: sideBarLoader
 
         height: parent.height
         anchors.right: parent.right
@@ -322,7 +322,9 @@ ApplicationWindow {
     CursorShape {
         id: cursorShape
 
-        hideTimeout: (!settingsDialog.visible && Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen) ? 3000 : 0
+        hideTimeout: (!settingsDialog.visible &&
+                      (sideBarLoader.status === Loader.Null || sideBarLoader.item.state === SideBar.Compact) &&
+                      Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen) ? 3000 : 0
         anchors.fill: parent
     }
 }
