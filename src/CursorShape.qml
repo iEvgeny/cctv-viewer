@@ -31,6 +31,11 @@ MouseArea {
         id: d
 
         property int hiddenCursor: Qt.ArrowCursor
+
+        function eventFiltered() {
+            root.hidden = false;
+            timer.restart();
+        }
     }
 
     Timer {
@@ -45,10 +50,14 @@ MouseArea {
         scope: EventFilter.Application
         eventType: "MouseMove"
         eventProperties: false
-        onEventFiltered: {
-            root.hidden = false;
-            timer.restart();
-        }
+        onEventFiltered: d.eventFiltered()
+    }
+    EventFilter {
+        enabled: root.hideTimeout > 0
+        scope: EventFilter.Application
+        eventType: "MouseButtonPress"
+        eventProperties: false
+        onEventFiltered: d.eventFiltered()
     }
 
     function set(cursorShape) {
