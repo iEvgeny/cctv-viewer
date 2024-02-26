@@ -322,9 +322,11 @@ ApplicationWindow {
     CursorShape {
         id: cursorShape
 
-        hideTimeout: (!settingsDialog.visible &&
-                      (sideBarLoader.status === Loader.Null || sideBarLoader.item.state === SideBar.Compact) &&
-                      Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen) ? 3000 : 0
+        autoHide: rootWindow.activeFocusItem != null &&  // Disabled when ApplicationWindow is't active
+                  !settingsDialog.visible &&
+                  (sideBarLoader.status === Loader.Null || sideBarLoader.item.state === SideBar.Compact) &&
+                  Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen
+        autoHideTimeout: 3000
         anchors.fill: parent
     }
 }

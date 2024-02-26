@@ -7,33 +7,34 @@ MouseArea {
     enabled: false
     acceptedButtons: Qt.NoButton
 
-    property bool hidden: false
-    property int hideTimeout: 0  // ms
+    property bool autoHide: false
+    property int autoHideTimeout: 0  // ms
 
-    onHideTimeoutChanged: {
-        if (hideTimeout > 0) {
-            timer.start();
-        } else {
-            timer.stop();
-            hidden = false;
-        }
-    }
-    onHiddenChanged: {
-        if (hidden) {
-            d.hiddenCursor = cursorShape;
-            cursorShape = Qt.BlankCursor;
-        } else {
-            cursorShape = d.hiddenCursor;
+    readonly property alias hidden: d.hidden
+
+    onAutoHideChanged: {
+        if (!autoHide) {
+            d.hidden = false;
         }
     }
 
     QtObject {
         id: d
 
+        property bool hidden: false
         property int hiddenCursor: Qt.ArrowCursor
 
+        onHiddenChanged: {
+            if (hidden) {
+                hiddenCursor = cursorShape;
+                root.cursorShape = Qt.BlankCursor;
+            } else {
+                root.cursorShape = hiddenCursor;
+            }
+        }
+
         function eventFiltered() {
-            root.hidden = false;
+            d.hidden = false;
             timer.restart();
         }
     }
@@ -41,21 +42,15 @@ MouseArea {
     Timer {
         id: timer
 
-        interval: root.hideTimeout
-        onTriggered: root.hidden = true
+        running: root.autoHide
+        interval: root.autoHideTimeout
+        onTriggered: d.hidden = true
     }
 
     EventFilter {
-        enabled: root.hideTimeout > 0
+        enabled: root.autoHide
         scope: EventFilter.Application
-        eventType: "MouseMove"
-        eventProperties: false
-        onEventFiltered: d.eventFiltered()
-    }
-    EventFilter {
-        enabled: root.hideTimeout > 0
-        scope: EventFilter.Application
-        eventType: "MouseButtonPress"
+        eventTypes: [ "MouseMove", "MouseButtonPress" ]
         eventProperties: false
         onEventFiltered: d.eventFiltered()
     }

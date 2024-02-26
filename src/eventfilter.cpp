@@ -1,4 +1,5 @@
 #include "eventfilter.h"
+#include "qjsvalue.h"
 #include "qevent.h"
 
 EventFilter::EventFilter(QObject *parent)
@@ -6,7 +7,6 @@ EventFilter::EventFilter(QObject *parent)
     , m_enabled(true)
     , m_scope(Scope::Parent)
     , m_watched(nullptr)
-    , m_eventType(QEvent::None)
     , m_eventProperties(true)
 {
     m_metaEnum = QMetaEnum::fromType<QEvent::Type>();
@@ -14,11 +14,15 @@ EventFilter::EventFilter(QObject *parent)
 
 bool EventFilter::eventFilter([[maybe_unused]] QObject *watched, QEvent *event)
 {
-    if (m_enabled && event->type() == m_eventType) {
+    auto type = event->type();
+
+    if (m_enabled && std::find(m_eventTypes.begin(), m_eventTypes.end(), type) != m_eventTypes.end()) {
         QVariantMap properties;
 
         if (m_eventProperties) {
-            switch (m_eventType) {
+            properties.insert("type", m_metaEnum.valueToKey(type));
+
+            switch (type) {
             case QEvent::MouseMove:
             case QEvent::MouseButtonPress:
             case QEvent::MouseButtonRelease: {
@@ -38,6 +42,15 @@ bool EventFilter::eventFilter([[maybe_unused]] QObject *watched, QEvent *event)
     }
 
     return false;
+}
+
+QVariant EventFilter::eventTypes() const
+{
+    QStringList list;
+    for (auto i : m_eventTypes) {
+        list.append(m_metaEnum.valueToKey(i));
+    }
+    return list;
 }
 
 void EventFilter::setEnabled(bool enabled)
@@ -66,16 +79,26 @@ void EventFilter::setScope(Scope scope)
     emit scopeChanged();
 }
 
-void EventFilter::setEventType(QString eventType)
+void EventFilter::setEventTypes(const QVariant &events)
 {
-    auto value = m_metaEnum.keyToValue(eventType.toLatin1());
-    if (value < 0 || m_eventType == static_cast<QEvent::Type>(value)) {
+    auto variant = events.value<QJSValue>().toVariant();
+    auto list = variant.toStringList();
+
+    if (eventTypes() == list) {
         return;
     }
 
-    m_eventType = static_cast<QEvent::Type>(value);
+    m_eventTypes.clear();
 
-    emit eventTypeChanged();
+    for (const auto &i : qAsConst(list)) {
+        auto type = m_metaEnum.keyToValue(i.toLatin1());
+        if (type < 0) {
+            return;
+        }
+        m_eventTypes.push_back(static_cast<QEvent::Type>(type));
+    }
+
+    emit eventTypesChanged();
 }
 
 void EventFilter::setEventProperties(bool enabled)

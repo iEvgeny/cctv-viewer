@@ -12,7 +12,7 @@ class EventFilter : public QObject, public QQmlParserStatus
 
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(Scope scope READ scope WRITE setScope NOTIFY scopeChanged)
-    Q_PROPERTY(QString eventType READ eventType WRITE setEventType NOTIFY eventTypeChanged)
+    Q_PROPERTY(QVariant eventTypes READ eventTypes WRITE setEventTypes NOTIFY eventTypesChanged)
     Q_PROPERTY(bool eventProperties READ eventProperties WRITE setEventProperties NOTIFY eventPropertiesChanged)
 
 public:
@@ -30,21 +30,21 @@ public:
 
     bool enabled() const { return m_enabled; }
     Scope scope() const { return m_scope; }
-    QString eventType() const { return m_metaEnum.valueToKey(m_eventType); }
+    QVariant eventTypes() const;
     bool eventProperties() const { return m_eventProperties; }
 
 public slots:
     void setEnabled(bool enabled);
     void setScope(Scope scope);
-    void setEventType(QString eventType);
+    void setEventTypes(const QVariant &events);
     void setEventProperties(bool enabled);
 
 signals:
     void enabledChanged();
     void scopeChanged();
-    void eventTypeChanged();
+    void eventTypesChanged();
     void eventPropertiesChanged();
-    void eventFiltered(QVariantMap properties);
+    void eventFiltered(const QVariantMap &properties);
 
 protected:
     void installEventFilter();
@@ -53,7 +53,7 @@ private:
     bool m_enabled;
     Scope m_scope;
     QObject *m_watched;
-    QEvent::Type m_eventType;
+    std::vector<QEvent::Type> m_eventTypes;
     bool m_eventProperties;
     QMetaEnum m_metaEnum;
 };
