@@ -25,7 +25,11 @@ execute_process(COMMAND git -C ${CMAKE_SOURCE_DIR} log --pretty=format:%h -n 1
     OUTPUT_VARIABLE GIT_REV
     ERROR_QUIET
 )
-set(VERSION "${VERSION} git.${GIT_REV}")
+
+if(NOT DEFINED PACKAGE_MANAGER)
+    set(PACKAGE_MANAGER "GIT")
+endif()
+set(VERSION "${VERSION} ${PACKAGE_MANAGER}.${GIT_REV}")
 
 add_definitions(-DAPP_NAME="${APP_NAME}" -DAPP_VERSION="${VERSION}" -DORG_NAME="${ORG_NAME}" -DORG_DOMAIN="${ORG_DOMAIN}")
 
