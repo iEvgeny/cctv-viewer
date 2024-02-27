@@ -15,7 +15,8 @@ Build-Depends: debhelper (>= 9),
                qtmultimedia5-dev,
                qttools5-dev,
                libgtest-dev,
-               cmake
+               cmake,
+               git
 Standards-Version: 3.9.8
 Homepage: https://github.com/iEvgeny/cctv-viewer
 Vcs-Git: https://github.com/iEvgeny/cctv-viewer.git

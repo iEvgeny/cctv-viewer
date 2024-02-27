@@ -214,6 +214,10 @@
         <source>FFmpeg options</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copied to clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBarItem</name>

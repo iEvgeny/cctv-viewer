@@ -157,24 +157,57 @@ FocusScope {
                         Frame {
                             anchors.fill: parent
 
-                            Text {
-                                text: String("<a href=\"https://cctv-viewer.org\" style=\"color: white; text-decoration: none;\">CCTV Viewer: v%1</a><br/>
-                                              <a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>").arg(Qt.application.version)
-                                color: "white"
-                                font.pointSize: rootWindow.font.pointSize * 1.05
-                                textFormat: Text.RichText
-                                horizontalAlignment: Text.AlignHCenter
-                                topPadding: 5
-                                width: parent.width
+                            ColumnLayout {
+                                anchors.fill: parent
 
-                                onLinkHovered: {
-                                    if (link.length > 0) {
-                                        cursorShape.set(Qt.PointingHandCursor);
-                                    } else {
-                                        cursorShape.reset();
+                                TextEdit {
+                                    readOnly: true
+                                    selectByMouse: true
+
+                                    text: String("<a href=\"https://cctv-viewer.org\" style=\"color: white; text-decoration: none;\">v%1</a>").arg(Qt.application.version)
+                                    color: "white"
+                                    font.pointSize: rootWindow.font.pointSize * 1.05
+                                    textFormat: Text.RichText
+                                    horizontalAlignment: Text.AlignHCenter
+
+                                    Layout.fillWidth: true
+
+                                    onLinkHovered: header.linkHovered(link)
+                                    onLinkActivated: {
+                                        toolTip.visible = true;
+                                        selectAll();
+                                        copy();
+                                    }
+
+                                    ToolTip {
+                                        id: toolTip
+
+                                        delay: 0
+                                        timeout: Compact.toolTipTimeout
+                                        text: qsTr("Copied to clipboard")
                                     }
                                 }
-                                onLinkActivated: Qt.openUrlExternally(link)
+
+                                Text {
+                                    text: "<a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>"
+                                    color: "white"
+                                    font.pointSize: rootWindow.font.pointSize * 1.05
+                                    textFormat: Text.RichText
+                                    horizontalAlignment: Text.AlignHCenter
+
+                                    Layout.fillWidth: true
+
+                                    onLinkHovered: header.linkHovered(link)
+                                    onLinkActivated: Qt.openUrlExternally(link)
+                                }
+                            }
+                        }
+
+                        function linkHovered(link) {
+                            if (link !== "") {
+                                cursorShape.set(Qt.PointingHandCursor);
+                            } else {
+                                cursorShape.reset();
                             }
                         }
                     }
