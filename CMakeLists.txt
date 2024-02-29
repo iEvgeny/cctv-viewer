@@ -21,15 +21,36 @@ if(DEFINED REL_STATUS)
     set(VERSION "${VERSION}-${REL_STATUS}")
 endif()
 
+### Packager and Git commit
 execute_process(COMMAND git -C ${CMAKE_SOURCE_DIR} log --pretty=format:%h -n 1
-    OUTPUT_VARIABLE GIT_REV
+    OUTPUT_VARIABLE GIT_COMMIT
     ERROR_QUIET
 )
 
-if(NOT DEFINED PACKAGE_MANAGER)
-    set(PACKAGE_MANAGER "GIT")
+if (EXISTS "${CMAKE_SOURCE_DIR}/debian/git-build-recipe.manifest")
+    set(PACKAGER "PPA")
+
+    if ("${GIT_COMMIT}" STREQUAL "")
+        file(READ "${CMAKE_SOURCE_DIR}/debian/git-build-recipe.manifest" PPA_MANIFEST)
+        string(REGEX MATCH "lp:cctv-viewer git-commit:(.......)" _ ${PPA_MANIFEST})
+        set(GIT_COMMIT ${CMAKE_MATCH_1})
+    endif()
 endif()
-set(VERSION "${VERSION} ${PACKAGE_MANAGER}.${GIT_REV}")
+
+if(NOT DEFINED PACKAGER)
+    if ("${GIT_COMMIT}" STREQUAL "")
+        set(PACKAGER "SRC")
+    else()
+        set(PACKAGER "GIT")
+    endif()
+endif()
+
+if ("${GIT_COMMIT}" STREQUAL "")
+    set(GIT_COMMIT "N/A")
+endif()
+
+set(VERSION "${VERSION} ${PACKAGER}.${GIT_COMMIT}")
+###
 
 add_definitions(-DAPP_NAME="${APP_NAME}" -DAPP_VERSION="${VERSION}" -DORG_NAME="${ORG_NAME}" -DORG_DOMAIN="${ORG_DOMAIN}")
 
