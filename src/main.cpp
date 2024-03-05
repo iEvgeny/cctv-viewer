@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QLatin1String(ORG_DOMAIN));
 #endif
 
+    qInfo() << "CCTV Viewer version " << APP_VERSION;
+
     registerQmlTypes();
 
     QGuiApplication app(argc, argv);
