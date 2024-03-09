@@ -3,6 +3,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
+import QtQuick.Dialogs 1.3
 import Qt.labs.settings 1.0
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Models 1.0
@@ -294,18 +295,14 @@ ApplicationWindow {
         }
     }
 
-    SingleApplicationDialog {
-        onVisibleChanged: {
-            if (!visible) {
-                if (singleApplication) {
-                    Qt.quit();
-                } else {
-                    generalSettings.singleApplication = false;
-                    stackLayout.visible = true;
-                }
-            }
-        }
+    MessageDialog {
+        title: qsTr("Already running!")
+        icon: StandardIcon.Warning
+        text: qsTr("The application is already running!")
+        informativeText: qsTr("Go to the first instance and allow multiple instances of the app to run in Settings.")
+        standardButtons: MessageDialog.Ok
 
+        onAccepted: Qt.quit();
         Component.onCompleted: {
             if (generalSettings.singleApplication && SingleApplication.isRunning()) {
                 open();

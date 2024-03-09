@@ -3,7 +3,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>translations/cctv-viewer_ru_RU.qm</file>
         <file>src/RootWindow.qml</file>
-        <file>src/SingleApplicationDialog.qml</file>
         <file>src/SettingsDialog.qml</file>
         <file>src/Player.qml</file>
         <file>src/ViewportsLayout.qml</file>

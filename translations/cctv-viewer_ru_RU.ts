@@ -82,15 +82,30 @@
 <context>
     <name>RootWindow</name>
     <message>
-        <location filename="../src/RootWindow.qml" line="14"/>
+        <location filename="../src/RootWindow.qml" line="15"/>
         <source>CCTV Viewer</source>
         <translation>CCTV Viewer</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="88"/>
-        <location filename="../src/RootWindow.qml" line="207"/>
+        <location filename="../src/RootWindow.qml" line="89"/>
+        <location filename="../src/RootWindow.qml" line="208"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
+    </message>
+    <message>
+        <location filename="../src/RootWindow.qml" line="299"/>
+        <source>Already running!</source>
+        <translation>Уже запущено!</translation>
+    </message>
+    <message>
+        <location filename="../src/RootWindow.qml" line="301"/>
+        <source>The application is already running!</source>
+        <translation>Приложение уже запущено!</translation>
+    </message>
+    <message>
+        <location filename="../src/RootWindow.qml" line="302"/>
+        <source>Go to the first instance and allow multiple instances of the app to run in Settings.</source>
+        <translation>Перейдите к первому экземпляру и разрешите запуск нескольких экземпляров приложения в настройках.</translation>
     </message>
 </context>
 <context>
@@ -278,24 +293,6 @@
         <location filename="../src/SideBarItem.qml" line="90"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
-    </message>
-</context>
-<context>
-    <name>SingleApplicationDialog</name>
-    <message>
-        <location filename="../src/SingleApplicationDialog.qml" line="7"/>
-        <source>Warning!</source>
-        <translation>Внимание!</translation>
-    </message>
-    <message>
-        <location filename="../src/SingleApplicationDialog.qml" line="26"/>
-        <source>The application is already running!</source>
-        <translation>Приложение уже запущено!</translation>
-    </message>
-    <message>
-        <location filename="../src/SingleApplicationDialog.qml" line="41"/>
-        <source>Allow running multiple application instances</source>
-        <translation>Разрешить запуск нескольких экземпляров приложения</translation>
     </message>
 </context>
 <context>

@@ -76,6 +76,18 @@
         <source>Error reading configuration!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The application is already running!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Already running!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to the first instance and allow multiple instances of the app to run in Settings.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsDialog</name>
@@ -223,21 +235,6 @@
     <name>SideBarItem</name>
     <message>
         <source>Error reading configuration!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>SingleApplicationDialog</name>
-    <message>
-        <source>Warning!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The application is already running!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow running multiple application instances</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
