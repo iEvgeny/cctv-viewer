@@ -230,6 +230,18 @@
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete preset #%1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>It&apos;s an irreversible procedure. Be careful!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SideBarItem</name>

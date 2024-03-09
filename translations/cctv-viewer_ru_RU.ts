@@ -174,115 +174,130 @@
 <context>
     <name>SideBar</name>
     <message>
-        <location filename="../src/SideBar.qml" line="218"/>
+        <location filename="../src/SideBar.qml" line="219"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="226"/>
+        <location filename="../src/SideBar.qml" line="227"/>
         <source>Window division</source>
         <translation>Деление окна</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="270"/>
+        <location filename="../src/SideBar.qml" line="271"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="322"/>
+        <location filename="../src/SideBar.qml" line="323"/>
         <source>Press and hold to enter edit mode</source>
         <translation>Нажмите и удерживайте,
 чтобы войти в режим редактирования</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="353"/>
+        <location filename="../src/SideBar.qml" line="354"/>
         <source>x</source>
         <translation>х</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="368"/>
+        <location filename="../src/SideBar.qml" line="369"/>
         <source>Geometry</source>
         <translation>Геметрия</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="402"/>
+        <location filename="../src/SideBar.qml" line="403"/>
         <source>Full Screen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="414"/>
+        <location filename="../src/SideBar.qml" line="415"/>
         <source>Other</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="423"/>
+        <location filename="../src/SideBar.qml" line="424"/>
         <source>Merging cells</source>
         <translation>Объединение ячеек</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="437"/>
+        <location filename="../src/SideBar.qml" line="438"/>
         <source>Viewport%1</source>
         <translation>Вьюпорт%1</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="437"/>
+        <location filename="../src/SideBar.qml" line="438"/>
         <source> #%1</source>
         <translation> №%1</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="462"/>
+        <location filename="../src/SideBar.qml" line="463"/>
         <source>Url</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="491"/>
+        <location filename="../src/SideBar.qml" line="492"/>
         <source>FFmpeg options</source>
         <translation>Опции FFmpeg</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="576"/>
+        <location filename="../src/SideBar.qml" line="578"/>
         <source>Press and hold to enter delete mode</source>
         <translation>Нажмите и удерживайте,
 чтобы войти в режим удаления</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="449"/>
+        <location filename="../src/SideBar.qml" line="450"/>
         <source>Select viewport!</source>
         <translation>Выберите вьюпорт!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="187"/>
+        <location filename="../src/SideBar.qml" line="188"/>
         <source>Copied to clipboard</source>
         <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="471"/>
+        <location filename="../src/SideBar.qml" line="472"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="533"/>
+        <location filename="../src/SideBar.qml" line="534"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="576"/>
+        <location filename="../src/SideBar.qml" line="578"/>
         <source>Press and hold to exit delete mode</source>
         <translation>Нажмите и удерживайте,
 чтобы выйти из режима удаления</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="594"/>
+        <location filename="../src/SideBar.qml" line="597"/>
+        <source>Are you sure?</source>
+        <translation>Вы уверены?</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="599"/>
+        <source>Are you sure you want to delete preset #%1?</source>
+        <translation>Вы уверены, что хотите удалить пресет №%1?</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="600"/>
+        <source>It&apos;s an irreversible procedure. Be careful!</source>
+        <translation>Это необратимая процедура. Будьте внимательны!</translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="608"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="607"/>
+        <location filename="../src/SideBar.qml" line="621"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="607"/>
+        <location filename="../src/SideBar.qml" line="621"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
     </message>

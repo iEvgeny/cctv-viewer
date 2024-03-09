@@ -2,6 +2,7 @@ import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
+import QtQuick.Dialogs 1.3
 import Qt.labs.settings 1.0
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Themes 1.0
@@ -559,7 +560,8 @@ FocusScope {
 
                                         onClicked: {
                                             if (deleteMode) {
-                                                layoutsCollectionModel.remove(index);
+                                                presetDeleteDialog.index = index;
+                                                presetDeleteDialog.open();
                                             } else {
                                                 stackLayout.currentIndex = index;
                                             }
@@ -587,6 +589,20 @@ FocusScope {
                                     onClicked: layoutsCollectionModel.append().size = Qt.size(3, 3)
                                 }
                             }
+                        }
+
+                        MessageDialog {
+                            id: presetDeleteDialog
+
+                            title: qsTr("Are you sure?")
+                            icon: StandardIcon.Question
+                            text: qsTr("Are you sure you want to delete preset #%1?").arg(index + 1)
+                            informativeText: qsTr("It's an irreversible procedure. Be careful!")
+                            standardButtons: MessageDialog.Yes | MessageDialog.No
+
+                            property int index: -1
+
+                            onYes: layoutsCollectionModel.remove(index)
                         }
                     }
                     SideBarItem {
