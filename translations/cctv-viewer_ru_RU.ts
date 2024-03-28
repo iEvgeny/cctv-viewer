@@ -287,17 +287,17 @@
         <translation>Это необратимая процедура. Будьте внимательны!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="608"/>
+        <location filename="../src/SideBar.qml" line="610"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="621"/>
+        <location filename="../src/SideBar.qml" line="623"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="621"/>
+        <location filename="../src/SideBar.qml" line="623"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
     </message>

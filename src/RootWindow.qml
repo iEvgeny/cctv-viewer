@@ -302,7 +302,7 @@ ApplicationWindow {
         informativeText: qsTr("Go to the first instance and allow multiple instances of the app to run in Settings.")
         standardButtons: MessageDialog.Ok
 
-        onAccepted: Qt.quit();
+        onVisibilityChanged: !visible && Qt.quit();
         Component.onCompleted: {
             if (generalSettings.singleApplication && SingleApplication.isRunning()) {
                 open();
