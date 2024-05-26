@@ -90,7 +90,7 @@ FocusScope {
             onStatusChanged: {
                 switch (status) {
                 case MediaPlayer.NoMedia:
-                    message.text = qsTr("No media!");
+                    message.text = qsTr("No media");
                     break;
                 case MediaPlayer.Loading:
                     message.text = qsTr("Loading...");
@@ -109,7 +109,7 @@ FocusScope {
                     message.text = qsTr("End of media");
                     break;
                 case MediaPlayer.InvalidMedia:
-                    message.text = qsTr("Invalid media!");
+                    message.text = qsTr("Error!");
                     break;
                 case MediaPlayer.UnknownStatus:
                     break;

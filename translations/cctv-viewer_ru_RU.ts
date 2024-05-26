@@ -38,8 +38,8 @@
     <name>Player</name>
     <message>
         <location filename="../src/Player.qml" line="93"/>
-        <source>No media!</source>
-        <translation>Нет медиаисточника!</translation>
+        <source>No media</source>
+        <translation>Нет источника</translation>
     </message>
     <message>
         <location filename="../src/Player.qml" line="96"/>
@@ -59,12 +59,12 @@
     <message>
         <location filename="../src/Player.qml" line="109"/>
         <source>End of media</source>
-        <translation>Конец медиаисточника</translation>
+        <translation>Конец источника</translation>
     </message>
     <message>
         <location filename="../src/Player.qml" line="112"/>
-        <source>Invalid media!</source>
-        <translation>Недопустимый медиаисточник!</translation>
+        <source>Error!</source>
+        <translation>Ошибка!</translation>
     </message>
     <message>
         <location filename="../src/Player.qml" line="120"/>

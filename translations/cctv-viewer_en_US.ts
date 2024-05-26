@@ -31,10 +31,6 @@
 <context>
     <name>Player</name>
     <message>
-        <source>No media!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -51,11 +47,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid media!</source>
+        <source>Buffering %1%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Buffering %1%</source>
+        <source>No media</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
