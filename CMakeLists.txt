@@ -63,6 +63,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Fix build on LP for Ubuntu 20.04
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT ANDROID)
     add_compile_options(
         -Werror
