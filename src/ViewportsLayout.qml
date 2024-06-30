@@ -223,6 +223,15 @@ FocusScope {
                         }
                     ]
 
+                    // Apply scale and translation transforms
+                    transform: Scale {
+                        id: scaler
+                        origin.x: pinchArea.m_x2
+                        origin.y: pinchArea.m_y2
+                        xScale: pinchArea.m_zoom2
+                        yScale: pinchArea.m_zoom2
+                    }
+
                     transitions: [
                         Transition {
                             ParallelAnimation {
@@ -271,6 +280,7 @@ FocusScope {
                         switch (event.key) {
                         case Qt.Key_Escape:
                             focus = false;
+                            pinchArea.m_zoom2 = 1;  //reset zoom
                             fullScreen = false;
                             break;
                         case Qt.Key_Up:
@@ -451,36 +461,108 @@ FocusScope {
                         ]
                     }
 
-                    MouseArea {
+                    PinchArea {
+                        id: pinchArea
+
+                        property real m_max: 5
+                        property real m_min: 1
+                        property real m_x1: 0
+                        property real m_x2: 0
+                        property real m_y1: 0
+                        property real m_y2: 0
+                        property real m_zoom1: 1
+                        property real m_zoom2: 1
+
                         anchors.fill: parent
 
-                        onPressed: {
-                            if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
-                                d.selectionIndex2 = model.index;
-                            } else {
-                                viewport.forceActiveFocus();
-                                d.selectionReset();
+                        onPinchStarted: {
+                            //console.log("Pinch Started");
+                            m_x1 = scaler.origin.x;
+                            m_y1 = scaler.origin.y;
+                            m_x2 = pinch.startCenter.x;
+                            m_y2 = pinch.startCenter.y;
+                            playerContainer.x = playerContainer.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
+                            playerContainer.y = playerContainer.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
+                        }
+                        onPinchUpdated: {
+                            //console.log("Pinch Updated"); not tested
+                            m_zoom1 = scaler.xScale;
+                            var dz = pinch.scale - pinch.previousScale;
+                            var newZoom = m_zoom1 + dz;
+                            if (newZoom <= m_max && newZoom >= m_min) {
+                                m_zoom2 = newZoom;
                             }
                         }
-                        onPressAndHold: d2.setCurrentIndex("pressAndHoldIndex", true)
-                        onDoubleClicked: {
-                            viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
-                            d.selectionReset();
-                        }
 
-                        onMouseXChanged: mouseMoveHandler()
-                        onMouseYChanged: mouseMoveHandler()
+                        MouseArea {
+                            id: dragArea
+                            anchors.fill: parent
+                            drag.filterChildren: true
+                            drag.target: playerContainer
+                            hoverEnabled: true
 
-                        function mouseMoveHandler() {
-                            if (!containsMouse) {
-                                var selectionIndex2 = viewport.indexAt(mouseX, mouseY);
-
-                                if (selectionIndex2 >= 0) {
-                                    d.selectionIndex2 = selectionIndex2;
+                            onWheel: {
+                                // Adjust the zoom factor based on the scroll wheel delta
+                                // Contrain zoom to fullscreen mode
+                                if (viewport.fullScreen) {
+                                    //console.log("Wheel Scrolled"); used for guetto debugging
+                                    pinchArea.m_x1 = scaler.origin.x;
+                                    pinchArea.m_y1 = scaler.origin.y;
+                                    pinchArea.m_zoom1 = scaler.xScale;
+                                    pinchArea.m_x2 = mouseX;
+                                    pinchArea.m_y2 = mouseY;
+                                    var newZoom;
+                                    if (wheel.angleDelta.y > 0) {
+                                        newZoom = pinchArea.m_zoom1 + 0.2;
+                                        if (newZoom <= pinchArea.m_max) {
+                                            pinchArea.m_zoom2 = newZoom;
+                                        } else {
+                                            pinchArea.m_zoom2 = pinchArea.m_max;
+                                        }
+                                    } else {
+                                        newZoom = pinchArea.m_zoom1 - 0.2;
+                                        if (newZoom >= pinchArea.m_min) {
+                                            pinchArea.m_zoom2 = newZoom;
+                                        } else {
+                                            pinchArea.m_zoom2 = pinchArea.m_min;
+                                        }
+                                    }
+                                    playerContainer.x = playerContainer.x + (pinchArea.m_x1 - pinchArea.m_x2) * (1 - pinchArea.m_zoom1);
+                                    playerContainer.y = playerContainer.y + (pinchArea.m_y1 - pinchArea.m_y2) * (1 - pinchArea.m_zoom1);
                                 }
-                            } else {
-                                if (!(d.keyModifiers & Qt.ShiftModifier)) {
+                            }
+
+                            MouseArea {
+                                function mouseMoveHandler() {
+                                    if (!containsMouse) {
+                                        var selectionIndex2 = viewport.indexAt(mouseX, mouseY);
+                                        if (selectionIndex2 >= 0) {
+                                            d.selectionIndex2 = selectionIndex2;
+                                        }
+                                    } else {
+                                        if (!(d.keyModifiers & Qt.ShiftModifier)) {
+                                            d.selectionReset();
+                                        }
+                                    }
+                                }
+
+                                anchors.fill: parent
+
+                                onDoubleClicked: {
+                                    viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
+                                    pinchArea.m_zoom2 = 1;
                                     d.selectionReset();
+                                }
+                                onMouseXChanged: mouseMoveHandler()
+                                onMouseYChanged: mouseMoveHandler()
+                                onPressAndHold: d2.setCurrentIndex("pressAndHoldIndex", true)
+                                onPressed: {
+                                    if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
+                                        d.selectionIndex2 = model.index;
+                                    } else {
+                                        viewport.forceActiveFocus();
+                                        d.selectionReset();
+                                    }
                                 }
                             }
                         }
