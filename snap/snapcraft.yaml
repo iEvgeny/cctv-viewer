@@ -147,6 +147,7 @@ parts:
       - qttools5-dev
       - libgtest-dev
       - git
+      - pkg-config
     stage-packages:
       # Debian package dependencies
       - libavcodec58

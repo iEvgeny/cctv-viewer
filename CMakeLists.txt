@@ -123,6 +123,17 @@ if (ANDROID)
         "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/lib/libavdevice.so"
         "${CMAKE_SOURCE_DIR}/src/qmlav/3rd/FFmpeg/ffbuild/${ANDROID_ABI}/lib/libavfilter.so"
         )
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(LIBAV REQUIRED
+        libavformat
+        libavcodec
+        libavutil
+        libswscale
+        libswresample
+        libavdevice
+    )
+    include_directories(${LIBAV_INCLUDE_DIRS})
 endif()
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS ${QT_LINK_DEPENDENCIES} QuickCompiler LinguistTools REQUIRED)
