@@ -196,10 +196,6 @@ ApplicationWindow {
             get(0).get(0).url = "rtmp://live.a71.ru/demo/0";
             get(0).get(1).url = "rtmp://live.a71.ru/demo/1";
 
-            layoutsCollectionModel.changed.connect(function () {
-                layoutsCollectionSettings.models = JSON.stringify(toJSValue());
-            });
-
             try {
                 if (!layoutsCollectionSettings.models.isEmpty()) {
                     fromJSValue(JSON.parse(layoutsCollectionSettings.models));
@@ -207,6 +203,11 @@ ApplicationWindow {
             } catch(err) {
                 Utils.log_error(qsTr("Error reading configuration!"));
             }
+
+            layoutsCollectionModel.changed.connect(function () {
+                layoutsCollectionSettings.models = JSON.stringify(toJSValue());
+            });
+
 
             // Force initialize "currentIndex" if option "-p" is set
             var currentIndex = (Context.config.currentIndex >= 0) ? Context.config.currentIndex : layoutsCollectionSettings.currentIndex;
