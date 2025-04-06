@@ -49,7 +49,7 @@ ApplicationWindow {
 
         fileName: Context.config.fileName
         category: "RootWindow"
-        property int width: 1280 + 48 /*SideBar compact width*/
+        property int width: 1280 + 48 // SideBar compact width
         property int height: 720
         property bool fullScreen
         property bool sidebarAutoCollapse: true
@@ -76,8 +76,8 @@ ApplicationWindow {
         property bool presetIndicator: true
         // TODO: Move to "Viewport"
         property string defaultAVFormatOptions: JSON.stringify({
-            "analyzeduration": 0,  // 0 µs
-            "probesize": 500000  // 500 KB
+            "analyzeduration": 0, // 0 µs
+            "probesize": 500000   // 500 KB
         })
 
         function toJSValue(key) {
@@ -118,7 +118,7 @@ ApplicationWindow {
         category: "Presets"
 
         property bool carouselRunning: false
-        property int carouselInterval: 15000  // ms
+        property int carouselInterval: 15000 // ms
     }
 
     Shortcut {
@@ -207,7 +207,6 @@ ApplicationWindow {
             layoutsCollectionModel.changed.connect(function () {
                 layoutsCollectionSettings.models = JSON.stringify(toJSValue());
             });
-
 
             // Force initialize "currentIndex" if option "-p" is set
             var currentIndex = (Context.config.currentIndex >= 0) ? Context.config.currentIndex : layoutsCollectionSettings.currentIndex;
@@ -320,7 +319,7 @@ ApplicationWindow {
     CursorShape {
         id: cursorShape
 
-        autoHide: rootWindow.activeFocusItem != null &&  // Disabled when ApplicationWindow is't active
+        autoHide: rootWindow.activeFocusItem != null && // Disabled when ApplicationWindow is't active
                   !settingsDialog.visible &&
                   (sideBarLoader.status === Loader.Null || sideBarLoader.item.state === SideBar.Compact) &&
                   Context.config.fullScreen && viewSettings.hideCursorWhenFullScreen
