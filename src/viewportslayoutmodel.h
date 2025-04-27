@@ -2,63 +2,36 @@
 #define VIEWPORTSLAYOUTMODEL_H
 
 #include <math.h>
-#include <QtCore>
-#include <QQmlEngine>
 
-#include "global.h"
+#include <QQmlEngine>
+#include <QAbstractListModel>
+#include <QSize>
+
+#include "utils.h"
 
 // TODO: Reimplement this with QSize/QRect as a span property
 class ViewportsLayoutItem : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(Visible)
-
-    Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
-    Q_PROPERTY(int rowSpan READ rowSpan WRITE setRowSpan NOTIFY rowSpanChanged)
-    Q_PROPERTY(int columnSpan READ columnSpan WRITE setColumnSpan NOTIFY columnSpanChanged)
-    Q_PROPERTY(ViewportsLayoutItem::Visible visible READ visible WRITE setVisible NOTIFY visibleChanged)
-    Q_PROPERTY(QVariant volume READ volume WRITE setVolume NOTIFY volumeChanged)
-    Q_PROPERTY(QVariantMap avFormatOptions READ avFormatOptions WRITE setAVFormatOptions NOTIFY avFormatOptionsChanged)
 
 public:
-    ViewportsLayoutItem(QObject *parent = nullptr);
-
     enum class Visible {
         Visible,
         Hidden
     };
+    Q_ENUM(Visible)
 
-    QString url() const { return m_url; }
-    int rowSpan() const { return m_rowSpan; }
-    int columnSpan() const { return m_columnSpan; }
-    ViewportsLayoutItem::Visible visible() const { return m_visible; }
-    QVariant volume() const { return m_volume; }
-    QVariantMap avFormatOptions() const { return m_avFormatOptions; }
+    ViewportsLayoutItem(QObject *parent = nullptr);
 
-public slots:
-    PROPERTY_WRITE_IMPL(QString, url, setUrl, urlChanged)
-    PROPERTY_WRITE_IMPL(int, rowSpan, setRowSpan, rowSpanChanged)
-    PROPERTY_WRITE_IMPL(int, columnSpan, setColumnSpan, columnSpanChanged)
-    PROPERTY_WRITE_IMPL(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged)
-    PROPERTY_WRITE_IMPL(QVariant, volume, setVolume, volumeChanged)
-    PROPERTY_WRITE_IMPL(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged)
+    PROPERTY_MUTABLE(QString, url, setUrl, urlChanged);
+    PROPERTY_MUTABLE(int, rowSpan, setRowSpan, rowSpanChanged) = 1;
+    PROPERTY_MUTABLE(int, columnSpan, setColumnSpan, columnSpanChanged) = 1;
+    PROPERTY_MUTABLE(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged) = Visible::Visible;
+    PROPERTY_MUTABLE(QVariant, volume, setVolume, volumeChanged) = 0.0;
+    PROPERTY_MUTABLE(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged);
 
 signals:
     void changed();
-    void urlChanged(const QString &url);
-    void rowSpanChanged(int rowSpan);
-    void columnSpanChanged(int columnSpan);
-    void visibleChanged(ViewportsLayoutItem::Visible visible);
-    void volumeChanged(const QVariant &volume);
-    void avFormatOptionsChanged(QVariantMap avFormatOptions);
-
-private:
-    QString m_url;
-    int m_rowSpan;
-    int m_columnSpan;
-    ViewportsLayoutItem::Visible m_visible;
-    QVariant m_volume;
-    QVariantMap m_avFormatOptions;
 };
 QML_DECLARE_TYPE(ViewportsLayoutItem)
 

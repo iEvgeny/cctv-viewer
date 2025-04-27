@@ -1,7 +1,9 @@
 #ifndef SINGLEAPPLICATION_H
 #define SINGLEAPPLICATION_H
 
-#include <QtCore>
+#include <QDir>
+#include <QLockFile>
+#include <QCoreApplication>
 
 class SingleApplication : public QObject
 {

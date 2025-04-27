@@ -1,16 +1,11 @@
 #include "viewportslayoutmodel.h"
 
 ViewportsLayoutItem::ViewportsLayoutItem(QObject *parent)
-    : QObject(parent),
-      m_rowSpan(1),
-      m_columnSpan(1),
-      m_visible(Visible::Visible),
-      m_volume(0.0)
+    : QObject(parent)
 {
-    const QMetaObject* metaObject = this->metaObject();
     QMetaMethod changedMethod = QMetaMethod::fromSignal(&ViewportsLayoutItem::changed);
-    for(int i = metaObject->methodOffset(); i < metaObject->methodCount(); ++i) {
-        QMetaMethod method = metaObject->method(i);
+    for (int i = staticMetaObject.methodOffset(); i < staticMetaObject.methodCount(); ++i) {
+        QMetaMethod method = staticMetaObject.method(i);
         if (method.methodType() == QMetaMethod::Signal && method != changedMethod) {
             connect(this, method, this, changedMethod);
         }
@@ -50,12 +45,12 @@ bool ViewportsLayoutModel::setData(const QModelIndex &index, const QVariant &val
 QHash<int, QByteArray> ViewportsLayoutModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[ViewportsLayoutModel::UrlRole] = "url";
-    roles[ViewportsLayoutModel::ColumnSpanRole] = "columnSpan";
-    roles[ViewportsLayoutModel::RowSpanRole] = "rowSpan";
-    roles[ViewportsLayoutModel::VisibleRole] = "visible";
-    roles[ViewportsLayoutModel::VolumeRole] = "volume";
-    roles[ViewportsLayoutModel::AVFormatOptionsRole] = "avFormatOptions";
+    roles[UrlRole] = "url";
+    roles[ColumnSpanRole] = "columnSpan";
+    roles[RowSpanRole] = "rowSpan";
+    roles[VisibleRole] = "visible";
+    roles[VolumeRole] = "volume";
+    roles[AVFormatOptionsRole] = "avFormatOptions";
 
     return roles;
 }

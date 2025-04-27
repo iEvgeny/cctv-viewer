@@ -153,7 +153,7 @@ endif()
 
 set(PROJ_FILES
     src/main.cpp
-    src/global.h
+    src/utils.h
     src/singleapplication.h
     src/config.cpp src/config.h
     src/context.cpp src/context.h

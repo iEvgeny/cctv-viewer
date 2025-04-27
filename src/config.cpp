@@ -1,5 +1,8 @@
 #include "config.h"
 
+#include <QSettings>
+#include <QLoggingCategory>
+
 Config::Config(QObject *parent)
     : Config(QSettings().fileName(), parent)
 {
@@ -7,11 +10,7 @@ Config::Config(QObject *parent)
 
 Config::Config(const QString &fileName, QObject *parent)
     : QObject(parent),
-      m_fileName(fileName),
-      m_currentIndex(-1),
-      m_fullScreen(false),
-      m_kioskMode(false),
-      m_logLevel(Config::LogInfo)
+      m_fileName(fileName)
 {
     qSetMessagePattern("%{message}");
     reconfigureLoggingFilterRules();

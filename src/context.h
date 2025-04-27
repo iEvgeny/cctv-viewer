@@ -1,7 +1,7 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#include <QtCore>
+#include <QCommandLineParser>
 
 #include "config.h"
 
@@ -9,7 +9,7 @@ class Context : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Config *config READ config NOTIFY configChanged)
+    Q_PROPERTY(Config *config READ config CONSTANT)
 
 public:
     Context(QObject *parent = nullptr) : QObject(parent) { }
@@ -19,14 +19,11 @@ public:
 
     static Config *config() { return m_config; }
 
-signals:
-    void configChanged(Config *config);
-
 private:
     static void parseCommandLineOptions(const QList<QCommandLineOption> &options);
 
 private:
-    inline static Config *m_config;
+    inline static Config *m_config = nullptr;
     inline static QCommandLineParser m_commandLineParser;
 };
 

@@ -1,15 +1,15 @@
 #include "eventfilter.h"
-#include "qjsvalue.h"
-#include "qevent.h"
+
+#include <QJSValue>
+#include <QMouseEvent>
+#include <QCoreApplication>
 
 EventFilter::EventFilter(QObject *parent)
     : QObject(parent)
-    , m_enabled(true)
-    , m_scope(Scope::Parent)
+    , m_metaEnum(QMetaEnum::fromType<QEvent::Type>())
     , m_watched(nullptr)
-    , m_eventProperties(true)
 {
-    m_metaEnum = QMetaEnum::fromType<QEvent::Type>();
+    connect(this, &EventFilter::scopeChanged, this, &EventFilter::installEventFilter);
 }
 
 bool EventFilter::eventFilter([[maybe_unused]] QObject *watched, QEvent *event)
@@ -53,32 +53,6 @@ QVariant EventFilter::eventTypes() const
     return list;
 }
 
-void EventFilter::setEnabled(bool enabled)
-{
-    if (m_enabled == enabled) {
-        return;
-    }
-
-    m_enabled = enabled;
-
-    emit enabledChanged();
-}
-
-void EventFilter::setScope(Scope scope)
-{
-    if (m_scope == scope) {
-        return;
-    }
-
-    m_scope = scope;
-
-    if (m_watched) {
-        installEventFilter();
-    }
-
-    emit scopeChanged();
-}
-
 void EventFilter::setEventTypes(const QVariant &events)
 {
     auto variant = events.value<QJSValue>().toVariant();
@@ -99,17 +73,6 @@ void EventFilter::setEventTypes(const QVariant &events)
     }
 
     emit eventTypesChanged();
-}
-
-void EventFilter::setEventProperties(bool enabled)
-{
-    if (m_eventProperties == enabled) {
-        return;
-    }
-
-    m_eventProperties = enabled;
-
-    emit eventPropertiesChanged();
 }
 
 void EventFilter::installEventFilter()
