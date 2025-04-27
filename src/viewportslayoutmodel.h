@@ -45,22 +45,11 @@ class ViewportsLayoutModel : public QAbstractListModel
 public:
     explicit ViewportsLayoutModel(QObject *parent = nullptr);
 
-    enum ModelRoles {
-        UrlRole = Qt::UserRole + 1,
-        ColumnSpanRole,
-        RowSpanRole,
-        VisibleRole,
-        VolumeRole,
-        AVFormatOptionsRole
-    };
-
     // QAbstractItemModel interface
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
-    virtual QHash<int, QByteArray> roleNames() const override;
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-//    virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
-//    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    virtual QHash<int, QByteArray> roleNames() const override { return m_roleNames; }
 
     // Model control interface
     Q_INVOKABLE QSize size() const { return QSize(m_columns, m_rows); }
@@ -99,6 +88,7 @@ private:
     }
 
 private:
+    QHash<int, QByteArray> m_roleNames;
     int m_columns;
     int m_rows;
     QSize m_aspectRatio;

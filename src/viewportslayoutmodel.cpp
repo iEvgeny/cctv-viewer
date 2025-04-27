@@ -18,41 +18,14 @@ ViewportsLayoutModel::ViewportsLayoutModel(QObject *parent)
       m_rows(0),
       m_aspectRatio(16, 9)
 {
+    const QMetaObject* meta = &ViewportsLayoutItem::staticMetaObject;
+    for (int i = meta->propertyOffset(); i < meta->propertyCount(); ++i) {
+        QMetaProperty property = meta->property(i);
+        m_roleNames[Qt::UserRole + i] = property.name();
+    }
+
     connect(this, &ViewportsLayoutModel::dataChanged, this, &ViewportsLayoutModel::changed);
     connect(this, &ViewportsLayoutModel::sizeChanged, this, &ViewportsLayoutModel::changed);
-}
-
-QVariant ViewportsLayoutModel::data(const QModelIndex &index, int role) const
-{
-    if (!hasIndex(index.row(), index.column())) {
-        return QVariant();
-    }
-
-    QString key = roleNames().value(role);
-    return get(index.row())->property(key.toUtf8());
-}
-
-bool ViewportsLayoutModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    if (!hasIndex(index.row(), index.column())) {
-        return false;
-    }
-
-    QString key = roleNames().value(role);
-    return get(index.row())->setProperty(key.toUtf8(), value);
-}
-
-QHash<int, QByteArray> ViewportsLayoutModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[UrlRole] = "url";
-    roles[ColumnSpanRole] = "columnSpan";
-    roles[RowSpanRole] = "rowSpan";
-    roles[VisibleRole] = "visible";
-    roles[VolumeRole] = "volume";
-    roles[AVFormatOptionsRole] = "avFormatOptions";
-
-    return roles;
 }
 
 int ViewportsLayoutModel::rowCount(const QModelIndex &parent) const
@@ -62,6 +35,24 @@ int ViewportsLayoutModel::rowCount(const QModelIndex &parent) const
     }
 
     return m_items.size();
+}
+
+QVariant ViewportsLayoutModel::data(const QModelIndex &index, int role) const
+{
+    if (!hasIndex(index.row(), index.column())) {
+        return {};
+    }
+
+    return get(index.row())->property(m_roleNames.value(role));
+}
+
+bool ViewportsLayoutModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!hasIndex(index.row(), index.column())) {
+        return false;
+    }
+
+    return get(index.row())->setProperty(m_roleNames.value(role), value);
 }
 
 ViewportsLayoutItem *ViewportsLayoutModel::set(int index, ViewportsLayoutItem *p)
@@ -217,7 +208,7 @@ void ViewportsLayoutModel::fromJSValue(const QVariantMap &model)
     if (val.canConvert(QMetaType::QVariantList)) {
         QVariantList items = val.toList();
         for (int i = 0; i < std::min(m_items.size(), items.size()); ++i) {
-            QHashIterator<int, QByteArray> role(roleNames());
+            QHashIterator<int, QByteArray> role(m_roleNames);
             while (role.hasNext()) {
                 role.next();
 
@@ -242,7 +233,7 @@ QVariantMap ViewportsLayoutModel::toJSValue() const
             const QMetaObject* metaObject = get(i)->metaObject();
             for(int j = metaObject->propertyOffset(); j < metaObject->propertyCount(); ++j) {
                 const char *name = metaObject->property(j).name();
-                int hashKey = roleNames().key(name);
+                int hashKey = m_roleNames.key(name);
                 if (hashKey) {
                     item[name] = get(i)->property(name);
                 }
