@@ -4,7 +4,7 @@ function currentModel() {
 }
 
 function currentLayout() {
-    return swipeViewRepeater.itemAt(stackLayout.currentIndex);
+    return layoutRepeater.itemAt(stackLayout.currentIndex);
 }
 
 function parseOptions(str) {

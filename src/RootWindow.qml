@@ -219,11 +219,6 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.right: sideBarLoader.left
 
-        Rectangle {
-            color: "black"
-            anchors.fill: parent
-        }
-
         StackLayout {
             id: stackLayout
 
@@ -239,7 +234,7 @@ ApplicationWindow {
             }
 
             Repeater {
-                id: swipeViewRepeater
+                id: layoutRepeater
                 model: layoutsCollectionModel
 
                 ViewportsLayout {
