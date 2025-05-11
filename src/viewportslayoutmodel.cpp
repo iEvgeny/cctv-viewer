@@ -13,10 +13,9 @@ ViewportsLayoutItem::ViewportsLayoutItem(QObject *parent)
 }
 
 ViewportsLayoutModel::ViewportsLayoutModel(QObject *parent)
-    : QAbstractListModel(parent),
-      m_columns(0),
-      m_rows(0),
-      m_aspectRatio(16, 9)
+    : QAbstractListModel(parent)
+    , m_columns(0)
+    , m_rows(0)
 {
     const QMetaObject* meta = &ViewportsLayoutItem::staticMetaObject;
     for (int i = meta->propertyOffset(); i < meta->propertyCount(); ++i) {
@@ -258,15 +257,4 @@ void ViewportsLayoutModel::setSize(const QSize &size)
     resize(size.width(), size.height());
 
     emit sizeChanged(size);
-}
-
-void ViewportsLayoutModel::setAspectRatio(const QSize &ratio)
-{
-    if (ratio == m_aspectRatio) {
-        return;
-    }
-
-    m_aspectRatio = ratio;
-
-    emit aspectRatioChanged(ratio);
 }

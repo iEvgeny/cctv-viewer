@@ -4,9 +4,10 @@
 #include <QMouseEvent>
 #include <QCoreApplication>
 
+QMetaEnum EventFilter::m_metaEnum(QMetaEnum::fromType<QEvent::Type>());
+
 EventFilter::EventFilter(QObject *parent)
     : QObject(parent)
-    , m_metaEnum(QMetaEnum::fromType<QEvent::Type>())
     , m_watched(nullptr)
 {
     connect(this, &EventFilter::scopeChanged, this, &EventFilter::installEventFilter);
@@ -16,7 +17,7 @@ bool EventFilter::eventFilter([[maybe_unused]] QObject *watched, QEvent *event)
 {
     auto type = event->type();
 
-    if (m_enabled && std::find(m_eventTypes.begin(), m_eventTypes.end(), type) != m_eventTypes.end()) {
+    if (m_enabled && std::find(m_events.begin(), m_events.end(), type) != m_events.end()) {
         QVariantMap properties;
 
         if (m_eventProperties) {
@@ -44,35 +45,17 @@ bool EventFilter::eventFilter([[maybe_unused]] QObject *watched, QEvent *event)
     return false;
 }
 
-QVariant EventFilter::eventTypes() const
+void EventFilter::prepareEvents(QStringList events)
 {
-    QStringList list;
-    for (auto i : m_eventTypes) {
-        list.append(m_metaEnum.valueToKey(i));
-    }
-    return list;
-}
+    m_events.clear();
 
-void EventFilter::setEventTypes(const QVariant &events)
-{
-    auto variant = events.value<QJSValue>().toVariant();
-    auto list = variant.toStringList();
-
-    if (eventTypes() == list) {
-        return;
-    }
-
-    m_eventTypes.clear();
-
-    for (const auto &i : qAsConst(list)) {
-        auto type = m_metaEnum.keyToValue(i.toLatin1());
+    for (const auto &i : events) {
+        auto type = m_metaEnum.keyToValue(i.toUtf8());
         if (type < 0) {
             return;
         }
-        m_eventTypes.push_back(static_cast<QEvent::Type>(type));
+        m_events.push_back(static_cast<QEvent::Type>(type));
     }
-
-    emit eventTypesChanged();
 }
 
 void EventFilter::installEventFilter()
@@ -85,4 +68,15 @@ void EventFilter::installEventFilter()
     if (m_watched) {
         m_watched->installEventFilter(this);
     }
+}
+
+void EventFilter::setEventTypes(QmlAVPropertyType<QStringList> events)
+{
+    if (eventTypes() == events) {
+        return;
+    }
+
+    prepareEvents(events);
+
+    emit eventTypesChanged(events);
 }

@@ -5,14 +5,12 @@
 #include <QMetaEnum>
 #include <QEvent>
 
-#include "utils.h"
+#include "qmlavpropertyhelpers.h"
 
 class EventFilter : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
-
-    Q_PROPERTY(QVariant eventTypes READ eventTypes WRITE setEventTypes NOTIFY eventTypesChanged)
 
 public:
     enum class Scope {
@@ -21,32 +19,29 @@ public:
     };
     Q_ENUM(Scope)
 
-    EventFilter(QObject *parent = nullptr);
+    QMLAV_PROPERTY(bool, enabled, setEnabled, enabledChanged) = true;
+    QMLAV_PROPERTY(EventFilter::Scope, scope, setScope, scopeChanged) = Scope::Parent;
+    QMLAV_PROPERTY_DECL(QStringList, eventTypes, setEventTypes, eventTypesChanged);
+    QMLAV_PROPERTY(bool, eventProperties, setEventProperties, eventPropertiesChanged) = true;
 
-    PROPERTY_MUTABLE(bool, enabled, setEnabled, enabledChanged) = true;
-    PROPERTY_MUTABLE(EventFilter::Scope, scope, setScope, scopeChanged) = Scope::Parent;
-    PROPERTY_MUTABLE(bool, eventProperties, setEventProperties, eventPropertiesChanged) = true;
+public:
+    EventFilter(QObject *parent = nullptr);
 
     void classBegin() override { }
     void componentComplete() override { installEventFilter(); }
     bool eventFilter(QObject *watched, QEvent *event) override;
 
-    QVariant eventTypes() const;
-
-public slots:
-    void setEventTypes(const QVariant &events);
-
 signals:
-    void eventTypesChanged();
     void eventFiltered(const QVariantMap &properties);
 
 protected:
+    void prepareEvents(QStringList events);
     void installEventFilter();
 
 private:
-    QMetaEnum m_metaEnum;
+    static QMetaEnum m_metaEnum;
     QObject *m_watched;
-    std::vector<QEvent::Type> m_eventTypes;
+    std::vector<QEvent::Type> m_events;
 };
 
 #endif // EVENTFILTER_H

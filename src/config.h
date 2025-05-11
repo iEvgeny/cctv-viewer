@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "utils.h"
+#include "qmlavpropertyhelpers.h"
 
 class Config : public QObject
 {
@@ -20,14 +20,15 @@ public:
     };
     Q_ENUM(LogLevel)
 
+    QMLAV_PROPERTY_CONST(QString, fileName);
+    QMLAV_PROPERTY(int, currentIndex, setCurrentIndex, currentIndexChanged) = -1;
+    QMLAV_PROPERTY(bool, fullScreen, setFullScreen, fullScreenChanged) = false;
+    QMLAV_PROPERTY(bool, kioskMode, setKioskMode, kioskModeChanged) = false;
+    QMLAV_PROPERTY(Config::LogLevel, logLevel, setLogLevel, logLevelChanged) = Config::LogInfo;
+
+public:
     Config(QObject *parent = nullptr);
     Config(const QString &fileName, QObject *parent = nullptr);
-
-    PROPERTY_CONST(QString, fileName);
-    PROPERTY_MUTABLE(int, currentIndex, setCurrentIndex, currentIndexChanged) = -1;
-    PROPERTY_MUTABLE(bool, fullScreen, setFullScreen, fullScreenChanged) = false;
-    PROPERTY_MUTABLE(bool, kioskMode, setKioskMode, kioskModeChanged) = false;
-    PROPERTY_MUTABLE(Config::LogLevel, logLevel, setLogLevel, logLevelChanged) = Config::LogInfo;
 
 protected slots:
     void reconfigureLoggingFilterRules();

@@ -7,7 +7,7 @@
 #include <QAbstractListModel>
 #include <QSize>
 
-#include "utils.h"
+#include "qmlavpropertyhelpers.h"
 
 // TODO: Reimplement this with QSize/QRect as a span property
 class ViewportsLayoutItem : public QObject
@@ -21,14 +21,15 @@ public:
     };
     Q_ENUM(Visible)
 
-    ViewportsLayoutItem(QObject *parent = nullptr);
+    QMLAV_PROPERTY(QString, url, setUrl, urlChanged);
+    QMLAV_PROPERTY(int, rowSpan, setRowSpan, rowSpanChanged) = 1;
+    QMLAV_PROPERTY(int, columnSpan, setColumnSpan, columnSpanChanged) = 1;
+    QMLAV_PROPERTY(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged) = Visible::Visible;
+    QMLAV_PROPERTY(QVariant, volume, setVolume, volumeChanged) = 0.0;
+    QMLAV_PROPERTY(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged);
 
-    PROPERTY_MUTABLE(QString, url, setUrl, urlChanged);
-    PROPERTY_MUTABLE(int, rowSpan, setRowSpan, rowSpanChanged) = 1;
-    PROPERTY_MUTABLE(int, columnSpan, setColumnSpan, columnSpanChanged) = 1;
-    PROPERTY_MUTABLE(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged) = Visible::Visible;
-    PROPERTY_MUTABLE(QVariant, volume, setVolume, volumeChanged) = 0.0;
-    PROPERTY_MUTABLE(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged);
+public:
+    ViewportsLayoutItem(QObject *parent = nullptr);
 
 signals:
     void changed();
@@ -40,10 +41,11 @@ class ViewportsLayoutModel : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
-    Q_PROPERTY(QSize aspectRatio READ aspectRatio WRITE setAspectRatio NOTIFY aspectRatioChanged)
+
+    QMLAV_PROPERTY(QSize, aspectRatio, setAspectRatio, aspectRatioChanged) = {16, 9};
 
 public:
-    explicit ViewportsLayoutModel(QObject *parent = nullptr);
+    ViewportsLayoutModel(QObject *parent = nullptr);
 
     // QAbstractItemModel interface
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -53,7 +55,7 @@ public:
 
     // Model control interface
     Q_INVOKABLE QSize size() const { return QSize(m_columns, m_rows); }
-    Q_INVOKABLE QSize aspectRatio() const { return m_aspectRatio; }
+
     Q_INVOKABLE ViewportsLayoutItem *get(int index) const { return m_items.value(index); }
     Q_INVOKABLE ViewportsLayoutItem *get(int column, int row) const { return get(dataIndex(column, row)); }
     Q_INVOKABLE ViewportsLayoutItem *set(int index, ViewportsLayoutItem *p);
@@ -67,12 +69,10 @@ public:
 
 public slots:
     void setSize(const QSize &size);
-    void setAspectRatio(const QSize &ratio);
 
 signals:
     void changed();
     void sizeChanged(const QSize &size);
-    void aspectRatioChanged(const QSize &ratio);
 
 protected:
     int dataIndex(int column, int row) const { return m_columns * row + column; }
@@ -87,11 +87,9 @@ private:
         return (v < lo) ? lo : (hi < v) ? hi : v;
     }
 
-private:
-    QHash<int, QByteArray> m_roleNames;
     int m_columns;
     int m_rows;
-    QSize m_aspectRatio;
+    QHash<int, QByteArray> m_roleNames;
     QVector<ViewportsLayoutItem *> m_items;
 };
 QML_DECLARE_TYPE(ViewportsLayoutModel)
