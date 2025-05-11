@@ -88,22 +88,22 @@
     </message>
     <message>
         <location filename="../src/RootWindow.qml" line="89"/>
-        <location filename="../src/RootWindow.qml" line="208"/>
+        <location filename="../src/RootWindow.qml" line="204"/>
         <source>Error reading configuration!</source>
         <translation>Ошибка чтения конфигурации!</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="299"/>
+        <location filename="../src/RootWindow.qml" line="294"/>
         <source>Already running!</source>
         <translation>Уже запущено!</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="301"/>
+        <location filename="../src/RootWindow.qml" line="296"/>
         <source>The application is already running!</source>
         <translation>Приложение уже запущено!</translation>
     </message>
     <message>
-        <location filename="../src/RootWindow.qml" line="302"/>
+        <location filename="../src/RootWindow.qml" line="297"/>
         <source>Go to the first instance and allow multiple instances of the app to run in Settings.</source>
         <translation>Перейдите к первому экземпляру и разрешите запуск нескольких экземпляров приложения в настройках.</translation>
     </message>
