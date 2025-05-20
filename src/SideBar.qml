@@ -161,13 +161,12 @@ FocusScope {
                             ColumnLayout {
                                 anchors.fill: parent
 
-                                TextEdit {
-                                    readOnly: true
-                                    selectByMouse: true
-
-                                    text: String("<a href=\"https://cctv-viewer.org\" style=\"color: white; text-decoration: none;\">v%1</a>").arg(Qt.application.version)
+                                Text {
+                                    text: {
+                                        var v = `<b style=\"font-size: ${rootWindow.font.pointSize * 1.4}pt;\">v${Qt.application.version.replace(/\s/, "</b><br />")}`;
+                                        return `<a href=\"#\" style=\"color: white; text-decoration: none;\">${v}</a>`;
+                                    }
                                     color: "white"
-                                    font.pointSize: rootWindow.font.pointSize * 1.05
                                     textFormat: Text.RichText
                                     horizontalAlignment: Text.AlignHCenter
 
@@ -176,8 +175,7 @@ FocusScope {
                                     onLinkHovered: header.linkHovered(link)
                                     onLinkActivated: {
                                         toolTip.visible = true;
-                                        selectAll();
-                                        copy();
+                                        Clipboard.setText(Qt.application.version);
                                     }
 
                                     ToolTip {

@@ -49,7 +49,7 @@ if ("${GIT_COMMIT}" STREQUAL "")
     set(GIT_COMMIT "N/A")
 endif()
 
-set(VERSION "${VERSION} ${PACKAGER}.${GIT_COMMIT}")
+set(VERSION "${VERSION} ${PACKAGER}.${GIT_COMMIT} (${CMAKE_SYSTEM_PROCESSOR})")
 ###
 
 add_definitions(-DAPP_NAME="${APP_NAME}" -DAPP_VERSION="${VERSION}" -DORG_NAME="${ORG_NAME}" -DORG_DOMAIN="${ORG_DOMAIN}")
@@ -153,7 +153,7 @@ endif()
 
 set(PROJ_FILES
     src/main.cpp
-
+    src/clipboard.h
     src/singleapplication.h
     src/config.cpp src/config.h
     src/context.cpp src/context.h

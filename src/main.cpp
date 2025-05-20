@@ -6,6 +6,7 @@
 #include "qmlavplayer.h"
 #include "context.h"
 #include "eventfilter.h"
+#include "clipboard.h"
 #include "singleapplication.h"
 #include "context.h"
 #include "viewportslayoutscollectionmodel.h"
@@ -17,6 +18,11 @@ void registerQmlTypes()
                                          [[maybe_unused]] QJSEngine *scriptEngine) -> QObject * {
         return new Context();
     });
+    qmlRegisterSingletonType<Clipboard>("CCTV_Viewer.Utils", 1, 0, "Clipboard",
+                                                []([[maybe_unused]] QQmlEngine *engine,
+                                                   [[maybe_unused]] QJSEngine *scriptEngine) -> QObject * {
+                                                    return new Clipboard();
+                                                });
     qmlRegisterSingletonType<SingleApplication>("CCTV_Viewer.Utils", 1, 0, "SingleApplication",
                                                 []([[maybe_unused]] QQmlEngine *engine,
                                                    [[maybe_unused]] QJSEngine *scriptEngine) -> QObject * {
@@ -48,7 +54,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QLatin1String(ORG_DOMAIN));
 #endif
 
-    qInfo() << "CCTV Viewer version " << APP_VERSION;
+    qInfo() << "CCTV Viewer version:" << APP_VERSION;
 
     registerQmlTypes();
 
