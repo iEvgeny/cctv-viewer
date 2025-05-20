@@ -27,8 +27,8 @@ public:
     QMLAV_PROPERTY(Config::LogLevel, logLevel, setLogLevel, logLevelChanged) = Config::LogInfo;
 
 public:
-    Config(QObject *parent = nullptr);
-    Config(const QString &fileName, QObject *parent = nullptr);
+    explicit Config(QObject *parent = nullptr);
+    explicit Config(const QString &fileName, QObject *parent = nullptr);
 
 protected slots:
     void reconfigureLoggingFilterRules();

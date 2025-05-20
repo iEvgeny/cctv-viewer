@@ -25,7 +25,7 @@ public:
     QMLAV_PROPERTY(bool, eventProperties, setEventProperties, eventPropertiesChanged) = true;
 
 public:
-    EventFilter(QObject *parent = nullptr);
+    explicit EventFilter(QObject *parent = nullptr);
 
     void classBegin() override { }
     void componentComplete() override { installEventFilter(); }

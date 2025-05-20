@@ -29,7 +29,7 @@ public:
     QMLAV_PROPERTY(QVariantMap, avFormatOptions, setAVFormatOptions, avFormatOptionsChanged);
 
 public:
-    ViewportsLayoutItem(QObject *parent = nullptr);
+    explicit ViewportsLayoutItem(QObject *parent = nullptr);
 
 signals:
     void changed();
@@ -45,7 +45,7 @@ class ViewportsLayoutModel : public QAbstractListModel
     QMLAV_PROPERTY(QSize, aspectRatio, setAspectRatio, aspectRatioChanged) = {16, 9};
 
 public:
-    ViewportsLayoutModel(QObject *parent = nullptr);
+    explicit ViewportsLayoutModel(QObject *parent = nullptr);
 
     // QAbstractItemModel interface
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;

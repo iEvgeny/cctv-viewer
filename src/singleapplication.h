@@ -10,7 +10,7 @@ class SingleApplication : public QObject
     Q_OBJECT
 
 public:
-    SingleApplication(QObject *parent = nullptr)
+    explicit SingleApplication(QObject *parent = nullptr)
         : QObject(parent),
           m_lockFile(QDir::tempPath() + "/" + QFileInfo(QCoreApplication::applicationFilePath()).fileName() + "-3356-4ce-lockfile")
     {
