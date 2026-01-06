@@ -184,6 +184,11 @@ FocusScope {
                     property int cursorColumnOffset: 0
                     property int cursorRowOffset: 0
                     property bool fullScreen: false
+                    
+                    // Zoom properties
+                    property real zoomScale: 1.0
+                    property real panX: 0
+                    property real panY: 0
 
                     readonly property alias selected: d2.selected
 
@@ -235,8 +240,20 @@ FocusScope {
                         }
                     ]
 
-                    onVisibleChanged: fullScreen = false
-                    onFullScreenChanged: d2.setCurrentIndex("fullScreenIndex", fullScreen)
+                    onVisibleChanged: {
+                        fullScreen = false
+                        zoomScale = 1.0
+                        panX = 0
+                        panY = 0
+                    }
+                    onFullScreenChanged: {
+                        d2.setCurrentIndex("fullScreenIndex", fullScreen)
+                        if (!fullScreen) {
+                            zoomScale = 1.0
+                            panX = 0
+                            panY = 0
+                        }
+                    }
                     onFocusChanged: {
                         d2.setCurrentIndex("focusIndex", focus);
                         d2.setCurrentIndex("pressAndHoldIndex", false);
@@ -398,6 +415,7 @@ FocusScope {
 
                         color: root.color
                         anchors.fill: parent
+                        clip: true
 
                         Player {
                             id: player
@@ -407,7 +425,26 @@ FocusScope {
                             volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
-                            anchors.fill: parent
+                            
+                            // Apply zoom transformation when in fullscreen
+                            scale: viewport.fullScreen ? viewport.zoomScale : 1.0
+                            transformOrigin: Item.TopLeft
+                            
+                            x: viewport.fullScreen ? viewport.panX : 0
+                            y: viewport.fullScreen ? viewport.panY : 0
+                            
+                            width: parent.width
+                            height: parent.height
+                            
+                            Behavior on scale {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+                            Behavior on x {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+                            Behavior on y {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
                         }
                     }
 
@@ -453,6 +490,10 @@ FocusScope {
 
                     MouseArea {
                         anchors.fill: parent
+                        
+                        // Enable wheel events for zooming
+                        acceptedButtons: Qt.LeftButton
+                        hoverEnabled: true
 
                         onPressed: {
                             if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
@@ -470,6 +511,45 @@ FocusScope {
 
                         onMouseXChanged: mouseMoveHandler()
                         onMouseYChanged: mouseMoveHandler()
+                        
+                        // Handle mousewheel zoom when in fullscreen
+                        onWheel: {
+                            if (viewport.fullScreen) {
+                                var delta = wheel.angleDelta.y / 120; // Standard wheel delta
+                                var zoomFactor = 1 + (delta * 0.1); // 10% zoom per wheel step
+                                
+                                var newScale = viewport.zoomScale * zoomFactor;
+                                newScale = Math.max(1.0, Math.min(newScale, 5.0)); // Clamp between 1x and 5x
+                                
+                                if (newScale !== viewport.zoomScale) {
+                                    // Calculate the point under the mouse in the current coordinate system
+                                    var mouseX = wheel.x;
+                                    var mouseY = wheel.y;
+                                    
+                                    // Calculate the point in the image that's currently under the mouse
+                                    var imageX = (mouseX - viewport.panX) / viewport.zoomScale;
+                                    var imageY = (mouseY - viewport.panY) / viewport.zoomScale;
+                                    
+                                    // Update scale
+                                    viewport.zoomScale = newScale;
+                                    
+                                    // Calculate new pan to keep the same point under the mouse
+                                    viewport.panX = mouseX - imageX * newScale;
+                                    viewport.panY = mouseY - imageY * newScale;
+                                    
+                                    // Clamp pan to prevent showing empty space
+                                    var maxPanX = 0;
+                                    var minPanX = viewport.width - (viewport.width * newScale);
+                                    var maxPanY = 0;
+                                    var minPanY = viewport.height - (viewport.height * newScale);
+                                    
+                                    viewport.panX = Math.max(minPanX, Math.min(maxPanX, viewport.panX));
+                                    viewport.panY = Math.max(minPanY, Math.min(maxPanY, viewport.panY));
+                                }
+                                
+                                wheel.accepted = true;
+                            }
+                        }
 
                         function mouseMoveHandler() {
                             if (!containsMouse) {
