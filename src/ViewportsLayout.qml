@@ -519,7 +519,7 @@ FocusScope {
                                 var zoomFactor = 1 + (delta * 0.1); // 10% zoom per wheel step
                                 
                                 var newScale = viewport.zoomScale * zoomFactor;
-                                newScale = Math.max(1.0, Math.min(newScale, 5.0)); // Clamp between 1x and 5x
+                                newScale = Math.max(1.0, Math.min(newScale, 10.0)); // Clamp between 1x and 10x
                                 
                                 if (newScale !== viewport.zoomScale) {
                                     // Calculate the point under the mouse in the current coordinate system
