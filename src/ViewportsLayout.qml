@@ -495,41 +495,22 @@ FocusScope {
                         acceptedButtons: Qt.LeftButton
                         hoverEnabled: true
 
-                        property bool isDragging: false
-
                         onPressed: {
-                            isDragging = false;
                             if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
                                 d.selectionIndex2 = model.index;
-                                isDragging = true;
                             } else {
                                 viewport.forceActiveFocus();
                                 d.selectionReset();
                             }
                         }
-                        
-                        onReleased: {
-                            isDragging = false;
-                        }
-                        
                         onPressAndHold: d2.setCurrentIndex("pressAndHoldIndex", true)
-                        
                         onDoubleClicked: {
                             viewport.fullScreen = (root.size.width > 1 && root.size.height > 1) ? !viewport.fullScreen : false;
                             d.selectionReset();
                         }
 
-                        onMouseXChanged: {
-                            if (isDragging && pressed) {
-                                mouseMoveHandler();
-                            }
-                        }
-                        
-                        onMouseYChanged: {
-                            if (isDragging && pressed) {
-                                mouseMoveHandler();
-                            }
-                        }
+                        onMouseXChanged: mouseMoveHandler()
+                        onMouseYChanged: mouseMoveHandler()
                         
                         // Handle mousewheel zoom when in fullscreen (requires CTRL modifier)
                         onWheel: {
@@ -573,8 +554,13 @@ FocusScope {
                         function mouseMoveHandler() {
                             if (!containsMouse) {
                                 var selectionIndex2 = viewport.indexAt(mouseX, mouseY);
+
                                 if (selectionIndex2 >= 0) {
                                     d.selectionIndex2 = selectionIndex2;
+                                }
+                            } else {
+                                if (!(d.keyModifiers & Qt.ShiftModifier)) {
+                                    d.selectionReset();
                                 }
                             }
                         }
