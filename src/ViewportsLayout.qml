@@ -493,7 +493,6 @@ FocusScope {
                         
                         // Enable wheel events for zooming
                         acceptedButtons: Qt.LeftButton
-                        hoverEnabled: true
 
                         onPressed: {
                             if (d.activeFocusIndex >= 0 && d.keyModifiers & Qt.ShiftModifier) {
