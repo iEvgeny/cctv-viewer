@@ -189,6 +189,7 @@ FocusScope {
                     property real zoomScale: 1.0
                     property real panX: 0
                     property real panY: 0
+                    readonly property bool zoomEnabled: fullScreen || (root.size.width === 1 && root.size.height === 1)
 
                     readonly property alias selected: d2.selected
 
@@ -241,17 +242,18 @@ FocusScope {
                     ]
 
                     onVisibleChanged: {
-                        fullScreen = false
-                        zoomScale = 1.0
-                        panX = 0
-                        panY = 0
+                        fullScreen = false;
+                        resetZoom();
                     }
                     onFullScreenChanged: {
                         d2.setCurrentIndex("fullScreenIndex", fullScreen)
                         if (!fullScreen) {
-                            zoomScale = 1.0
-                            panX = 0
-                            panY = 0
+                            resetZoom();
+                        }
+                    }
+                    onZoomEnabledChanged: {
+                        if (!zoomEnabled) {
+                            resetZoom();
                         }
                     }
                     onFocusChanged: {
@@ -265,6 +267,12 @@ FocusScope {
                             cursorColumnOffset = 0;
                             cursorRowOffset = 0;
                         }
+                    }
+
+                    function resetZoom() {
+                        zoomScale = 1.0;
+                        panX = 0;
+                        panY = 0;
                     }
 
                     Keys.onPressed: {
@@ -426,12 +434,12 @@ FocusScope {
                             avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
                             
-                            // Apply zoom transformation when in fullscreen
-                            scale: viewport.fullScreen ? viewport.zoomScale : 1.0
+                            // Apply zoom transformation when zoom is enabled
+                            scale: viewport.zoomEnabled ? viewport.zoomScale : 1.0
                             transformOrigin: Item.TopLeft
                             
-                            x: viewport.fullScreen ? viewport.panX : 0
-                            y: viewport.fullScreen ? viewport.panY : 0
+                            x: viewport.zoomEnabled ? viewport.panX : 0
+                            y: viewport.zoomEnabled ? viewport.panY : 0
                             
                             width: parent.width
                             height: parent.height
@@ -513,39 +521,42 @@ FocusScope {
                         
                         // Handle mousewheel zoom when in fullscreen (requires CTRL modifier)
                         onWheel: {
-                            if (viewport.fullScreen && (wheel.modifiers & Qt.ControlModifier)) {
-                                var delta = wheel.angleDelta.y / 120; // Standard wheel delta
-                                var zoomFactor = 1 + (delta * 0.1); // 10% zoom per wheel step
-                                
-                                var newScale = viewport.zoomScale * zoomFactor;
-                                newScale = Math.max(1.0, Math.min(newScale, 10.0)); // Clamp between 1x and 10x
-                                
-                                if (newScale !== viewport.zoomScale) {
-                                    // Calculate the point under the mouse in the current coordinate system
-                                    var mouseX = wheel.x;
-                                    var mouseY = wheel.y;
-                                    
-                                    // Calculate the point in the image that's currently under the mouse
-                                    var imageX = (mouseX - viewport.panX) / viewport.zoomScale;
-                                    var imageY = (mouseY - viewport.panY) / viewport.zoomScale;
-                                    
-                                    // Update scale
-                                    viewport.zoomScale = newScale;
-                                    
-                                    // Calculate new pan to keep the same point under the mouse
-                                    viewport.panX = mouseX - imageX * newScale;
-                                    viewport.panY = mouseY - imageY * newScale;
-                                    
-                                    // Clamp pan to prevent showing empty space
-                                    var maxPanX = 0;
-                                    var minPanX = viewport.width - (viewport.width * newScale);
-                                    var maxPanY = 0;
-                                    var minPanY = viewport.height - (viewport.height * newScale);
-                                    
-                                    viewport.panX = Math.max(minPanX, Math.min(maxPanX, viewport.panX));
-                                    viewport.panY = Math.max(minPanY, Math.min(maxPanY, viewport.panY));
+                            if (wheel.modifiers & Qt.ControlModifier) {
+                                if (!viewport.fullScreen && root.size.width > 1 && root.size.height > 1) {
+                                    viewport.fullScreen = true;
+                                    viewport.forceActiveFocus();
+                                    d.selectionReset();
                                 }
-                                
+
+                                if (viewport.zoomEnabled) {
+                                    var delta = wheel.angleDelta.y / 120;
+                                    var zoomFactor = 1 + (delta * 0.1);
+
+                                    var newScale = viewport.zoomScale * zoomFactor;
+                                    newScale = Number(newScale).clamp(1.0, 10.0);
+
+                                    if (newScale !== viewport.zoomScale) {
+                                        var mouseX = wheel.x;
+                                        var mouseY = wheel.y;
+
+                                        var imageX = (mouseX - viewport.panX) / viewport.zoomScale;
+                                        var imageY = (mouseY - viewport.panY) / viewport.zoomScale;
+
+                                        viewport.zoomScale = newScale;
+
+                                        viewport.panX = mouseX - imageX * newScale;
+                                        viewport.panY = mouseY - imageY * newScale;
+
+                                        var minPanX = viewport.width - (viewport.width * newScale);
+                                        var maxPanX = 0;
+                                        var minPanY = viewport.height - (viewport.height * newScale);
+                                        var maxPanY = 0;
+
+                                        viewport.panX = Number(viewport.panX).clamp(minPanX, maxPanX);
+                                        viewport.panY = Number(viewport.panY).clamp(minPanY, maxPanY);
+                                    }
+                                }
+
                                 wheel.accepted = true;
                             }
                         }
