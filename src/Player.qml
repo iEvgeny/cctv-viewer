@@ -55,15 +55,8 @@ FocusScope {
 
             source: qmlAvPlayer
             anchors.fill: parent
+            fillMode: VideoOutput.Stretch
         }
-
-//        Rectangle {
-//            id: shutter
-
-//            color: root.color
-//            visible: qmlAvPlayer.status !== MediaPlayer.Buffering && qmlAvPlayer.status !== MediaPlayer.Buffered
-//            anchors.fill: parent
-//        }
 
         Text {
             id: message
