@@ -456,6 +456,27 @@ FocusScope {
                                 enabled: rootSideBar.currentViewportIndex >= 0
                                 anchors.fill: parent
 
+                                Text {
+                                        text: qsTr("Camera")
+                                        color: "white"
+                                        font.pointSize: rootWindow.font.pointSize * 1.05
+                                }
+
+                                TextField {
+                                    text: enabled ? Utils.currentModel().get(currentViewportIndex).name : ""
+                                    selectByMouse: true
+
+                                    Layout.fillWidth: true
+
+                                    onEditingFinished: Utils.currentModel().get(currentViewportIndex).name = text
+                                }
+
+                                Text {
+                                        text: qsTr("URL")
+                                        color: "white"
+                                        font.pointSize: rootWindow.font.pointSize * 1.05
+                                }
+
                                 TextField {
                                     text: enabled ? Utils.currentModel().get(currentViewportIndex).url : ""
                                     placeholderText: qsTr("Url")
@@ -464,6 +485,22 @@ FocusScope {
                                     Layout.fillWidth: true
 
                                     onEditingFinished: Utils.currentModel().get(currentViewportIndex).url = text
+                                }
+
+                                Text {
+                                        text: qsTr("Description")
+                                        color: "white"
+                                        font.pointSize: rootWindow.font.pointSize * 1.05
+                                }
+
+                                TextField {
+                                    text: enabled ? Utils.currentModel().get(currentViewportIndex).description : ""
+                                    placeholderText: qsTr("Description")
+                                    selectByMouse: true
+
+                                    Layout.fillWidth: true
+
+                                    onEditingFinished: Utils.currentModel().get(currentViewportIndex).description = text
                                 }
 
                                 Button {
