@@ -1,6 +1,19 @@
 cctv-viewer for Debian
 ---------------------
 
-<possible notes regarding this package - if none, delete this file>
+CCTV Viewer is a lightweight application for simultaneously viewing multiple
+video streams. It is designed for high performance and low latency, using
+FFmpeg for media decoding and Qt/QML for the user interface.
+
+Runtime requirements:
+  - A working display server (X11 or Wayland)
+  - FFmpeg libraries (automatically installed as dependencies)
+  - Hardware video acceleration is supported via VA-API when available
+
+PPA packages are available at:
+  https://launchpad.net/~ievgeny/+archive/ubuntu/cctv-viewer
+
+For more information, see the upstream project:
+  https://github.com/iEvgeny/cctv-viewer
 
  -- Evgeny S Maksimov <admin@vragam.net>  Thu, 18 May 2017 09:53:57 +0300
