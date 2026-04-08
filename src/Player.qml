@@ -2,11 +2,12 @@ import QtQml 2.12
 import QtQuick 2.12
 import QtMultimedia 5.12
 import CCTV_Viewer.Multimedia 1.0
+import CCTV_Viewer.Themes 1.0
 
 FocusScope {
     id: root
 
-    property string color: "black"
+    property string color: Compact.viewportBackground
 
     property var avOptions: ({})
 
@@ -47,7 +48,7 @@ FocusScope {
 
     Rectangle {
         color: root.color
-        border.color: "#101010"
+        border.color: Compact.viewportBorder
         anchors.fill: parent
 
         VideoOutput {
@@ -68,7 +69,7 @@ FocusScope {
         Text {
             id: message
 
-            color: "white"
+            color: Compact.viewportStatusText
             visible: qmlAvPlayer.status !== MediaPlayer.Buffered
             anchors.centerIn: parent
         }

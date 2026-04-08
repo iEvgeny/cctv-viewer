@@ -4,6 +4,9 @@
         <file>translations/cctv-viewer_ru_RU.qm</file>
         <file>src/RootWindow.qml</file>
         <file>src/SettingsDialog.qml</file>
+        <file>src/ThemedDialog.qml</file>
+        <file>src/ThemedButton.qml</file>
+        <file>src/KeyBindingsDialog.qml</file>
         <file>src/Player.qml</file>
         <file>src/ViewportsLayout.qml</file>
         <file>src/SideBar.qml</file>
@@ -27,6 +30,8 @@
         <file alias="Compact/TextField.qml">src/imports/CCTV_Viewer/Themes/Compact/TextField.qml</file>
         <file alias="Compact/CheckBox.qml">src/imports/CCTV_Viewer/Themes/Compact/CheckBox.qml</file>
         <file alias="Compact/ToolTip.qml">src/imports/CCTV_Viewer/Themes/Compact/ToolTip.qml</file>
+        <file alias="Compact/ComboBox.qml">src/imports/CCTV_Viewer/Themes/Compact/ComboBox.qml</file>
+        <file alias="Compact/SpinBox.qml">src/imports/CCTV_Viewer/Themes/Compact/SpinBox.qml</file>
         <file>images/github.svg</file>
         <file>src/PresetIndicator.qml</file>
         <file>images/play.svg</file>
