@@ -132,16 +132,17 @@ normalize:
 
             set(index, item);
         } else {
-            int span = 1;
             int columnSpan = clamp(item->property("columnSpan").toInt(), 1, m_columns - column(index));
             int rowSpan = clamp(item->property("rowSpan").toInt(), 1, m_rows - row(index));
 
-            if (columnSpan != m_columns || rowSpan != m_rows) {
-                span = std::min(rowSpan, columnSpan);
+            // Don't allow merging the entire grid into one cell
+            if (columnSpan >= m_columns && rowSpan >= m_rows) {
+                columnSpan = 1;
+                rowSpan = 1;
             }
 
-            item->setProperty("columnSpan", span);
-            item->setProperty("rowSpan", span);
+            item->setProperty("columnSpan", columnSpan);
+            item->setProperty("rowSpan", rowSpan);
             item->setProperty("visible", static_cast<int>(ViewportsLayoutItem::Visible::Visible));
             item->setProperty("volume", clamp(item->property("volume").toDouble(), 0.0, 1.0));
         }
