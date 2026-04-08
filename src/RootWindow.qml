@@ -8,6 +8,7 @@ import Qt.labs.settings 1.0
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Models 1.0
 import CCTV_Viewer.Utils 1.0
+import CCTV_Viewer.Themes 1.0
 
 ApplicationWindow {
     id: rootWindow
@@ -119,6 +120,88 @@ ApplicationWindow {
 
         property bool carouselRunning: false
         property int carouselInterval: 15000 // ms
+    }
+
+    Settings {
+        id: themeSettings
+
+        fileName: Context.config.fileName
+        category: "Theme"
+
+        property string accentColor
+        property string viewportBackground
+        property string viewportBorder
+        property string viewportStatusText
+        property string selectionBorder
+        property string selectionFill
+        property string fpsText
+        property string fpsBackground
+        property string overlayLabelBackground
+        property string overlayLabelText
+        property string sidebarText
+        property string sidebarGroupTitle
+        property string sidebarActiveItem
+        property string conflictText
+        property string discoveryHighlight
+        property string discoveryHighlightText
+        property string discoveryHighlightSecondary
+        property string categoryHeaderBackground
+        property string dialogBackground
+        property string dialogText
+        property string dialogInputBase
+        property string dialogInputButton
+        property string dialogDestructive
+        property string paletteButton
+        property string paletteButtonText
+        property string paletteLight
+        property string paletteMid
+        property string paletteDark
+        property string paletteToolTipBase
+        property string paletteToolTipText
+
+        Component.onCompleted: {
+            if (accentColor) Compact.accentColor = accentColor;
+            if (viewportBackground) Compact.viewportBackground = viewportBackground;
+            if (viewportBorder) Compact.viewportBorder = viewportBorder;
+            if (viewportStatusText) Compact.viewportStatusText = viewportStatusText;
+            if (selectionBorder) Compact.selectionBorder = selectionBorder;
+            if (selectionFill) Compact.selectionFill = selectionFill;
+            if (fpsText) Compact.fpsText = fpsText;
+            if (fpsBackground) Compact.fpsBackground = fpsBackground;
+            if (overlayLabelBackground) Compact.overlayLabelBackground = overlayLabelBackground;
+            if (overlayLabelText) Compact.overlayLabelText = overlayLabelText;
+            if (sidebarText) Compact.sidebarText = sidebarText;
+            if (sidebarGroupTitle) Compact.sidebarGroupTitle = sidebarGroupTitle;
+            if (sidebarActiveItem) Compact.sidebarActiveItem = sidebarActiveItem;
+            if (conflictText) Compact.conflictText = conflictText;
+            if (discoveryHighlight) Compact.discoveryHighlight = discoveryHighlight;
+            if (discoveryHighlightText) Compact.discoveryHighlightText = discoveryHighlightText;
+            if (discoveryHighlightSecondary) Compact.discoveryHighlightSecondary = discoveryHighlightSecondary;
+            if (categoryHeaderBackground) Compact.categoryHeaderBackground = categoryHeaderBackground;
+            if (dialogBackground) Compact.dialogBackground = dialogBackground;
+            if (dialogText) Compact.dialogText = dialogText;
+            if (dialogInputBase) Compact.dialogInputBase = dialogInputBase;
+            if (dialogInputButton) Compact.dialogInputButton = dialogInputButton;
+            if (dialogDestructive) Compact.dialogDestructive = dialogDestructive;
+            if (paletteButton) Compact.paletteButton = paletteButton;
+            if (paletteButtonText) Compact.paletteButtonText = paletteButtonText;
+            if (paletteLight) Compact.paletteLight = paletteLight;
+            if (paletteMid) Compact.paletteMid = paletteMid;
+            if (paletteDark) Compact.paletteDark = paletteDark;
+            if (paletteToolTipBase) Compact.paletteToolTipBase = paletteToolTipBase;
+            if (paletteToolTipText) Compact.paletteToolTipText = paletteToolTipText;
+
+            // Apply theme colors to the Qt Controls palette
+            rootWindow.palette.highlight = Compact.accentColor;
+            rootWindow.palette.highlightedText = Compact.discoveryHighlightText;
+            rootWindow.palette.button = Compact.paletteButton;
+            rootWindow.palette.buttonText = Compact.paletteButtonText;
+            rootWindow.palette.light = Compact.paletteLight;
+            rootWindow.palette.mid = Compact.paletteMid;
+            rootWindow.palette.dark = Compact.paletteDark;
+            rootWindow.palette.toolTipBase = Compact.paletteToolTipBase;
+            rootWindow.palette.toolTipText = Compact.paletteToolTipText;
+        }
     }
 
     Shortcut {
