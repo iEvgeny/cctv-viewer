@@ -1,0 +1,5 @@
+?package(cctv-viewer):needs="X11" \
+  section="Applications/Video" \
+  title="CCTV Viewer" \
+  command="/usr/bin/cctv-viewer" \
+  icon="/usr/share/pixmaps/cctv-viewer.svg"

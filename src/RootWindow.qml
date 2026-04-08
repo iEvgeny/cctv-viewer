@@ -8,6 +8,7 @@ import Qt.labs.settings 1.0
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Models 1.0
 import CCTV_Viewer.Utils 1.0
+import CCTV_Viewer.Themes 1.0
 
 ApplicationWindow {
     id: rootWindow
@@ -121,31 +122,162 @@ ApplicationWindow {
         property int carouselInterval: 15000 // ms
     }
 
-    Shortcut {
-        sequence: "M"
-        onActivated: {
-            if (Utils.currentLayout().focusIndex >= 0) {
-                var item = Utils.currentModel().get(Utils.currentLayout().focusIndex);
-                var viewport = Utils.currentLayout().get(Utils.currentLayout().focusIndex);
+    Settings {
+        id: themeSettings
 
-                if (viewport.hasAudio) {
-                    if (item.volume > 0) {
-                        item.volume = 0;
-                    } else {
-                        item.volume = 1;
-                    }
-                }
+        fileName: Context.config.fileName
+        category: "Theme"
+
+        property string accentColor
+        property string viewportBackground
+        property string viewportBorder
+        property string viewportStatusText
+        property string selectionBorder
+        property string selectionFill
+        property string fpsText
+        property string fpsBackground
+        property string overlayLabelBackground
+        property string overlayLabelText
+        property string sidebarText
+        property string sidebarGroupTitle
+        property string sidebarActiveItem
+        property string conflictText
+        property string discoveryHighlight
+        property string discoveryHighlightText
+        property string discoveryHighlightSecondary
+        property string categoryHeaderBackground
+        property string dialogBackground
+        property string dialogText
+        property string dialogInputBase
+        property string dialogInputButton
+        property string dialogDestructive
+        property string paletteButton
+        property string paletteButtonText
+        property string paletteLight
+        property string paletteMid
+        property string paletteDark
+        property string paletteToolTipBase
+        property string paletteToolTipText
+
+        Component.onCompleted: {
+            if (accentColor) Compact.accentColor = accentColor;
+            if (viewportBackground) Compact.viewportBackground = viewportBackground;
+            if (viewportBorder) Compact.viewportBorder = viewportBorder;
+            if (viewportStatusText) Compact.viewportStatusText = viewportStatusText;
+            if (selectionBorder) Compact.selectionBorder = selectionBorder;
+            if (selectionFill) Compact.selectionFill = selectionFill;
+            if (fpsText) Compact.fpsText = fpsText;
+            if (fpsBackground) Compact.fpsBackground = fpsBackground;
+            if (overlayLabelBackground) Compact.overlayLabelBackground = overlayLabelBackground;
+            if (overlayLabelText) Compact.overlayLabelText = overlayLabelText;
+            if (sidebarText) Compact.sidebarText = sidebarText;
+            if (sidebarGroupTitle) Compact.sidebarGroupTitle = sidebarGroupTitle;
+            if (sidebarActiveItem) Compact.sidebarActiveItem = sidebarActiveItem;
+            if (conflictText) Compact.conflictText = conflictText;
+            if (discoveryHighlight) Compact.discoveryHighlight = discoveryHighlight;
+            if (discoveryHighlightText) Compact.discoveryHighlightText = discoveryHighlightText;
+            if (discoveryHighlightSecondary) Compact.discoveryHighlightSecondary = discoveryHighlightSecondary;
+            if (categoryHeaderBackground) Compact.categoryHeaderBackground = categoryHeaderBackground;
+            if (dialogBackground) Compact.dialogBackground = dialogBackground;
+            if (dialogText) Compact.dialogText = dialogText;
+            if (dialogInputBase) Compact.dialogInputBase = dialogInputBase;
+            if (dialogInputButton) Compact.dialogInputButton = dialogInputButton;
+            if (dialogDestructive) Compact.dialogDestructive = dialogDestructive;
+            if (paletteButton) Compact.paletteButton = paletteButton;
+            if (paletteButtonText) Compact.paletteButtonText = paletteButtonText;
+            if (paletteLight) Compact.paletteLight = paletteLight;
+            if (paletteMid) Compact.paletteMid = paletteMid;
+            if (paletteDark) Compact.paletteDark = paletteDark;
+            if (paletteToolTipBase) Compact.paletteToolTipBase = paletteToolTipBase;
+            if (paletteToolTipText) Compact.paletteToolTipText = paletteToolTipText;
+
+            // Apply theme colors to the Qt Controls palette
+            rootWindow.palette.highlight = Compact.accentColor;
+            rootWindow.palette.highlightedText = Compact.discoveryHighlightText;
+            rootWindow.palette.button = Compact.paletteButton;
+            rootWindow.palette.buttonText = Compact.paletteButtonText;
+            rootWindow.palette.light = Compact.paletteLight;
+            rootWindow.palette.mid = Compact.paletteMid;
+            rootWindow.palette.dark = Compact.paletteDark;
+            rootWindow.palette.toolTipBase = Compact.paletteToolTipBase;
+            rootWindow.palette.toolTipText = Compact.paletteToolTipText;
+        }
+    }
+
+    // ── Bindable action definitions ──────────────────────────────────
+    // To add a new binding: add one entry here. The Key Bindings dialog,
+    // config persistence, conflict detection, and Shortcut generation all
+    // follow automatically. Actions with autoShortcut: false need manual
+    // Shortcut blocks below (for custom enabled conditions or sequences).
+    // The order below determines how items appear in the Key Bindings dialog.
+    readonly property var actionDefs: [
+        { id: "mute",              name: qsTr("Mute/Unmute"),            category: qsTr("Viewport"), default1: "M",         default2: "",
+          action: function() { muteAction() } },
+        { id: "viewportFullScreen", name: qsTr("Viewport fullscreen"),  category: qsTr("Viewport"), default1: "F",         default2: "",
+          action: function() { /* TODO: viewport-level fullscreen */ } },
+        { id: "focusUrl",          name: qsTr("Focus URL input"),       category: qsTr("Viewport"), default1: "Ctrl+L",    default2: "", autoShortcut: false,
+          action: function() {
+              if (Context.config.kioskMode) return;
+              if (sideBarLoader.item && sideBarLoader.item.state === SideBar.Compact) {
+                  sideBarLoader.item.state = SideBar.Popup;
+              }
+          } },
+        { id: "nextPreset",        name: qsTr("Next preset"),           category: qsTr("Presets"),  default1: "Alt+Right", default2: "",
+          action: function() { stackLayout.currentIndex = Math.min(stackLayout.currentIndex + 1, stackLayout.count - 1) } },
+        { id: "prevPreset",        name: qsTr("Previous preset"),       category: qsTr("Presets"),  default1: "Alt+Left",  default2: "",
+          action: function() { stackLayout.currentIndex = Math.max(stackLayout.currentIndex - 1, 0) } },
+        { id: "carouselPause",     name: qsTr("Pause/Resume carousel"), category: qsTr("Presets"),  default1: "Space",     default2: "", autoShortcut: false,
+          action: function() { carouselTimer.paused = !carouselTimer.paused } },
+        { id: "fullScreen",        name: qsTr("Full screen"),           category: qsTr("Window"),   default1: "F11",       default2: "", autoShortcut: false,
+          action: function() { Context.config.fullScreen = !Context.config.fullScreen } },
+        { id: "quit",              name: qsTr("Quit app"),              category: qsTr("Window"),   default1: "Ctrl+Q",    default2: "",
+          action: function() { Qt.quit() } }
+    ]
+
+    KeyBindingsDialog {
+        id: keyBindingsDialog
+        actionDefs: rootWindow.actionDefs
+    }
+
+    // ── Configurable key bindings ───────────────────────────────────
+    function runAction(actionId) {
+        for (var i = 0; i < actionDefs.length; ++i) {
+            if (actionDefs[i].id === actionId) { actionDefs[i].action(); return; }
+        }
+    }
+
+    function muteAction() {
+        if (Utils.currentLayout().focusIndex >= 0) {
+            var item = Utils.currentModel().get(Utils.currentLayout().focusIndex);
+            var viewport = Utils.currentLayout().get(Utils.currentLayout().focusIndex);
+
+            if (viewport.hasAudio) {
+                item.volume = item.volume > 0 ? 0 : 1;
             }
         }
     }
-    Shortcut {
-        sequence: "Alt+Right"
-        onActivated: stackLayout.currentIndex = Math.min(stackLayout.currentIndex + 1, stackLayout.count - 1)
+
+    // Auto-generated shortcuts for actions without autoShortcut: false
+    Repeater {
+        model: actionDefs.length
+        delegate: Item {
+            visible: false
+            property var def: actionDefs[index]
+            property bool skip: def.autoShortcut === false
+
+            Shortcut {
+                sequence: skip ? "" : keyBindingsDialog.getBindingSlot(def.id, 1)
+                enabled: !skip && sequence !== ""
+                onActivated: def.action()
+            }
+            Shortcut {
+                sequence: skip ? "" : keyBindingsDialog.getBindingSlot(def.id, 2)
+                enabled: !skip && sequence !== ""
+                onActivated: def.action()
+            }
+        }
     }
-    Shortcut {
-        sequence: "Alt+Left"
-        onActivated: stackLayout.currentIndex = Math.max(stackLayout.currentIndex - 1, 0)
-    }
+
     // Shortcuts for the first 9 presets (Alt + 1, Alt + 2, ..., Alt + 9)
     Repeater {
         model: Context.config.kioskMode ? 0 : Math.min(stackLayout.count, 9)
@@ -157,20 +289,36 @@ ApplicationWindow {
             }
         }
     }
-    Shortcut {
-        sequence: "Space"
-        enabled: presetsSettings.carouselRunning
-        onActivated: carouselTimer.paused = !carouselTimer.paused
-    }
-    Shortcut {
-        sequences: ["F11", StandardKey.FullScreen]
-        onActivated: toggleFullScreen()
-        onActivatedAmbiguously: toggleFullScreen()
 
-        function toggleFullScreen() {
-            Context.config.fullScreen = !Context.config.fullScreen;
-        }
+    // ── Special-case shortcuts (autoShortcut: false) ─────────────
+
+    // Focus URL — needs sidebar awareness
+    Shortcut {
+        sequence: keyBindingsDialog.getBindingSlot("focusUrl", 1)
+        enabled: sequence !== ""
+        onActivated: runAction("focusUrl")
     }
+
+    // Carousel pause — only active when carousel is running
+    Shortcut {
+        sequence: keyBindingsDialog.getBindingSlot("carouselPause", 1)
+        enabled: presetsSettings.carouselRunning && sequence !== ""
+        onActivated: runAction("carouselPause")
+    }
+
+    // Full screen — needs dual sequences
+    Shortcut {
+        sequence: keyBindingsDialog.getBindingSlot("fullScreen", 1)
+        enabled: sequence !== ""
+        onActivated: Context.config.fullScreen = !Context.config.fullScreen
+    }
+    Shortcut {
+        sequences: [StandardKey.FullScreen]
+        onActivated: Context.config.fullScreen = !Context.config.fullScreen
+        onActivatedAmbiguously: Context.config.fullScreen = !Context.config.fullScreen
+    }
+
+    // Quit — uses StandardKey
     Shortcut {
         sequence: StandardKey.Quit
         onActivated: Qt.quit()

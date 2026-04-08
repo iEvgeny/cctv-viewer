@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import QtMultimedia 5.12
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Utils 1.0
+import CCTV_Viewer.Themes 1.0
 import CCTV_Viewer.Models 1.0
 
 FocusScope {
@@ -11,7 +12,7 @@ FocusScope {
 
     property var size: model.size
     property var model: ViewportsLayoutModel {}
-    property string color: "black"
+    property string color: Compact.viewportBackground
 
     readonly property alias fullScreenIndex: d.fullScreenIndex
     readonly property alias focusIndex: d.focusIndex
@@ -470,7 +471,7 @@ FocusScope {
 
                                 PropertyChanges {
                                     target: selectionRect
-                                    color: "#4000a8ff"
+                                    color: Compact.selectionFill
                                 }
                             }
                         ]
@@ -491,7 +492,7 @@ FocusScope {
                                 PropertyChanges {
                                     target: selectionFrame
                                     border.width: 1
-                                    border.color: "#00dd00"
+                                    border.color: Compact.selectionBorder
                                 }
                             }
                         ]

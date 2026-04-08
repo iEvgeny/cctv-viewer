@@ -2,22 +2,26 @@ Source: cctv-viewer
 Section: video
 Priority: optional
 Maintainer: Evgeny S Maksimov <admin@vragam.net>
-Build-Depends: debhelper (>= 9),
+Build-Depends: debhelper-compat (= 12),
+               cmake,
+               pkg-config,
+               git,
                libva-dev,
+               libgl-dev,
                libglx-dev,
+               libx11-dev,
                libavformat-dev,
                libavcodec-dev,
                libavutil-dev,
                libswscale-dev,
                libswresample-dev,
                libavdevice-dev,
-               qtdeclarative5-dev,
-               qtmultimedia5-dev,
-               qttools5-dev,
-               libgtest-dev,
-               git,
-               cmake,
-               pkg-config
+               qt6-declarative-dev | qtdeclarative5-dev,
+               qt6-multimedia-dev | qtmultimedia5-dev,
+               qt6-tools-dev | qttools5-dev,
+               qt6-l10n-tools | qttools5-dev-tools,
+               qt6-shader-baker | qtdeclarative5-dev,
+               libgtest-dev
 Standards-Version: 3.9.8
 Homepage: https://github.com/iEvgeny/cctv-viewer
 Vcs-Git: https://github.com/iEvgeny/cctv-viewer.git
@@ -25,17 +29,7 @@ Vcs-Browser: https://github.com/iEvgeny/cctv-viewer
 
 Package: cctv-viewer
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
-         libqt5multimedia5-plugins,
-         qtwayland5,
-         qml-module-qtquick-layouts,
-         qml-module-qtqml-models2,
-         qml-module-qtquick-controls,
-         qml-module-qtquick-controls2,
-         qml-module-qtquick-window2,
-         qml-module-qtquick-dialogs,
-         qml-module-qt-labs-settings,
-         qml-module-qtmultimedia
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: CCTV Viewer - viewer and mounter video streams.
  A simple application for simultaneously viewing multiple video streams.
  Designed for high performance and low latency. Based on ffmpeg.

@@ -27,6 +27,10 @@ public:
     QMLAV_PROPERTY(Config::LogLevel, logLevel, setLogLevel, logLevelChanged) = Config::LogInfo;
 
 public:
+    Q_INVOKABLE QVariant readSetting(const QString &group, const QString &key, const QVariant &defaultValue = QVariant()) const;
+    Q_INVOKABLE void writeSetting(const QString &group, const QString &key, const QVariant &value);
+
+public:
     explicit Config(QObject *parent = nullptr);
     explicit Config(const QString &fileName, QObject *parent = nullptr);
 
