@@ -498,7 +498,11 @@ FocusScope {
                     }
 
                     MouseArea {
+                        property real lastMouseX: 0
+                        property real lastMouseY: 0
+                        property bool panActive: viewport.zoomEnabled && viewport.zoomScale > 1.0
                         anchors.fill: parent
+                        hoverEnabled: true
                         
                         // Enable wheel events for zooming
                         acceptedButtons: Qt.LeftButton
@@ -509,6 +513,10 @@ FocusScope {
                             } else {
                                 viewport.forceActiveFocus();
                                 d.selectionReset();
+                            }
+                            if (viewport.zoomEnabled && viewport.zoomScale > 1.0) {
+                                lastMouseX = mouse.x;
+                                lastMouseY = mouse.y;
                             }
                         }
                         onPressAndHold: d2.setCurrentIndex("pressAndHoldIndex", true)
@@ -522,43 +530,62 @@ FocusScope {
                         
                         // Handle mousewheel zoom when in fullscreen (requires CTRL modifier)
                         onWheel: {
-                            if (wheel.modifiers & Qt.ControlModifier) {
-                                if (!viewport.fullScreen && root.size.width > 1 && root.size.height > 1) {
-                                    viewport.fullScreen = true;
-                                    viewport.forceActiveFocus();
-                                    d.selectionReset();
+                            if (viewport.zoomEnabled) {
+                                var delta = wheel.angleDelta.y / 120;
+                                var zoomFactor = 1 + (delta * 0.1);
+
+                                var newScale = viewport.zoomScale * zoomFactor;
+                                newScale = Number(newScale).clamp(1.0, 10.0);
+
+                                if (viewport.zoomScale > 1.0 && lastMouseX === 0 && lastMouseY === 0) {
+                                    lastMouseX = wheel.x;
+                                    lastMouseY = wheel.y;
                                 }
 
-                                if (viewport.zoomEnabled) {
-                                    var delta = wheel.angleDelta.y / 120;
-                                    var zoomFactor = 1 + (delta * 0.1);
+                                if (newScale !== viewport.zoomScale) {
+                                    var mouseX = wheel.x;
+                                    var mouseY = wheel.y;
 
-                                    var newScale = viewport.zoomScale * zoomFactor;
-                                    newScale = Number(newScale).clamp(1.0, 10.0);
+                                    var imageX = (mouseX - viewport.panX) / viewport.zoomScale;
+                                    var imageY = (mouseY - viewport.panY) / viewport.zoomScale;
 
-                                    if (newScale !== viewport.zoomScale) {
-                                        var mouseX = wheel.x;
-                                        var mouseY = wheel.y;
+                                    viewport.zoomScale = newScale;
 
-                                        var imageX = (mouseX - viewport.panX) / viewport.zoomScale;
-                                        var imageY = (mouseY - viewport.panY) / viewport.zoomScale;
+                                    viewport.panX = mouseX - imageX * newScale;
+                                    viewport.panY = mouseY - imageY * newScale;
 
-                                        viewport.zoomScale = newScale;
+                                    var minPanX = viewport.width - (viewport.width * newScale);
+                                    var maxPanX = 0;
+                                    var minPanY = viewport.height - (viewport.height * newScale);
+                                    var maxPanY = 0;
 
-                                        viewport.panX = mouseX - imageX * newScale;
-                                        viewport.panY = mouseY - imageY * newScale;
-
-                                        var minPanX = viewport.width - (viewport.width * newScale);
-                                        var maxPanX = 0;
-                                        var minPanY = viewport.height - (viewport.height * newScale);
-                                        var maxPanY = 0;
-
-                                        viewport.panX = Number(viewport.panX).clamp(minPanX, maxPanX);
-                                        viewport.panY = Number(viewport.panY).clamp(minPanY, maxPanY);
-                                    }
+                                    viewport.panX = Number(viewport.panX).clamp(minPanX, maxPanX);
+                                    viewport.panY = Number(viewport.panY).clamp(minPanY, maxPanY);
                                 }
+                            }
 
-                                wheel.accepted = true;
+                            wheel.accepted = true;
+                        }
+
+                        onPositionChanged: {
+                            if (viewport.zoomEnabled && viewport.zoomScale > 1.0) {
+                                var dx = mouse.x - lastMouseX;
+                                var dy = mouse.y - lastMouseY;
+
+                                viewport.panX -= dx;
+                                viewport.panY -= dy;
+
+                                // clamping (mesma lógica que já existe no zoom)
+                                var minPanX = viewport.width - (viewport.width * viewport.zoomScale);
+                                var maxPanX = 0;
+                                var minPanY = viewport.height - (viewport.height * viewport.zoomScale);
+                                var maxPanY = 0;
+
+                                viewport.panX = Number(viewport.panX).clamp(minPanX, maxPanX);
+                                viewport.panY = Number(viewport.panY).clamp(minPanY, maxPanY);
+
+                                lastMouseX = mouse.x;
+                                lastMouseY = mouse.y;
                             }
                         }
 
