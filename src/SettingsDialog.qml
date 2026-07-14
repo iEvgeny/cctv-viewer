@@ -78,6 +78,12 @@ Dialog {
                     text: qsTr("Unmute when the viewport is in full screen mode")
                 }
 
+                CheckBox {
+                    id: bandwidthSaverCheckBox
+
+                    text: qsTr("Pause other streams in full screen mode (after 3s)")
+                }
+
                 RowLayout {
                     Layout.fillWidth: true
 
@@ -168,6 +174,8 @@ Dialog {
 
         unmuteWhenFullScreenCheckBox.checked = viewportSettings.unmuteWhenFullScreen;
 
+        bandwidthSaverCheckBox.checked = viewportSettings.bandwidthSaver;
+
         videoFitComboBox.currentIndex = viewportSettings.fillMode;
 
         carouselRunningCheckBox.checked = presetsSettings.carouselRunning;
@@ -193,6 +201,8 @@ Dialog {
         viewSettings.hideCursorWhenFullScreen = hideCursorWhenFullScreenCheckBox.checked;
 
         viewportSettings.unmuteWhenFullScreen = unmuteWhenFullScreenCheckBox.checked;
+
+        viewportSettings.bandwidthSaver = bandwidthSaverCheckBox.checked;
 
         viewportSettings.fillMode = videoFitComboBox.currentIndex;
 

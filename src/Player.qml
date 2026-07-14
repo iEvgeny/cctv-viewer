@@ -16,14 +16,23 @@ FocusScope {
     //   VideoOutput.Stretch            - stretch to fill
     property int fillMode: VideoOutput.PreserveAspectFit
 
+    // When false the stream is stopped and the network connection released.
+    // Used to pause hidden/background viewports to save bandwidth.
+    property bool active: true
+
+    readonly property bool shouldPlay: visible && active
+
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
     property alias muted: qmlAvPlayer.muted
     property alias volume: qmlAvPlayer.volume
     readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
-    onVisibleChanged: {
-        if (visible) {
+    onShouldPlayChanged: updatePlayback()
+    Component.onCompleted: updatePlayback()
+
+    function updatePlayback() {
+        if (shouldPlay) {
             if (!timer.running) {
                 timer.start();
             }
@@ -33,11 +42,6 @@ FocusScope {
             qmlAvPlayer.stop();
         }
     }
-    Component.onCompleted: {
-        if (visible) {
-            timer.start();
-        }
-    }
 
     Timer {
         id: timer
@@ -45,7 +49,7 @@ FocusScope {
         interval: 50
 
         onTriggered: {
-            if (root.visible) {
+            if (root.shouldPlay) {
                 qmlAvPlayer.autoPlay = true;
             }
         }

@@ -27,6 +27,9 @@ FocusScope {
 
         property real layoutRatio: (model.aspectRatio.width * model.size.width) / (model.aspectRatio.height * model.size.height);
         property int fullScreenIndex: -1
+        // Becomes true a few seconds after a viewport goes full screen so the
+        // other (hidden) viewports can stop streaming to save bandwidth.
+        property bool bandwidthSaveActive: false
         property int focusIndex: -1
         property int activeFocusIndex: -1
         property int pressAndHoldIndex: -1
@@ -37,6 +40,14 @@ FocusScope {
 
         onLayoutRatioChanged: selectionReset()
         onSelectionIndex1Changed: selectionReset()
+        onFullScreenIndexChanged: {
+            if (fullScreenIndex >= 0 && viewportSettings.bandwidthSaver) {
+                bandwidthSaveTimer.restart();
+            } else {
+                bandwidthSaveTimer.stop();
+                bandwidthSaveActive = false;
+            }
+        }
 
         function columnFromIndex(index) {
             return index % root.size.width;
@@ -125,6 +136,14 @@ FocusScope {
     Rectangle {
         color: root.color
         anchors.fill: parent
+    }
+
+    Timer {
+        id: bandwidthSaveTimer
+
+        interval: 3000
+
+        onTriggered: d.bandwidthSaveActive = true
     }
 
     GridLayout {
@@ -435,6 +454,9 @@ FocusScope {
                             id: player
 
                             color: root.color
+                            // Save bandwidth: once a viewport has been full screen
+                            // for a few seconds, stop streaming the hidden ones.
+                            active: d.fullScreenIndex < 0 || !d.bandwidthSaveActive || d.fullScreenIndex === index
                             // Auto adapt resolution: use the low-res sub stream in
                             // grid view and switch to the main stream when the
                             // viewport is maximized (full screen or single 1x1 view).

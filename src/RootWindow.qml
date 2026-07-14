@@ -115,6 +115,9 @@ ApplicationWindow {
         // 0 = Stretch, 1 = Fit (letterbox), 2 = Fill (crop). Default: Fill, so
         // streams auto-fit the tile without black bars in grid and full view.
         property int fillMode: 2
+        // Stop streaming the hidden viewports a few seconds after one goes full
+        // screen, to save network bandwidth.
+        property bool bandwidthSaver: true
     }
 
     Settings {
