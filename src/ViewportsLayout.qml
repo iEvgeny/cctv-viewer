@@ -1,6 +1,7 @@
 import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
 import QtMultimedia 5.12
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Utils 1.0
@@ -185,6 +186,8 @@ FocusScope {
                     property int cursorColumnOffset: 0
                     property int cursorRowOffset: 0
                     property bool fullScreen: false
+                    // Remembers the last non-zero volume so the mute button can restore it.
+                    property real lastVolume: 0.5
                     
                     // Zoom properties
                     property real zoomScale: 1.0
@@ -195,6 +198,7 @@ FocusScope {
                     readonly property alias selected: d2.selected
 
                     readonly property alias url: d2.url
+                    readonly property alias subStreamUrl: d2.subStreamUrl
                     readonly property alias column: d2.column
                     readonly property alias row: d2.row
                     readonly property alias columnSpan: d2.columnSpan
@@ -372,6 +376,7 @@ FocusScope {
                         property bool selected: d.selectionContains(model.index)
 
                         property url url: model.url
+                        property url subStreamUrl: model.subStreamUrl
                         property int column: d.columnFromIndex(model.index)
                         property int row: d.rowFromIndex(model.index)
                         property int columnSpan: model.columnSpan
@@ -430,7 +435,16 @@ FocusScope {
                             id: player
 
                             color: root.color
-                            source: viewport.url
+                            // Auto adapt resolution: use the low-res sub stream in
+                            // grid view and switch to the main stream when the
+                            // viewport is maximized (full screen or single 1x1 view).
+                            source: {
+                                var sub = viewport.subStreamUrl.toString();
+                                if (!viewport.zoomEnabled && sub !== "") {
+                                    return viewport.subStreamUrl;
+                                }
+                                return viewport.url;
+                            }
                             volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
@@ -577,6 +591,95 @@ FocusScope {
                         }
                     }
 
+                    // Per-viewport audio controls: a mute toggle and a volume
+                    // slider, shown on hover for every channel that has audio.
+                    Item {
+                        id: audioControls
+
+                        visible: viewport.hasAudio && !Context.config.kioskMode
+                        z: 5
+                        anchors.fill: parent
+
+                        readonly property bool active: hoverArea.containsMouse || volumeSlider.pressed
+                        readonly property bool muted: viewport.volume <= 0
+
+                        MouseArea {
+                            id: hoverArea
+
+                            acceptedButtons: Qt.NoButton
+                            hoverEnabled: true
+                            anchors.fill: parent
+                        }
+
+                        Rectangle {
+                            id: controlBar
+
+                            color: "#b0000000"
+                            radius: 4
+                            width: controlRow.implicitWidth + 12
+                            height: 26
+                            visible: opacity > 0
+                            opacity: audioControls.active ? 1 : 0
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            anchors.margins: 6
+
+                            Behavior on opacity {
+                                NumberAnimation { duration: 150 }
+                            }
+
+                            Row {
+                                id: controlRow
+
+                                spacing: 4
+                                anchors.centerIn: parent
+
+                                Image {
+                                    id: muteIcon
+
+                                    width: 18
+                                    height: 18
+                                    sourceSize: Qt.size(18, 18)
+                                    source: audioControls.muted ? "qrc:/images/volume-mute.svg" : "qrc:/images/volume.svg"
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    MouseArea {
+                                        enabled: audioControls.active
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+
+                                        onClicked: {
+                                            if (viewport.volume > 0) {
+                                                viewport.lastVolume = viewport.volume;
+                                                model.volume = 0;
+                                            } else {
+                                                model.volume = viewport.lastVolume > 0 ? viewport.lastVolume : 1;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Slider {
+                                    id: volumeSlider
+
+                                    enabled: audioControls.active
+                                    from: 0
+                                    to: 1
+                                    value: viewport.volume
+                                    width: 80
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    onMoved: {
+                                        model.volume = value;
+                                        if (value > 0) {
+                                            viewport.lastVolume = value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     function indexAt(x, y) {
                         for (var i = 0; i < repeater.count; ++i) {
                             var itemTo = repeater.itemAt(i);
@@ -609,6 +712,7 @@ FocusScope {
             for (var i = 0; i < root.size.width * root.size.height; ++i) {
                 if (root.get(i).selected) {
                     model.get(i).url = "";
+                    model.get(i).subStreamUrl = "";
                     model.get(i).volume = 0;
                     model.get(i).avFormatOptions = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
                 }

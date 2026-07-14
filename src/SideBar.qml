@@ -482,6 +482,28 @@ FocusScope {
                                     }
                                 }
 
+                                RowLayout {
+                                    Layout.fillWidth: true
+
+                                    Text {
+                                        text: qsTr("Volume")
+                                        color: "white"
+                                    }
+
+                                    Slider {
+                                        id: viewportVolumeSlider
+
+                                        enabled: currentViewportIndex >= 0 ? Utils.currentLayout().get(currentViewportIndex).hasAudio : false
+                                        from: 0
+                                        to: 1
+                                        value: enabled ? Utils.currentModel().get(currentViewportIndex).volume : 0
+
+                                        Layout.fillWidth: true
+
+                                        onMoved: Utils.currentModel().get(currentViewportIndex).volume = value
+                                    }
+                                }
+
 
                                 ColumnLayout {
                                     Layout.fillWidth: true
@@ -521,6 +543,67 @@ FocusScope {
                                             return Utils.stringifyOptions(options);
                                         }
 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    SideBarItem {
+                        objectName: "sources"
+                        icon: "qrc:/images/menu-sources.svg"
+                        title: qsTr("Sources")
+
+                        Layout.fillWidth: true
+
+                        Frame {
+                            anchors.fill: parent
+
+                            ColumnLayout {
+                                anchors.fill: parent
+
+                                GroupBox {
+                                    title: qsTr("ONVIF")
+                                    palette.windowText: "white"
+
+                                    Layout.fillWidth: true
+
+                                    ColumnLayout {
+                                        anchors.fill: parent
+
+                                        Button {
+                                            text: qsTr("Add camera / NVR…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: onvifDialog.open()
+                                        }
+                                    }
+                                }
+
+                                GroupBox {
+                                    title: qsTr("Batch")
+                                    palette.windowText: "white"
+
+                                    Layout.fillWidth: true
+
+                                    GridLayout {
+                                        columns: 2
+                                        anchors.fill: parent
+
+                                        Button {
+                                            text: qsTr("Import…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: importDialog.open()
+                                        }
+                                        Button {
+                                            text: qsTr("Export…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: exportDialog.open()
+                                        }
                                     }
                                 }
                             }
