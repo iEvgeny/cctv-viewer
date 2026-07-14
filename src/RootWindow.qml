@@ -109,6 +109,8 @@ ApplicationWindow {
         category: "Viewport"
 
         property bool unmuteWhenFullScreen: false
+        // Master mute: silences every viewport without changing per-stream volume.
+        property bool audioMuted: false
     }
 
     Settings {
@@ -137,6 +139,10 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    Shortcut {
+        sequence: "Ctrl+M"
+        onActivated: viewportSettings.audioMuted = !viewportSettings.audioMuted
     }
     Shortcut {
         sequence: "Alt+Right"

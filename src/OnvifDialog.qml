@@ -152,6 +152,29 @@ Dialog {
             Item { Layout.fillWidth: true }
         }
 
+        RowLayout {
+            Layout.fillWidth: true
+
+            Label { text: qsTr("Subnet:") }
+
+            TextField {
+                id: subnetField
+
+                placeholderText: qsTr("192.168.1.0/24 or 10.0.0.1-10.0.0.50")
+                selectByMouse: true
+                Layout.fillWidth: true
+            }
+
+            Button {
+                text: qsTr("Scan subnet")
+                enabled: !discovery.scanning && subnetField.text.trim() !== ""
+                onClicked: {
+                    root.statusMessage = qsTr("Scanning subnet %1…").arg(subnetField.text.trim());
+                    discovery.scanSubnet(subnetField.text.trim(), 6000);
+                }
+            }
+        }
+
         // Discovered devices
         GroupBox {
             title: qsTr("Discovered devices")

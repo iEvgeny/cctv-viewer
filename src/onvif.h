@@ -120,8 +120,14 @@ public:
     bool scanning() const { return m_scanning; }
     QVariantList devices() const { return m_devices; }
 
-    // Scans the local network for the given number of milliseconds.
+    // Scans the local network (multicast WS-Discovery) for the given number of
+    // milliseconds.
     Q_INVOKABLE void scan(int timeoutMs = 4000);
+    // Scans an arbitrary subnet by sending unicast WS-Discovery probes to every
+    // host in the range, so devices on remote/routed subnets can be found too.
+    // Accepts CIDR ("192.168.5.0/24"), a range ("192.168.5.10-192.168.5.60") or
+    // a single address.
+    Q_INVOKABLE void scanSubnet(const QString &subnet, int timeoutMs = 6000);
     Q_INVOKABLE void reset();
 
 signals:
@@ -135,6 +141,8 @@ private slots:
 
 private:
     void addDevice(const QString &xaddr);
+    QByteArray buildProbe() const;
+    static QList<quint32> expandSubnet(const QString &subnet);
 
     QUdpSocket *m_socket;
     QTimer *m_timer;

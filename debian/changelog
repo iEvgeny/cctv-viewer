@@ -1,11 +1,14 @@
 cctv-viewer (0.1.10-0) jammy; urgency=medium
 
   * Add ONVIF support for cameras and NVR/DVR multi-channel devices
-  * Add WS-Discovery scanning of ONVIF devices on the local network
+  * Add WS-Discovery (local) and unicast subnet scanning of ONVIF devices
+  * Add separate main-stream and sub-stream URL fields for manual RTSP entry
   * Auto adapt resolution: sub stream in grid, main stream when maximized
   * Add audio mute toggle and volume slider on every audio-capable channel
+  * Add a master mute button and a speaker badge on sounding viewports
   * Add batch import/export of presets and sources to JSON
-  * Add install-debian.sh and build-deb.sh for snap-free installation
+  * Add install-debian.sh and make-deb.sh for snap-free installation
+  * New application icon
 
  -- Evgeny S Maksimov <admin@vragam.net>  Mon, 14 Jul 2025 12:00:00 +0300
 

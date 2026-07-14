@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 set(VER_MAJ 0)
 set(VER_MIN 1)
-set(VER_PAT 9)
+set(VER_PAT 10)
 set(REL_STATUS "alpha")
 
 set(APP_NAME "CCTV Viewer")
@@ -15,7 +15,7 @@ if(${VER_PAT} GREATER 0)
     set(VERSION "${VERSION}.${VER_PAT}")
 endif()
 
-project(cctv-viewer VERSION ${VERSION} HOMEPAGE_URL "https://github.com/iEvgeny/cctv-viewer" LANGUAGES C CXX)
+project(cctv-viewer VERSION ${VERSION} HOMEPAGE_URL "https://github.com/jahedcuet/cctv-viewer" LANGUAGES C CXX)
 
 if(DEFINED REL_STATUS)
     set(VERSION "${VERSION}-${REL_STATUS}")

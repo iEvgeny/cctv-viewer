@@ -445,7 +445,7 @@ FocusScope {
                                 }
                                 return viewport.url;
                             }
-                            volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
+                            volume: viewportSettings.audioMuted ? 0 : Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
                             
@@ -588,6 +588,31 @@ FocusScope {
                                     d.selectionReset();
                                 }
                             }
+                        }
+                    }
+
+                    // Persistent badge that highlights which viewport is
+                    // currently generating sound.
+                    Rectangle {
+                        id: audioIndicator
+
+                        visible: viewport.hasAudio && !viewportSettings.audioMuted &&
+                                 (viewport.volume > 0 || (root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen))
+                        z: 6
+                        width: 22
+                        height: 22
+                        radius: 4
+                        color: "#cc17a9ca"
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.margins: 6
+
+                        Image {
+                            source: "qrc:/images/volume.svg"
+                            width: 14
+                            height: 14
+                            sourceSize: Qt.size(14, 14)
+                            anchors.centerIn: parent
                         }
                     }
 

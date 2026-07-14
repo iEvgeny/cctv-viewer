@@ -442,22 +442,10 @@ void OnvifDiscovery::reset()
     }
 }
 
-void OnvifDiscovery::scan(int timeoutMs)
+QByteArray OnvifDiscovery::buildProbe() const
 {
-    if (m_scanning) {
-        return;
-    }
-
-    reset();
-
-    m_socket->close();
-    if (!m_socket->bind(QHostAddress(QHostAddress::AnyIPv4), 0)) {
-        emit finished();
-        return;
-    }
-
     const QString messageId = QString("uuid:%1").arg(QUuid::createUuid().toString(QUuid::WithoutBraces));
-    const QByteArray probe = QString(
+    return QString(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         "<e:Envelope xmlns:e=\"http://www.w3.org/2003/05/soap-envelope\" "
         "xmlns:w=\"http://schemas.xmlsoap.org/ws/2004/08/addressing\" "
@@ -473,12 +461,125 @@ void OnvifDiscovery::scan(int timeoutMs)
         "</e:Body>"
         "</e:Envelope>")
         .arg(messageId).toUtf8();
+}
 
-    m_socket->writeDatagram(probe, QHostAddress("239.255.255.250"), 3702);
+void OnvifDiscovery::scan(int timeoutMs)
+{
+    if (m_scanning) {
+        return;
+    }
+
+    reset();
+
+    m_socket->close();
+    if (!m_socket->bind(QHostAddress(QHostAddress::AnyIPv4), 0)) {
+        emit finished();
+        return;
+    }
+
+    m_socket->writeDatagram(buildProbe(), QHostAddress("239.255.255.250"), 3702);
 
     m_scanning = true;
     emit scanningChanged();
     m_timer->start(timeoutMs);
+}
+
+void OnvifDiscovery::scanSubnet(const QString &subnet, int timeoutMs)
+{
+    if (m_scanning) {
+        return;
+    }
+
+    const QList<quint32> hosts = expandSubnet(subnet);
+    if (hosts.isEmpty()) {
+        emit finished();
+        return;
+    }
+
+    reset();
+
+    m_socket->close();
+    if (!m_socket->bind(QHostAddress(QHostAddress::AnyIPv4), 0)) {
+        emit finished();
+        return;
+    }
+
+    m_scanning = true;
+    emit scanningChanged();
+    m_timer->start(timeoutMs);
+
+    // Send a unicast probe to every host in the range. Devices reply directly
+    // to our socket, so this works across routed/remote subnets.
+    const QByteArray probe = buildProbe();
+    for (quint32 host : hosts) {
+        m_socket->writeDatagram(probe, QHostAddress(host), 3702);
+    }
+}
+
+QList<quint32> OnvifDiscovery::expandSubnet(const QString &subnet)
+{
+    QList<quint32> hosts;
+    const QString trimmed = subnet.trimmed();
+    if (trimmed.isEmpty()) {
+        return hosts;
+    }
+
+    // Cap the number of probed hosts to keep the scan bounded.
+    const int maxHosts = 2048;
+
+    if (trimmed.contains('/')) {
+        const QStringList parts = trimmed.split('/');
+        if (parts.size() != 2) {
+            return hosts;
+        }
+        QHostAddress base(parts.at(0));
+        bool ok = false;
+        const int prefix = parts.at(1).toInt(&ok);
+        if (base.isNull() || !ok || prefix < 0 || prefix > 32) {
+            return hosts;
+        }
+
+        const quint32 baseIp = base.toIPv4Address();
+        const quint32 mask = (prefix == 0) ? 0u : (0xFFFFFFFFu << (32 - prefix));
+        const quint32 network = baseIp & mask;
+        const quint32 broadcast = network | ~mask;
+
+        quint32 first = network;
+        quint32 last = broadcast;
+        if (prefix <= 30) {
+            // Skip the network and broadcast addresses for usable ranges.
+            first = network + 1;
+            last = broadcast - 1;
+        }
+        for (quint32 ip = first; ip <= last && hosts.size() < maxHosts; ++ip) {
+            hosts.append(ip);
+        }
+    } else if (trimmed.contains('-')) {
+        const QStringList parts = trimmed.split('-');
+        if (parts.size() != 2) {
+            return hosts;
+        }
+        QHostAddress from(parts.at(0).trimmed());
+        QHostAddress to(parts.at(1).trimmed());
+        if (from.isNull() || to.isNull()) {
+            return hosts;
+        }
+        quint32 first = from.toIPv4Address();
+        quint32 last = to.toIPv4Address();
+        if (last < first) {
+            qSwap(first, last);
+        }
+        for (quint32 ip = first; ip <= last && hosts.size() < maxHosts; ++ip) {
+            hosts.append(ip);
+        }
+    } else {
+        QHostAddress single(trimmed);
+        if (!single.isNull()) {
+            hosts.append(single.toIPv4Address());
+        }
+    }
+
+    return hosts;
 }
 
 void OnvifDiscovery::readResponses()
