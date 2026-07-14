@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVariantList>
 #include <QList>
+#include <QVector>
 #include <QString>
 
 class QNetworkAccessManager;
@@ -64,7 +65,8 @@ private:
     struct Profile {
         QString token;
         QString name;
-        QString sourceToken;
+        QString sourceToken;        // <tt:SourceToken> child of VideoSourceConfiguration
+        QString sourceConfigToken;  // token attribute of VideoSourceConfiguration
         int width = 0;
         int height = 0;
         QString uri;
@@ -80,6 +82,9 @@ private:
     void requestProfiles();
     void requestStreamUri(int profileIndex);
     void buildChannels();
+
+    static int profileArea(const Profile &p);
+    static QVector<QVector<int>> groupProfiles(const QList<Profile> &profiles);
 
     void setBusy(bool busy);
     void setError(const QString &error);

@@ -1,5 +1,7 @@
 #include "onvif.h"
 
+#include <algorithm>
+
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -278,37 +280,56 @@ void OnvifDevice::buildChannels()
 {
     m_timeout->stop();
 
-    // Group profiles by their video source token. Each source is one physical
-    // camera (behind an NVR there is one source per channel).
-    QMap<QString, QList<Profile>> grouped;
-    QStringList order;
+    // Keep only the profiles that produced a playable URI.
+    QList<Profile> profiles;
     for (const Profile &p : m_profiles) {
-        if (p.uri.isEmpty()) {
-            continue;
+        if (!p.uri.isEmpty()) {
+            profiles.append(p);
         }
-        const QString key = p.sourceToken.isEmpty() ? p.token : p.sourceToken;
-        if (!grouped.contains(key)) {
-            order.append(key);
-        }
-        grouped[key].append(p);
     }
+    if (profiles.isEmpty()) {
+        fail(tr("No playable streams were returned by the device."));
+        return;
+    }
+
+    // Group profiles that belong to the same physical channel so a main and a
+    // sub stream can be paired. Different devices expose this differently, so we
+    // try several strategies in order of reliability.
+    QVector<QVector<int>> groups = groupProfiles(profiles);
 
     QVariantList channels;
     int channelNumber = 0;
-    for (const QString &key : order) {
-        QList<Profile> profiles = grouped.value(key);
+    for (const QVector<int> &group : groups) {
+        if (group.isEmpty()) {
+            continue;
+        }
 
         // Highest resolution profile is the main stream, lowest is the sub.
-        Profile main = profiles.first();
-        Profile sub = profiles.first();
-        for (const Profile &p : profiles) {
-            if (p.width * p.height > main.width * main.height) {
-                main = p;
+        int mainIdx = group.first();
+        int subIdx = group.first();
+        for (int idx : group) {
+            if (profileArea(profiles[idx]) > profileArea(profiles[mainIdx])) {
+                mainIdx = idx;
             }
-            if (p.width * p.height < sub.width * sub.height) {
-                sub = p;
+            if (profileArea(profiles[idx]) < profileArea(profiles[subIdx])) {
+                subIdx = idx;
             }
         }
+        // If every profile in the group has the same resolution the loop above
+        // leaves sub == main; pick any other profile as the sub stream so it is
+        // still used for the low-load grid view.
+        if (subIdx == mainIdx && group.size() >= 2) {
+            for (int idx : group) {
+                if (idx != mainIdx) {
+                    subIdx = idx;
+                    break;
+                }
+            }
+        }
+
+        const Profile &main = profiles[mainIdx];
+        const Profile &sub = profiles[subIdx];
+        const bool hasSub = (subIdx != mainIdx);
 
         ++channelNumber;
 
@@ -319,10 +340,10 @@ void OnvifDevice::buildChannels()
         }
         channel["name"] = name;
         channel["mainUrl"] = main.uri;
-        channel["subUrl"] = (sub.token != main.token) ? sub.uri : QString();
+        channel["subUrl"] = hasSub ? sub.uri : QString();
         channel["mainResolution"] = (main.width > 0 && main.height > 0)
                 ? QString("%1x%2").arg(main.width).arg(main.height) : QString();
-        channel["subResolution"] = (sub.token != main.token && sub.width > 0 && sub.height > 0)
+        channel["subResolution"] = (hasSub && sub.width > 0 && sub.height > 0)
                 ? QString("%1x%2").arg(sub.width).arg(sub.height) : QString();
         channels.append(channel);
     }
@@ -337,6 +358,90 @@ void OnvifDevice::buildChannels()
 
     setBusy(false);
     emit finished();
+}
+
+int OnvifDevice::profileArea(const Profile &p)
+{
+    return p.width * p.height;
+}
+
+QVector<QVector<int>> OnvifDevice::groupProfiles(const QList<Profile> &profiles)
+{
+    // Strategy 1: group by the video source, shared by the main and sub streams
+    // of one channel. Prefer the VideoSourceConfiguration token attribute and
+    // fall back to the SourceToken child.
+    {
+        QMap<QString, int> keyToGroup;
+        QVector<QVector<int>> groups;
+        bool usable = true;
+        for (int i = 0; i < profiles.size(); ++i) {
+            QString key = profiles[i].sourceConfigToken;
+            if (key.isEmpty()) {
+                key = profiles[i].sourceToken;
+            }
+            if (key.isEmpty()) {
+                usable = false;
+                break;
+            }
+            if (!keyToGroup.contains(key)) {
+                keyToGroup[key] = groups.size();
+                groups.append(QVector<int>());
+            }
+            groups[keyToGroup[key]].append(i);
+        }
+
+        int maxGroup = 0;
+        for (const QVector<int> &g : groups) {
+            maxGroup = std::max(maxGroup, int(g.size()));
+        }
+
+        // Only trust source-token grouping when it actually paired streams
+        // (some group has 2+ profiles) and did not collapse every channel into a
+        // single shared source. Otherwise fall through to name-based pairing.
+        if (usable && maxGroup >= 2 && !(groups.size() == 1 && profiles.size() > 3)) {
+            return groups;
+        }
+    }
+
+    // Strategy 2: classify each profile as main or sub from its name/token and
+    // pair them by order (devices list channels in a consistent order).
+    {
+        QVector<int> mains;
+        QVector<int> subs;
+        int unknown = 0;
+        for (int i = 0; i < profiles.size(); ++i) {
+            const QString s = (profiles[i].name + QLatin1Char(' ') + profiles[i].token).toLower();
+            const bool isSub = s.contains("sub") || s.contains("second") ||
+                               s.contains("minor") || s.contains("low");
+            const bool isMain = s.contains("main") || s.contains("primary") ||
+                                s.contains("first") || s.contains("high");
+            if (isSub && !isMain) {
+                subs.append(i);
+            } else if (isMain && !isSub) {
+                mains.append(i);
+            } else {
+                ++unknown;
+            }
+        }
+        if (unknown == 0 && !mains.isEmpty() && mains.size() == subs.size()) {
+            QVector<QVector<int>> groups;
+            for (int k = 0; k < mains.size(); ++k) {
+                QVector<int> pair;
+                pair.append(mains[k]);
+                pair.append(subs[k]);
+                groups.append(pair);
+            }
+            return groups;
+        }
+    }
+
+    // Strategy 3: give up on pairing and expose every profile as its own
+    // channel (the user can still set a sub stream manually).
+    QVector<QVector<int>> groups;
+    for (int i = 0; i < profiles.size(); ++i) {
+        groups.append(QVector<int>{i});
+    }
+    return groups;
 }
 
 void OnvifDevice::setBusy(bool busy)
@@ -409,6 +514,8 @@ QList<OnvifDevice::Profile> OnvifDevice::parseProfiles(const QByteArray &xml)
             } else if (inProfile) {
                 if (name == QLatin1String("Name") && current.name.isEmpty()) {
                     current.name = reader.readElementText();
+                } else if (name == QLatin1String("VideoSourceConfiguration")) {
+                    current.sourceConfigToken = reader.attributes().value("token").toString();
                 } else if (name == QLatin1String("SourceToken")) {
                     current.sourceToken = reader.readElementText();
                 } else if (name == QLatin1String("Width") && current.width == 0) {

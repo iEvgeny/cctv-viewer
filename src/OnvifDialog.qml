@@ -41,8 +41,12 @@ Dialog {
         }
         onChannelsChanged: {
             channelsModel.clear();
+            var subCount = 0;
             for (var i = 0; i < channels.length; ++i) {
                 var ch = channels[i];
+                if (ch.subUrl) {
+                    ++subCount;
+                }
                 channelsModel.append({
                     "name": ch.name,
                     "mainUrl": ch.mainUrl,
@@ -53,7 +57,13 @@ Dialog {
                 });
             }
             if (channelsModel.count > 0) {
-                root.statusMessage = qsTr("Found %1 channel(s).").arg(channelsModel.count);
+                if (subCount === channelsModel.count) {
+                    root.statusMessage = qsTr("Found %1 channel(s), each with a sub stream.").arg(channelsModel.count);
+                } else if (subCount > 0) {
+                    root.statusMessage = qsTr("Found %1 channel(s); %2 have a sub stream.").arg(channelsModel.count).arg(subCount);
+                } else {
+                    root.statusMessage = qsTr("Found %1 channel(s), but no sub streams were detected. Enable sub streams on the device for better grid performance, or set them manually.").arg(channelsModel.count);
+                }
             }
         }
     }
