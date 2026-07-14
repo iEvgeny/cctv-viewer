@@ -1,6 +1,9 @@
 cctv-viewer (0.1.10-0) jammy; urgency=medium
 
   * Add ONVIF support for cameras and NVR/DVR multi-channel devices
+  * Answer HTTP Basic/Digest auth challenges (fixes Hikvision "Host requires
+    authentication") and fix the WS-Security timestamp
+  * Add a selectable video fit mode (Stretch/Fit/Fill) to auto-fit streams
   * Add WS-Discovery (local) and unicast subnet scanning of ONVIF devices
   * Add separate main-stream and sub-stream URL fields for manual RTSP entry
   * Auto adapt resolution: sub stream in grid, main stream when maximized

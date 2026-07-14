@@ -10,6 +10,12 @@ FocusScope {
 
     property var avOptions: ({})
 
+    // How the video is fitted into the viewport:
+    //   VideoOutput.PreserveAspectFit  - fit, keep aspect ratio (letterbox)
+    //   VideoOutput.PreserveAspectCrop - fill, keep aspect ratio (crop)
+    //   VideoOutput.Stretch            - stretch to fill
+    property int fillMode: VideoOutput.PreserveAspectFit
+
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
     property alias muted: qmlAvPlayer.muted
@@ -54,6 +60,7 @@ FocusScope {
             id: videoOutput
 
             source: qmlAvPlayer
+            fillMode: root.fillMode
             anchors.fill: parent
         }
 

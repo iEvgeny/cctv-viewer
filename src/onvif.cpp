@@ -3,6 +3,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QAuthenticator>
 #include <QUdpSocket>
 #include <QHostAddress>
 #include <QTimer>
@@ -29,6 +30,23 @@ OnvifDevice::OnvifDevice(QObject *parent)
         if (m_busy) {
             fail(tr("Connection timed out."));
         }
+    });
+
+    // Many ONVIF devices (e.g. Hikvision) protect the service endpoints with
+    // HTTP Basic/Digest authentication in addition to the WS-UsernameToken in
+    // the SOAP header. Answer that HTTP challenge with the same credentials.
+    connect(m_nam, &QNetworkAccessManager::authenticationRequired, this,
+            [this]([[maybe_unused]] QNetworkReply *reply, QAuthenticator *authenticator) {
+        if (m_username.isEmpty()) {
+            return;
+        }
+        // Only supply the credentials once per request; if they are already set
+        // the previous attempt failed and retrying would loop.
+        if (authenticator->user() == m_username) {
+            return;
+        }
+        authenticator->setUser(m_username);
+        authenticator->setPassword(m_password);
     });
 }
 
@@ -115,7 +133,9 @@ QString OnvifDevice::soapHeader() const
     }
 
     const QByteArray nonce = QUuid::createUuid().toRfc4122();
-    const QString created = QDateTime::currentDateTimeUtc().toString(Qt::ISODate) + "Z";
+    // NOTE: A UTC QDateTime already renders a trailing "Z" with Qt::ISODate, so
+    // build the timestamp explicitly to avoid a malformed "...ZZ" value.
+    const QString created = QDateTime::currentDateTimeUtc().toString("yyyy-MM-ddTHH:mm:ss'Z'");
 
     QByteArray digestSource;
     digestSource.append(nonce);

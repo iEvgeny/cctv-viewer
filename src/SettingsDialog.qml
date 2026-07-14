@@ -78,6 +78,23 @@ Dialog {
                     text: qsTr("Unmute when the viewport is in full screen mode")
                 }
 
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    Label {
+                        text: qsTr("Video fit:")
+                    }
+
+                    ComboBox {
+                        id: videoFitComboBox
+
+                        // Index matches VideoOutput.fillMode: 0=Stretch, 1=Fit, 2=Fill.
+                        model: [qsTr("Stretch"), qsTr("Fit (letterbox)"), qsTr("Fill (crop)")]
+
+                        Layout.fillWidth: true
+                    }
+                }
+
                 Label {
                     text: qsTr("Default FFmpeg options")
                 }
@@ -151,6 +168,8 @@ Dialog {
 
         unmuteWhenFullScreenCheckBox.checked = viewportSettings.unmuteWhenFullScreen;
 
+        videoFitComboBox.currentIndex = viewportSettings.fillMode;
+
         carouselRunningCheckBox.checked = presetsSettings.carouselRunning;
         carouselIntervalSpinBox.value = presetsSettings.carouselInterval;
 
@@ -174,6 +193,8 @@ Dialog {
         viewSettings.hideCursorWhenFullScreen = hideCursorWhenFullScreenCheckBox.checked;
 
         viewportSettings.unmuteWhenFullScreen = unmuteWhenFullScreenCheckBox.checked;
+
+        viewportSettings.fillMode = videoFitComboBox.currentIndex;
 
         presetsSettings.carouselRunning = carouselRunningCheckBox.checked;
         presetsSettings.carouselInterval = carouselIntervalSpinBox.value;

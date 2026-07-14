@@ -447,6 +447,7 @@ FocusScope {
                             }
                             volume: viewportSettings.audioMuted ? 0 : Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
+                            fillMode: viewportSettings.fillMode
                             loops: MediaPlayer.Infinite
                             
                             // Apply zoom transformation when zoom is enabled

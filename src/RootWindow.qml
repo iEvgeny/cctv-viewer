@@ -111,6 +111,10 @@ ApplicationWindow {
         property bool unmuteWhenFullScreen: false
         // Master mute: silences every viewport without changing per-stream volume.
         property bool audioMuted: false
+        // Video fit mode applied to every viewport (VideoOutput.fillMode):
+        // 0 = Stretch, 1 = Fit (letterbox), 2 = Fill (crop). Default: Fill, so
+        // streams auto-fit the tile without black bars in grid and full view.
+        property int fillMode: 2
     }
 
     Settings {
