@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 set(VER_MAJ 0)
 set(VER_MIN 1)
-set(VER_PAT 9)
+set(VER_PAT 10)
 set(REL_STATUS "alpha")
 
 set(APP_NAME "CCTV Viewer")
@@ -15,7 +15,7 @@ if(${VER_PAT} GREATER 0)
     set(VERSION "${VERSION}.${VER_PAT}")
 endif()
 
-project(cctv-viewer VERSION ${VERSION} HOMEPAGE_URL "https://github.com/iEvgeny/cctv-viewer" LANGUAGES C CXX)
+project(cctv-viewer VERSION ${VERSION} HOMEPAGE_URL "https://github.com/jahedcuet/cctv-viewer" LANGUAGES C CXX)
 
 if(DEFINED REL_STATUS)
     set(VERSION "${VERSION}-${REL_STATUS}")
@@ -109,7 +109,7 @@ add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 #    endif()
 #endif()
 
-set(QT_LINK_DEPENDENCIES Core Quick Multimedia)
+set(QT_LINK_DEPENDENCIES Core Network Quick Multimedia)
 
 if (ANDROID)
     list(APPEND QT_LINK_DEPENDENCIES Svg)
@@ -157,6 +157,8 @@ set(PROJ_FILES
     src/singleapplication.h
     src/config.cpp src/config.h
     src/context.cpp src/context.h
+    src/fileio.cpp src/fileio.h
+    src/onvif.cpp src/onvif.h
     src/eventfilter.h src/eventfilter.cpp
     src/viewportslayoutmodel.cpp src/viewportslayoutmodel.h
     src/viewportslayoutscollectionmodel.cpp src/viewportslayoutscollectionmodel.h

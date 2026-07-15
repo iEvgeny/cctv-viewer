@@ -10,26 +10,47 @@ FocusScope {
 
     property var avOptions: ({})
 
+    // How the video is fitted into the viewport:
+    //   VideoOutput.PreserveAspectFit  - fit, keep aspect ratio (letterbox)
+    //   VideoOutput.PreserveAspectCrop - fill, keep aspect ratio (crop)
+    //   VideoOutput.Stretch            - stretch to fill
+    property int fillMode: VideoOutput.PreserveAspectFit
+
+    // When false the stream is stopped and the network connection released.
+    // Used to pause hidden/background viewports to save bandwidth.
+    property bool active: true
+
+    readonly property bool shouldPlay: visible && active
+
+    // Holds the last frame grabbed from the video output. It is shown in place
+    // of a black rectangle while a new stream is loading (e.g. when switching
+    // between the grid and a full-size/single view swaps the stream source).
+    property var _lastFrame: null
+
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
     property alias muted: qmlAvPlayer.muted
     property alias volume: qmlAvPlayer.volume
     readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
-    onVisibleChanged: {
-        if (visible) {
+    onShouldPlayChanged: updatePlayback()
+    Component.onCompleted: updatePlayback()
+
+    function updatePlayback() {
+        if (shouldPlay) {
             if (!timer.running) {
                 timer.start();
             }
         } else {
             timer.stop();
+            // Remember the last frame before releasing the stream (e.g. the
+            // bandwidth saver stopping a hidden viewport) so it can be shown as
+            // a thumbnail when playback resumes.
+            if (qmlAvPlayer.status === MediaPlayer.Buffered) {
+                grabThumbnail();
+            }
             qmlAvPlayer.autoPlay = false;
             qmlAvPlayer.stop();
-        }
-    }
-    Component.onCompleted: {
-        if (visible) {
-            timer.start();
         }
     }
 
@@ -39,10 +60,32 @@ FocusScope {
         interval: 50
 
         onTriggered: {
-            if (root.visible) {
+            if (root.shouldPlay) {
                 qmlAvPlayer.autoPlay = true;
             }
         }
+    }
+
+    // Periodically refresh the remembered frame while the stream is playing so
+    // that if it drops and reconnects on its own we still have a recent frame
+    // to show. Source switches (grid <-> full-size) and stops are captured
+    // explicitly, so this only needs a coarse interval.
+    Timer {
+        id: thumbnailTimer
+
+        interval: 2000
+        repeat: true
+        running: root.shouldPlay && qmlAvPlayer.status === MediaPlayer.Buffered
+
+        onTriggered: root.grabThumbnail()
+    }
+
+    function grabThumbnail() {
+        videoOutput.grabToImage(function(result) {
+            if (result !== null) {
+                root._lastFrame = result;
+            }
+        });
     }
 
     Rectangle {
@@ -54,7 +97,31 @@ FocusScope {
             id: videoOutput
 
             source: qmlAvPlayer
+            fillMode: root.fillMode
             anchors.fill: parent
+        }
+
+        // Last known frame, shown instead of a black rectangle while the new
+        // stream buffers after a source change.
+        Image {
+            id: thumbnail
+
+            anchors.fill: parent
+            cache: false
+            smooth: true
+            source: root._lastFrame ? root._lastFrame.url : ""
+            visible: source.toString() !== "" && qmlAvPlayer.status !== MediaPlayer.Buffered
+            fillMode: {
+                switch (root.fillMode) {
+                case VideoOutput.PreserveAspectCrop:
+                    return Image.PreserveAspectCrop;
+                case VideoOutput.Stretch:
+                    return Image.Stretch;
+                default:
+                    return Image.PreserveAspectFit;
+                }
+            }
+            clip: true
         }
 
 //        Rectangle {
@@ -104,6 +171,9 @@ FocusScope {
                     message.text = qsTr("Stalled");
                     break;
                 case MediaPlayer.Buffered:
+                    // Capture a fresh frame as soon as playback resumes so a
+                    // recent thumbnail is available for the next reload.
+                    root.grabThumbnail();
                     break;
                 case MediaPlayer.EndOfMedia:
                     message.text = qsTr("End of media");

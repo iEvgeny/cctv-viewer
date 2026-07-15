@@ -1,6 +1,7 @@
 import QtQml 2.12
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls 2.12
 import QtMultimedia 5.12
 import CCTV_Viewer.Core 1.0
 import CCTV_Viewer.Utils 1.0
@@ -26,6 +27,9 @@ FocusScope {
 
         property real layoutRatio: (model.aspectRatio.width * model.size.width) / (model.aspectRatio.height * model.size.height);
         property int fullScreenIndex: -1
+        // Becomes true a few seconds after a viewport goes full screen so the
+        // other (hidden) viewports can stop streaming to save bandwidth.
+        property bool bandwidthSaveActive: false
         property int focusIndex: -1
         property int activeFocusIndex: -1
         property int pressAndHoldIndex: -1
@@ -36,6 +40,14 @@ FocusScope {
 
         onLayoutRatioChanged: selectionReset()
         onSelectionIndex1Changed: selectionReset()
+        onFullScreenIndexChanged: {
+            if (fullScreenIndex >= 0 && viewportSettings.bandwidthSaver) {
+                bandwidthSaveTimer.restart();
+            } else {
+                bandwidthSaveTimer.stop();
+                bandwidthSaveActive = false;
+            }
+        }
 
         function columnFromIndex(index) {
             return index % root.size.width;
@@ -126,6 +138,14 @@ FocusScope {
         anchors.fill: parent
     }
 
+    Timer {
+        id: bandwidthSaveTimer
+
+        interval: 3000
+
+        onTriggered: d.bandwidthSaveActive = true
+    }
+
     GridLayout {
         id: layout
 
@@ -185,6 +205,8 @@ FocusScope {
                     property int cursorColumnOffset: 0
                     property int cursorRowOffset: 0
                     property bool fullScreen: false
+                    // Remembers the last non-zero volume so the mute button can restore it.
+                    property real lastVolume: 0.5
                     
                     // Zoom properties
                     property real zoomScale: 1.0
@@ -195,6 +217,7 @@ FocusScope {
                     readonly property alias selected: d2.selected
 
                     readonly property alias url: d2.url
+                    readonly property alias subStreamUrl: d2.subStreamUrl
                     readonly property alias column: d2.column
                     readonly property alias row: d2.row
                     readonly property alias columnSpan: d2.columnSpan
@@ -253,6 +276,14 @@ FocusScope {
                         }
                     }
                     onZoomEnabledChanged: {
+                        // The stream source is swapped between the sub and main
+                        // stream when zoomEnabled toggles (grid <-> full-size).
+                        // Grab the frame that is currently on screen so it can be
+                        // shown as a placeholder while the new stream loads: the
+                        // sub-stream frame stretched up to full size when
+                        // entering, and the main-stream frame scaled down to fit
+                        // the cell when returning to the grid.
+                        player.grabThumbnail();
                         if (!zoomEnabled) {
                             resetZoom();
                         }
@@ -372,6 +403,7 @@ FocusScope {
                         property bool selected: d.selectionContains(model.index)
 
                         property url url: model.url
+                        property url subStreamUrl: model.subStreamUrl
                         property int column: d.columnFromIndex(model.index)
                         property int row: d.rowFromIndex(model.index)
                         property int columnSpan: model.columnSpan
@@ -430,9 +462,22 @@ FocusScope {
                             id: player
 
                             color: root.color
-                            source: viewport.url
-                            volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
+                            // Save bandwidth: once a viewport has been full screen
+                            // for a few seconds, stop streaming the hidden ones.
+                            active: d.fullScreenIndex < 0 || !d.bandwidthSaveActive || d.fullScreenIndex === index
+                            // Auto adapt resolution: use the low-res sub stream in
+                            // grid view and switch to the main stream when the
+                            // viewport is maximized (full screen or single 1x1 view).
+                            source: {
+                                var sub = viewport.subStreamUrl.toString();
+                                if (!viewport.zoomEnabled && sub !== "") {
+                                    return viewport.subStreamUrl;
+                                }
+                                return viewport.url;
+                            }
+                            volume: viewportSettings.audioMuted ? 0 : Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
+                            fillMode: viewportSettings.fillMode
                             loops: MediaPlayer.Infinite
                             
                             // Apply zoom transformation when zoom is enabled
@@ -577,6 +622,120 @@ FocusScope {
                         }
                     }
 
+                    // Persistent badge that highlights which viewport is
+                    // currently generating sound.
+                    Rectangle {
+                        id: audioIndicator
+
+                        visible: viewport.hasAudio && !viewportSettings.audioMuted &&
+                                 (viewport.volume > 0 || (root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen))
+                        z: 6
+                        width: 22
+                        height: 22
+                        radius: 4
+                        color: "#cc17a9ca"
+                        anchors.top: parent.top
+                        anchors.right: parent.right
+                        anchors.margins: 6
+
+                        Image {
+                            source: "qrc:/images/volume.svg"
+                            width: 14
+                            height: 14
+                            sourceSize: Qt.size(14, 14)
+                            anchors.centerIn: parent
+                        }
+                    }
+
+                    // Per-viewport audio controls: a mute toggle and a volume
+                    // slider, shown on hover for every channel that has audio.
+                    Item {
+                        id: audioControls
+
+                        visible: viewport.hasAudio && !Context.config.kioskMode
+                        z: 5
+                        anchors.fill: parent
+
+                        readonly property bool active: hoverArea.containsMouse || volumeSlider.pressed
+                        readonly property bool muted: viewport.volume <= 0
+
+                        MouseArea {
+                            id: hoverArea
+
+                            acceptedButtons: Qt.NoButton
+                            hoverEnabled: true
+                            anchors.fill: parent
+                        }
+
+                        Rectangle {
+                            id: controlBar
+
+                            color: "#b0000000"
+                            radius: 4
+                            width: controlRow.implicitWidth + 12
+                            height: 26
+                            visible: opacity > 0
+                            opacity: audioControls.active ? 1 : 0
+                            anchors.left: parent.left
+                            anchors.bottom: parent.bottom
+                            anchors.margins: 6
+
+                            Behavior on opacity {
+                                NumberAnimation { duration: 150 }
+                            }
+
+                            Row {
+                                id: controlRow
+
+                                spacing: 4
+                                anchors.centerIn: parent
+
+                                Image {
+                                    id: muteIcon
+
+                                    width: 18
+                                    height: 18
+                                    sourceSize: Qt.size(18, 18)
+                                    source: audioControls.muted ? "qrc:/images/volume-mute.svg" : "qrc:/images/volume.svg"
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    MouseArea {
+                                        enabled: audioControls.active
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+
+                                        onClicked: {
+                                            if (viewport.volume > 0) {
+                                                viewport.lastVolume = viewport.volume;
+                                                model.volume = 0;
+                                            } else {
+                                                model.volume = viewport.lastVolume > 0 ? viewport.lastVolume : 1;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                Slider {
+                                    id: volumeSlider
+
+                                    enabled: audioControls.active
+                                    from: 0
+                                    to: 1
+                                    value: viewport.volume
+                                    width: 80
+                                    anchors.verticalCenter: parent.verticalCenter
+
+                                    onMoved: {
+                                        model.volume = value;
+                                        if (value > 0) {
+                                            viewport.lastVolume = value;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     function indexAt(x, y) {
                         for (var i = 0; i < repeater.count; ++i) {
                             var itemTo = repeater.itemAt(i);
@@ -609,6 +768,7 @@ FocusScope {
             for (var i = 0; i < root.size.width * root.size.height; ++i) {
                 if (root.get(i).selected) {
                     model.get(i).url = "";
+                    model.get(i).subStreamUrl = "";
                     model.get(i).volume = 0;
                     model.get(i).avFormatOptions = layoutsCollectionSettings.toJSValue("defaultAVFormatOptions");
                 }
