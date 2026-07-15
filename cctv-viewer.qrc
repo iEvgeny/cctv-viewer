@@ -4,6 +4,7 @@
         <file>translations/cctv-viewer_ru_RU.qm</file>
         <file>src/RootWindow.qml</file>
         <file>src/SettingsDialog.qml</file>
+        <file>src/OnvifDialog.qml</file>
         <file>src/Player.qml</file>
         <file>src/ViewportsLayout.qml</file>
         <file>src/SideBar.qml</file>
@@ -31,6 +32,9 @@
         <file>src/PresetIndicator.qml</file>
         <file>images/play.svg</file>
         <file>images/pause.svg</file>
+        <file>images/menu-sources.svg</file>
+        <file>images/volume.svg</file>
+        <file>images/volume-mute.svg</file>
         <file>src/CursorShape.qml</file>
     </qresource>
 </RCC>

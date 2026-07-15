@@ -32,10 +32,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
          qml-module-qtqml-models2,
          qml-module-qtquick-controls,
          qml-module-qtquick-controls2,
+         qml-module-qtquick-templates2,
          qml-module-qtquick-window2,
          qml-module-qtquick-dialogs,
          qml-module-qt-labs-settings,
-         qml-module-qtmultimedia
+         qml-module-qtmultimedia,
+         qml-module-qtgraphicaleffects
 Description: CCTV Viewer - viewer and mounter video streams.
  A simple application for simultaneously viewing multiple video streams.
  Designed for high performance and low latency. Based on ffmpeg.

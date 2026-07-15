@@ -22,6 +22,7 @@ public:
     Q_ENUM(Visible)
 
     QMLAV_PROPERTY(QString, url, setUrl, urlChanged);
+    QMLAV_PROPERTY(QString, subStreamUrl, setSubStreamUrl, subStreamUrlChanged);
     QMLAV_PROPERTY(int, rowSpan, setRowSpan, rowSpanChanged) = 1;
     QMLAV_PROPERTY(int, columnSpan, setColumnSpan, columnSpanChanged) = 1;
     QMLAV_PROPERTY(ViewportsLayoutItem::Visible, visible, setVisible, visibleChanged) = Visible::Visible;

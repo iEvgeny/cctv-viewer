@@ -109,6 +109,15 @@ ApplicationWindow {
         category: "Viewport"
 
         property bool unmuteWhenFullScreen: false
+        // Master mute: silences every viewport without changing per-stream volume.
+        property bool audioMuted: false
+        // Video fit mode applied to every viewport (VideoOutput.fillMode):
+        // 0 = Stretch, 1 = Fit (letterbox), 2 = Fill (crop). Default: Fill, so
+        // streams auto-fit the tile without black bars in grid and full view.
+        property int fillMode: 2
+        // Stop streaming the hidden viewports a few seconds after one goes full
+        // screen, to save network bandwidth.
+        property bool bandwidthSaver: true
     }
 
     Settings {
@@ -137,6 +146,10 @@ ApplicationWindow {
                 }
             }
         }
+    }
+    Shortcut {
+        sequence: "Ctrl+M"
+        onActivated: viewportSettings.audioMuted = !viewportSettings.audioMuted
     }
     Shortcut {
         sequence: "Alt+Right"
@@ -309,6 +322,87 @@ ApplicationWindow {
 
     SettingsDialog {
         id: settingsDialog
+    }
+
+    OnvifDialog {
+        id: onvifDialog
+    }
+
+    FileIO {
+        id: fileIO
+    }
+
+    FileDialog {
+        id: exportDialog
+
+        title: qsTr("Export sources")
+        selectExisting: false
+        nameFilters: [qsTr("CCTV Viewer sources (*.json)"), qsTr("All files (*)")]
+        defaultSuffix: "json"
+
+        onAccepted: rootWindow.exportSources(fileUrl)
+    }
+
+    FileDialog {
+        id: importDialog
+
+        title: qsTr("Import sources")
+        selectExisting: true
+        nameFilters: [qsTr("CCTV Viewer sources (*.json)"), qsTr("All files (*)")]
+
+        onAccepted: rootWindow.importSources(fileUrl)
+    }
+
+    MessageDialog {
+        id: sourcesMessageDialog
+
+        standardButtons: MessageDialog.Ok
+    }
+
+    // Batch export of every preset and its sources to a JSON file.
+    function exportSources(fileUrl) {
+        var data = {
+            "version": 1,
+            "presets": layoutsCollectionModel.toJSValue()
+        };
+
+        if (!fileIO.write(fileUrl, JSON.stringify(data, null, 2))) {
+            sourcesMessageDialog.icon = StandardIcon.Critical;
+            sourcesMessageDialog.title = qsTr("Export failed");
+            sourcesMessageDialog.text = qsTr("Could not write the file: %1").arg(fileIO.error());
+            sourcesMessageDialog.open();
+        }
+    }
+
+    // Batch import that replaces the current presets/sources with those from a
+    // previously exported JSON file.
+    function importSources(fileUrl) {
+        var text = fileIO.read(fileUrl);
+
+        if (text.length === 0) {
+            sourcesMessageDialog.icon = StandardIcon.Critical;
+            sourcesMessageDialog.title = qsTr("Import failed");
+            sourcesMessageDialog.text = qsTr("Could not read the file: %1").arg(fileIO.error());
+            sourcesMessageDialog.open();
+            return;
+        }
+
+        try {
+            var data = JSON.parse(text);
+            var presets = (data.presets !== undefined) ? data.presets : data;
+
+            if (!(presets instanceof Array) || presets.length === 0) {
+                throw new Error(qsTr("The file does not contain any presets."));
+            }
+
+            layoutsCollectionModel.fromJSValue(presets);
+            stackLayout.currentIndex = stackLayout.currentIndex.clamp(0, layoutsCollectionModel.count - 1);
+        } catch(err) {
+            sourcesMessageDialog.icon = StandardIcon.Critical;
+            sourcesMessageDialog.title = qsTr("Import failed");
+            sourcesMessageDialog.text = qsTr("The file is not a valid sources file.");
+            sourcesMessageDialog.open();
+        }
     }
 
     CursorShape {
