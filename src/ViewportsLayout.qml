@@ -276,6 +276,14 @@ FocusScope {
                         }
                     }
                     onZoomEnabledChanged: {
+                        // The stream source is swapped between the sub and main
+                        // stream when zoomEnabled toggles (grid <-> full-size).
+                        // Grab the frame that is currently on screen so it can be
+                        // shown as a placeholder while the new stream loads: the
+                        // sub-stream frame stretched up to full size when
+                        // entering, and the main-stream frame scaled down to fit
+                        // the cell when returning to the grid.
+                        player.grabThumbnail();
                         if (!zoomEnabled) {
                             resetZoom();
                         }
