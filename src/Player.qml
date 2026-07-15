@@ -43,6 +43,12 @@ FocusScope {
             }
         } else {
             timer.stop();
+            // Remember the last frame before releasing the stream (e.g. the
+            // bandwidth saver stopping a hidden viewport) so it can be shown as
+            // a thumbnail when playback resumes.
+            if (qmlAvPlayer.status === MediaPlayer.Buffered) {
+                grabThumbnail();
+            }
             qmlAvPlayer.autoPlay = false;
             qmlAvPlayer.stop();
         }
@@ -60,13 +66,14 @@ FocusScope {
         }
     }
 
-    // Periodically remember the last displayed frame while the stream is
-    // playing so it can be used as a placeholder thumbnail when the stream is
-    // reloaded (grid <-> full-size/single view).
+    // Periodically refresh the remembered frame while the stream is playing so
+    // that if it drops and reconnects on its own we still have a recent frame
+    // to show. Source switches (grid <-> full-size) and stops are captured
+    // explicitly, so this only needs a coarse interval.
     Timer {
         id: thumbnailTimer
 
-        interval: 1000
+        interval: 2000
         repeat: true
         running: root.shouldPlay && qmlAvPlayer.status === MediaPlayer.Buffered
 
