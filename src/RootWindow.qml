@@ -359,8 +359,24 @@ ApplicationWindow {
         standardButtons: MessageDialog.Ok
     }
 
+    // Appends a ".json" extension when the user typed a file name without one.
+    // defaultSuffix is not honoured by every platform's file dialog, so we
+    // enforce it here as well.
+    function ensureJsonSuffix(fileUrl) {
+        var url = fileUrl.toString();
+        var name = url.substring(url.lastIndexOf("/") + 1);
+
+        if (name.indexOf(".") === -1) {
+            url += ".json";
+        }
+
+        return url;
+    }
+
     // Batch export of every preset and its sources to a JSON file.
     function exportSources(fileUrl) {
+        fileUrl = rootWindow.ensureJsonSuffix(fileUrl);
+
         var data = {
             "version": 1,
             "presets": layoutsCollectionModel.toJSValue()
