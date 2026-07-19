@@ -1,3 +1,12 @@
+cctv-viewer (0.1.9+git.ce96556) jammy; urgency=medium
+
+  * Rework debian packaging for broader Ubuntu compatibility
+  * Use system ffmpeg/Qt libraries instead of version-pinned deps
+  * Support Qt5 or Qt6 build alternatives
+  * Update debhelper compat to 12
+
+ -- ayourk <ayourk@gmail.com>  Fri, 13 Mar 2026 12:00:00 +0000
+
 cctv-viewer (0.1.9-0) jammy; urgency=medium
 
   * Deep refactoring
