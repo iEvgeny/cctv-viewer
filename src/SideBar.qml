@@ -230,9 +230,12 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
+                                ColumnLayout {
+                                    anchors.fill: parent
+
                                 GridLayout {
                                     columns: 2
-                                    anchors.fill: parent
+                                    Layout.fillWidth: true
 
                                     ListModel {
                                         id: divisionModel
@@ -360,6 +363,38 @@ FocusScope {
                                             }
                                         }
                                     }
+                                }
+
+                                GridLayout {
+                                    columns: 2
+                                    Layout.fillWidth: true
+
+                                    Text {
+                                        text: qsTr("Columns")
+                                        color: "white"
+                                    }
+                                    SpinBox {
+                                        id: columnsSpinBox
+                                        from: 1
+                                        to: 9
+                                        value: Utils.currentModel().size.width
+                                        Layout.fillWidth: true
+                                        onValueModified: Utils.currentModel().size = Qt.size(value, rowsSpinBox.value)
+                                    }
+
+                                    Text {
+                                        text: qsTr("Rows")
+                                        color: "white"
+                                    }
+                                    SpinBox {
+                                        id: rowsSpinBox
+                                        from: 1
+                                        to: 9
+                                        value: Utils.currentModel().size.height
+                                        Layout.fillWidth: true
+                                        onValueModified: Utils.currentModel().size = Qt.size(columnsSpinBox.value, value)
+                                    }
+                                }
                                 }
                             }
 
