@@ -1,20 +1,25 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.3
+import CCTV_Viewer.Themes 1.0
 import CCTV_Viewer.Utils 1.0
 
-Dialog {
+ThemedDialog {
     title: qsTr("Settings")
-    modality: Qt.ApplicationModal
-    standardButtons: StandardButton.Ok | StandardButton.Cancel
+    width: 530
+    height: 680
+    minimumWidth: 450
+    minimumHeight: 620
 
     onVisibleChanged: {
         if (visible) {
             loadSettings();
         }
     }
-    onAccepted: saveSettings()
+    onAccepted: {
+        saveSettings()
+        close()
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -106,7 +111,7 @@ Dialog {
                     CheckBox {
                         id: carouselRunningCheckBox
 
-                        text: qsTr("Run presets carousel with interval (sec.):")
+                        text: qsTr("Carousel interval (sec):")
 
                         Layout.fillWidth: true
                     }
