@@ -164,9 +164,9 @@ FocusScope {
                                 Text {
                                     text: {
                                         var v = `<b style=\"font-size: ${rootWindow.font.pointSize * 1.4}pt;\">v${Qt.application.version.replace(/\s/, "</b><br />")}`;
-                                        return `<a href=\"#\" style=\"color: white; text-decoration: none;\">${v}</a>`;
+                                        return `<a href=\"#\" style=\"color: ${Compact.sidebarText}; text-decoration: none;\">${v}</a>`;
                                     }
-                                    color: "white"
+                                    color: Compact.sidebarText
                                     textFormat: Text.RichText
                                     horizontalAlignment: Text.AlignHCenter
 
@@ -189,7 +189,7 @@ FocusScope {
 
                                 Text {
                                     text: "<a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>"
-                                    color: "white"
+                                    color: Compact.sidebarText
                                     font.pointSize: rootWindow.font.pointSize * 1.05
                                     textFormat: Text.RichText
                                     horizontalAlignment: Text.AlignHCenter
@@ -223,7 +223,7 @@ FocusScope {
 
                             GroupBox {
                                 title: qsTr("Window division")
-                                palette.windowText: "white"
+                                palette.windowText: Compact.sidebarGroupTitle
 
                                 // Disable controls when one of the viewports is in full-screen mode.
                                 enabled: !(Utils.currentLayout().fullScreenIndex >= 0)
@@ -365,7 +365,7 @@ FocusScope {
 
                             GroupBox {
                                 title: qsTr("Geometry")
-                                palette.windowText: "white"
+                                palette.windowText: Compact.sidebarGroupTitle
 
                                 Layout.fillWidth: true
 
@@ -411,7 +411,7 @@ FocusScope {
 
                             GroupBox {
                                 title: qsTr("Other")
-                                palette.windowText: "white"
+                                palette.windowText: Compact.sidebarGroupTitle
 
                                 Layout.fillWidth: true
 
@@ -488,7 +488,7 @@ FocusScope {
 
                                     Text {
                                         text: qsTr("FFmpeg options")
-                                        color: "white"
+                                        color: Compact.sidebarText
                                         font.pointSize: rootWindow.font.pointSize * 1.05
                                     }
 

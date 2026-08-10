@@ -24,7 +24,7 @@ T.Page {
 
     property url icon: ""
     property bool mirrorIcon: false
-    property color color: "white"
+    property color color: Compact.sidebarText
 
     property int state: SideBarItem.Compact
 
@@ -215,7 +215,7 @@ T.Page {
             Rectangle {
                 id: headerBackground
 
-                color: "#17a9ca"
+                color: Compact.sidebarActiveItem
                 visible: header.hovered || root.state === SideBarItem.Expanded || collapseAnimaton.running
                 opacity: visible ? 1 : 0
                 anchors.fill: parent

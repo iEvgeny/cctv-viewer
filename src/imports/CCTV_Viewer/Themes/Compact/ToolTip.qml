@@ -64,7 +64,7 @@ T.ToolTip {
         text: control.text
         font: control.font
         horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.Wrap
+        wrapMode: Text.NoWrap
         color: control.palette.toolTipText
     }
 
