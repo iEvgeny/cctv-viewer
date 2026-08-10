@@ -27,6 +27,8 @@
         <file alias="Compact/TextField.qml">src/imports/CCTV_Viewer/Themes/Compact/TextField.qml</file>
         <file alias="Compact/CheckBox.qml">src/imports/CCTV_Viewer/Themes/Compact/CheckBox.qml</file>
         <file alias="Compact/ToolTip.qml">src/imports/CCTV_Viewer/Themes/Compact/ToolTip.qml</file>
+        <file alias="Compact/ComboBox.qml">src/imports/CCTV_Viewer/Themes/Compact/ComboBox.qml</file>
+        <file alias="Compact/SpinBox.qml">src/imports/CCTV_Viewer/Themes/Compact/SpinBox.qml</file>
         <file>images/github.svg</file>
         <file>src/PresetIndicator.qml</file>
         <file>images/play.svg</file>
