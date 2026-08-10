@@ -1,10 +1,18 @@
 cctv-viewer for Debian
 ---------------------
 
-<this file describes information about the source package, see Debian policy
-manual section 4.14. You WILL either need to modify or delete this file>
+This package uses a git submodule (qmlav) for its FFmpeg/Qt integration
+layer. The submodule is located at src/qmlav/ and must be initialized
+before building:
 
+  git submodule update --init --recursive
 
+When building from a release tarball, the qmlav sources are included.
+When building from git, ensure the submodule is checked out at the
+correct commit.
+
+The build system uses CMake. Key build options:
+  -DCMAKE_BUILD_TYPE=RelWithDebInfo  (default for packaging)
+  -DPACKAGER=DEB                     (enables Debian-specific paths)
 
  -- Evgeny S Maksimov <admin@vragam.net>  Thu, 18 May 2017 09:53:57 +0300
-
