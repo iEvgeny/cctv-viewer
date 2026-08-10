@@ -18,6 +18,20 @@ Config::Config(const QString &fileName, QObject *parent)
     connect(this, &Config::logLevelChanged, this, &Config::reconfigureLoggingFilterRules);
 }
 
+QVariant Config::readSetting(const QString &group, const QString &key, const QVariant &defaultValue) const
+{
+    QSettings settings(m_fileName, QSettings::IniFormat);
+    settings.beginGroup(group);
+    return settings.value(key, defaultValue);
+}
+
+void Config::writeSetting(const QString &group, const QString &key, const QVariant &value)
+{
+    QSettings settings(m_fileName, QSettings::IniFormat);
+    settings.beginGroup(group);
+    settings.setValue(key, value);
+}
+
 void Config::reconfigureLoggingFilterRules()
 {
     QLoggingCategory::setFilterRules(QString("%1.critical=%2\n"
