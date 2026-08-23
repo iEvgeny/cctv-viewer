@@ -188,9 +188,22 @@ FocusScope {
                                 }
 
                                 Text {
-                                    text: "<a href=\"https://github.com/iEvgeny/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>"
+                                    text: "<a href=\"https://github.com/jahedcuet/cctv-viewer\"><img src=\"qrc:/images/github.svg\" width=\"180\"></a>"
                                     color: "white"
                                     font.pointSize: rootWindow.font.pointSize * 1.05
+                                    textFormat: Text.RichText
+                                    horizontalAlignment: Text.AlignHCenter
+
+                                    Layout.fillWidth: true
+
+                                    onLinkHovered: header.linkHovered(link)
+                                    onLinkActivated: Qt.openUrlExternally(link)
+                                }
+
+                                Text {
+                                    text: "<a href=\"https://github.com/jahedcuet/cctv-viewer\" style=\"color: white; text-decoration: none;\">jahedcuet/cctv-viewer</a>"
+                                    color: "white"
+                                    font.pointSize: rootWindow.font.pointSize * 0.95
                                     textFormat: Text.RichText
                                     horizontalAlignment: Text.AlignHCenter
 
@@ -415,7 +428,7 @@ FocusScope {
 
                                 Layout.fillWidth: true
 
-                                RowLayout {
+                                ColumnLayout {
                                     anchors.fill: parent
 
                                     Button {
@@ -425,6 +438,15 @@ FocusScope {
                                         Layout.fillWidth: true
 
                                         onClicked: Utils.currentLayout().mergeCells()
+                                    }
+
+                                    Button {
+                                        text: viewportSettings.audioMuted ? qsTr("Unmute all") : qsTr("Mute all")
+                                        highlighted: viewportSettings.audioMuted
+
+                                        Layout.fillWidth: true
+
+                                        onClicked: viewportSettings.audioMuted = !viewportSettings.audioMuted
                                     }
                                 }
                             }
@@ -456,14 +478,36 @@ FocusScope {
                                 enabled: rootSideBar.currentViewportIndex >= 0
                                 anchors.fill: parent
 
+                                Text {
+                                    text: qsTr("Main stream")
+                                    color: "white"
+                                    font.pointSize: rootWindow.font.pointSize * 1.05
+                                }
+
                                 TextField {
                                     text: enabled ? Utils.currentModel().get(currentViewportIndex).url : ""
-                                    placeholderText: qsTr("Url")
+                                    placeholderText: qsTr("rtsp:// main stream URL")
                                     selectByMouse: true
 
                                     Layout.fillWidth: true
 
                                     onEditingFinished: Utils.currentModel().get(currentViewportIndex).url = text
+                                }
+
+                                Text {
+                                    text: qsTr("Sub stream")
+                                    color: "white"
+                                    font.pointSize: rootWindow.font.pointSize * 1.05
+                                }
+
+                                TextField {
+                                    text: enabled ? Utils.currentModel().get(currentViewportIndex).subStreamUrl : ""
+                                    placeholderText: qsTr("rtsp:// sub stream URL (optional)")
+                                    selectByMouse: true
+
+                                    Layout.fillWidth: true
+
+                                    onEditingFinished: Utils.currentModel().get(currentViewportIndex).subStreamUrl = text
                                 }
 
                                 Button {
@@ -479,6 +523,28 @@ FocusScope {
                                         } else {
                                             Utils.currentModel().get(currentViewportIndex).volume = 1;
                                         }
+                                    }
+                                }
+
+                                RowLayout {
+                                    Layout.fillWidth: true
+
+                                    Text {
+                                        text: qsTr("Volume")
+                                        color: "white"
+                                    }
+
+                                    Slider {
+                                        id: viewportVolumeSlider
+
+                                        enabled: currentViewportIndex >= 0 ? Utils.currentLayout().get(currentViewportIndex).hasAudio : false
+                                        from: 0
+                                        to: 1
+                                        value: enabled ? Utils.currentModel().get(currentViewportIndex).volume : 0
+
+                                        Layout.fillWidth: true
+
+                                        onMoved: Utils.currentModel().get(currentViewportIndex).volume = value
                                     }
                                 }
 
@@ -521,6 +587,67 @@ FocusScope {
                                             return Utils.stringifyOptions(options);
                                         }
 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    SideBarItem {
+                        objectName: "sources"
+                        icon: "qrc:/images/menu-sources.svg"
+                        title: qsTr("Sources")
+
+                        Layout.fillWidth: true
+
+                        Frame {
+                            anchors.fill: parent
+
+                            ColumnLayout {
+                                anchors.fill: parent
+
+                                GroupBox {
+                                    title: qsTr("ONVIF")
+                                    palette.windowText: "white"
+
+                                    Layout.fillWidth: true
+
+                                    ColumnLayout {
+                                        anchors.fill: parent
+
+                                        Button {
+                                            text: qsTr("Add camera / NVR…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: onvifDialog.open()
+                                        }
+                                    }
+                                }
+
+                                GroupBox {
+                                    title: qsTr("Batch")
+                                    palette.windowText: "white"
+
+                                    Layout.fillWidth: true
+
+                                    GridLayout {
+                                        columns: 2
+                                        anchors.fill: parent
+
+                                        Button {
+                                            text: qsTr("Import…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: importDialog.open()
+                                        }
+                                        Button {
+                                            text: qsTr("Export…")
+
+                                            Layout.fillWidth: true
+
+                                            onClicked: exportDialog.open()
+                                        }
                                     }
                                 }
                             }

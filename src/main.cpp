@@ -7,6 +7,8 @@
 #include "context.h"
 #include "eventfilter.h"
 #include "clipboard.h"
+#include "fileio.h"
+#include "onvif.h"
 #include "singleapplication.h"
 #include "context.h"
 #include "viewportslayoutscollectionmodel.h"
@@ -30,6 +32,9 @@ void registerQmlTypes()
     });
 
     qmlRegisterType<QmlAVPlayer>("CCTV_Viewer.Multimedia", 1, 0, "QmlAVPlayer");
+    qmlRegisterType<FileIO>("CCTV_Viewer.Utils", 1, 0, "FileIO");
+    qmlRegisterType<OnvifDevice>("CCTV_Viewer.Onvif", 1, 0, "OnvifDevice");
+    qmlRegisterType<OnvifDiscovery>("CCTV_Viewer.Onvif", 1, 0, "OnvifDiscovery");
     qmlRegisterType<ViewportsLayoutItem>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutItem");
     qmlRegisterType<ViewportsLayoutModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutModel");
     qmlRegisterType<ViewportsLayoutsCollectionModel>("CCTV_Viewer.Models", 1, 0, "ViewportsLayoutsCollectionModel");
