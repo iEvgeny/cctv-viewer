@@ -455,6 +455,50 @@ FocusScope {
                                 NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
                             }
                         }
+                        
+                        Rectangle {
+                            id: labelBackground
+                            anchors.left: parent.left
+                            anchors.top: parent.top
+                            anchors.leftMargin: 0
+                                                        
+                            states: [
+                                State {
+                                    name: "centered"
+                                    when: viewport.fullScreen
+                                    AnchorChanges {
+                                        target: labelBackground
+                                        anchors.left: undefined
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                    }
+                                }
+                            ]
+
+                            // Ajusta o tamanho baseado no texto + preenchimento (padding)
+                            width: infoText.width + 10
+                            height: infoText.height + 6
+                            
+                            color: "#80000000"
+                            radius: 0
+
+                            Text {
+                                id: infoText
+                                anchors.centerIn: parent
+                                
+                                // Aqui fazemos a concatenação que você pediu
+                                text: (model.name ? model.name : "") + ( model.name && model.description ? " | " : "") + (model.description ? model.description : "")
+                                
+                                color: "white"
+                                font.pixelSize: 11
+                                font.bold: false
+                                
+                                // Garante que o texto não "quebre" se for muito longo
+                                elide: Text.ElideRight 
+                            }
+
+                            // Torna a etiqueta invisível se não houver texto em nenhum dos campos
+                            visible: model.name !== "" || model.description !== ""
+                        }
                     }
 
                     Rectangle {
