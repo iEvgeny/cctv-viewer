@@ -37,37 +37,37 @@
 <context>
     <name>Player</name>
     <message>
-        <location filename="../src/Player.qml" line="93"/>
+        <location filename="../src/Player.qml" line="96"/>
         <source>No media</source>
         <translation>Нет источника</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="96"/>
+        <location filename="../src/Player.qml" line="99"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="99"/>
+        <location filename="../src/Player.qml" line="102"/>
         <source>Loaded</source>
         <translation>Загружено</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="104"/>
+        <location filename="../src/Player.qml" line="107"/>
         <source>Stalled</source>
         <translation>Застопорено</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="109"/>
+        <location filename="../src/Player.qml" line="112"/>
         <source>End of media</source>
         <translation>Конец источника</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="112"/>
+        <location filename="../src/Player.qml" line="115"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/Player.qml" line="120"/>
+        <location filename="../src/Player.qml" line="123"/>
         <source>Buffering %1%</source>
         <translation>Буферизация %1%</translation>
     </message>
@@ -235,12 +235,17 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="490"/>
+        <location filename="../src/SideBar.qml" line="480"/>
+        <source>Use alternate URL when maximized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="511"/>
         <source>FFmpeg options</source>
         <translation>Опции FFmpeg</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="576"/>
+        <location filename="../src/SideBar.qml" line="597"/>
         <source>Press and hold to enter delete mode</source>
         <translation>Нажмите и удерживайте,
 чтобы войти в режим удаления</translation>
@@ -256,48 +261,53 @@
         <translation>Скопировано в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="470"/>
+        <location filename="../src/SideBar.qml" line="471"/>
+        <source>Alternate URL (loaded on demand when maximized)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/SideBar.qml" line="491"/>
         <source>Mute</source>
         <translation>Отключение звука</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="532"/>
+        <location filename="../src/SideBar.qml" line="553"/>
         <source>Presets</source>
         <translation>Пресеты</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="576"/>
+        <location filename="../src/SideBar.qml" line="597"/>
         <source>Press and hold to exit delete mode</source>
         <translation>Нажмите и удерживайте,
 чтобы выйти из режима удаления</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="595"/>
+        <location filename="../src/SideBar.qml" line="616"/>
         <source>Are you sure?</source>
         <translation>Вы уверены?</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="597"/>
+        <location filename="../src/SideBar.qml" line="618"/>
         <source>Are you sure you want to delete preset #%1?</source>
         <translation>Вы уверены, что хотите удалить пресет №%1?</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="598"/>
+        <location filename="../src/SideBar.qml" line="619"/>
         <source>It&apos;s an irreversible procedure. Be careful!</source>
         <translation>Это необратимая процедура. Будьте внимательны!</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="608"/>
+        <location filename="../src/SideBar.qml" line="629"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="621"/>
+        <location filename="../src/SideBar.qml" line="642"/>
         <source>Expand</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../src/SideBar.qml" line="621"/>
+        <location filename="../src/SideBar.qml" line="642"/>
         <source>Collapse</source>
         <translation>Свернуть</translation>
     </message>
@@ -313,7 +323,7 @@
 <context>
     <name>ViewportsLayout</name>
     <message>
-        <location filename="../src/ViewportsLayout.qml" line="271"/>
+        <location filename="../src/ViewportsLayout.qml" line="324"/>
         <source>F</source>
         <comment>Shortcut</comment>
         <translation>А</translation>

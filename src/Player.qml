@@ -10,14 +10,17 @@ FocusScope {
 
     property var avOptions: ({})
 
+    property bool playing: true
+
     property alias loops: qmlAvPlayer.loops
     property alias source: qmlAvPlayer.source
     property alias muted: qmlAvPlayer.muted
     property alias volume: qmlAvPlayer.volume
+    readonly property alias status: qmlAvPlayer.status
     readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
-    onVisibleChanged: {
-        if (visible) {
+    onPlayingChanged: {
+        if (playing) {
             if (!timer.running) {
                 timer.start();
             }
@@ -28,7 +31,7 @@ FocusScope {
         }
     }
     Component.onCompleted: {
-        if (visible) {
+        if (playing) {
             timer.start();
         }
     }
@@ -39,7 +42,7 @@ FocusScope {
         interval: 50
 
         onTriggered: {
-            if (root.visible) {
+            if (root.playing) {
                 qmlAvPlayer.autoPlay = true;
             }
         }

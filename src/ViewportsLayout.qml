@@ -195,6 +195,8 @@ FocusScope {
                     readonly property alias selected: d2.selected
 
                     readonly property alias url: d2.url
+                    readonly property alias altUrl: d2.altUrl
+                    readonly property alias useAltUrl: d2.useAltUrl
                     readonly property alias column: d2.column
                     readonly property alias row: d2.row
                     readonly property alias columnSpan: d2.columnSpan
@@ -207,7 +209,48 @@ FocusScope {
                     readonly property alias bottomIndex: d2.bottomIndex
                     readonly property alias leftIndex: d2.leftIndex
 
-                    readonly property alias hasAudio: player.hasAudio
+                    readonly property alias hasAudio: playerContainer.showingHasAudio
+
+                    // Transition state for gapless alt-URL switching.
+                    // "primary" or "alt" — which slot is currently visible.
+                    property string showingUrl: "primary"
+                    // The URL we want to transition to ("" when not transitioning).
+                    property string pendingUrl: ""
+                    readonly property bool transitioning: pendingUrl !== ""
+                    // Set briefly when the alt stream fails to load.
+                    property real altFailedAt: -1
+
+                    function desiredUrl() {
+                        return (useAltUrl && fullScreen && altUrl && altUrl.toString().length > 0) ? "alt" : "primary";
+                    }
+
+                    function updateTransition() {
+                        var desired = desiredUrl();
+                        if (desired === showingUrl) {
+                            pendingUrl = "";
+                            return;
+                        }
+                        if (desired === pendingUrl) {
+                            return;
+                        }
+                        pendingUrl = desired;
+                    }
+
+                    function commitTransition() {
+                        if (pendingUrl === "") {
+                            return;
+                        }
+                        showingUrl = pendingUrl;
+                        pendingUrl = "";
+                    }
+
+                    function cancelTransitionWithError() {
+                        pendingUrl = "";
+                        altFailedAt = Date.now();
+                    }
+
+                    onUseAltUrlChanged: updateTransition()
+                    onAltUrlChanged: updateTransition()
 
                     states: [
                         State {
@@ -251,6 +294,7 @@ FocusScope {
                         if (!fullScreen) {
                             resetZoom();
                         }
+                        updateTransition();
                     }
                     onZoomEnabledChanged: {
                         if (!zoomEnabled) {
@@ -372,6 +416,8 @@ FocusScope {
                         property bool selected: d.selectionContains(model.index)
 
                         property url url: model.url
+                        property url altUrl: model.altUrl
+                        property bool useAltUrl: model.useAltUrl
                         property int column: d.columnFromIndex(model.index)
                         property int row: d.rowFromIndex(model.index)
                         property int columnSpan: model.columnSpan
@@ -426,25 +472,42 @@ FocusScope {
                         anchors.fill: parent
                         clip: true
 
+                        readonly property bool showingIsPrimary: viewport.showingUrl === "primary"
+                        readonly property bool showingHasAudio: showingIsPrimary ? primarySlot.hasAudio : altSlot.hasAudio
+
+                        // Apply the viewport's zoom transform to whichever slot is visible.
+                        property real playerScale: viewport.zoomEnabled ? viewport.zoomScale : 1.0
+                        property real playerX: viewport.zoomEnabled ? viewport.panX : 0
+                        property real playerY: viewport.zoomEnabled ? viewport.panY : 0
+
+                        function slotVolume(slotVisible) {
+                            if (!slotVisible) return 0;
+                            return Math.max(viewport.volume,
+                                             root.fullScreenIndex === index &&
+                                             viewportSettings.unmuteWhenFullScreen);
+                        }
+
                         Player {
-                            id: player
+                            id: primarySlot
 
                             color: root.color
                             source: viewport.url
-                            volume: Math.max(viewport.volume, root.fullScreenIndex === index && viewportSettings.unmuteWhenFullScreen)
                             avOptions: viewport.avFormatOptions
                             loops: MediaPlayer.Infinite
-                            
-                            // Apply zoom transformation when zoom is enabled
-                            scale: viewport.zoomEnabled ? viewport.zoomScale : 1.0
-                            transformOrigin: Item.TopLeft
-                            
-                            x: viewport.zoomEnabled ? viewport.panX : 0
-                            y: viewport.zoomEnabled ? viewport.panY : 0
-                            
+                            playing: viewport.showingUrl === "primary" ||
+                                     (viewport.transitioning && viewport.pendingUrl === "primary")
+                            visible: viewport.showingUrl === "primary"
+                            volume: playerContainer.slotVolume(visible)
+                            z: visible ? 1 : 0
+
                             width: parent.width
                             height: parent.height
-                            
+
+                            scale: playerContainer.playerScale
+                            transformOrigin: Item.TopLeft
+                            x: playerContainer.playerX
+                            y: playerContainer.playerY
+
                             Behavior on scale {
                                 NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
                             }
@@ -453,6 +516,80 @@ FocusScope {
                             }
                             Behavior on y {
                                 NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+
+                            onStatusChanged: {
+                                if (status === MediaPlayer.Buffered &&
+                                    viewport.transitioning &&
+                                    viewport.pendingUrl === "primary") {
+                                    viewport.commitTransition();
+                                }
+                            }
+                        }
+
+                        Player {
+                            id: altSlot
+
+                            color: root.color
+                            source: viewport.altUrl
+                            avOptions: viewport.avFormatOptions
+                            loops: MediaPlayer.Infinite
+                            playing: viewport.showingUrl === "alt" ||
+                                     (viewport.transitioning && viewport.pendingUrl === "alt")
+                            visible: viewport.showingUrl === "alt"
+                            volume: playerContainer.slotVolume(visible)
+                            z: visible ? 1 : 0
+
+                            width: parent.width
+                            height: parent.height
+
+                            scale: playerContainer.playerScale
+                            transformOrigin: Item.TopLeft
+                            x: playerContainer.playerX
+                            y: playerContainer.playerY
+
+                            Behavior on scale {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+                            Behavior on x {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+                            Behavior on y {
+                                NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
+                            }
+
+                            onStatusChanged: {
+                                if (status === MediaPlayer.Buffered &&
+                                    viewport.transitioning &&
+                                    viewport.pendingUrl === "alt") {
+                                    viewport.commitTransition();
+                                } else if (status === MediaPlayer.InvalidMedia &&
+                                           viewport.transitioning &&
+                                           viewport.pendingUrl === "alt") {
+                                    viewport.cancelTransitionWithError();
+                                }
+                            }
+                        }
+
+                        // Brief red-dot indicator when the alt stream fails to load.
+                        Rectangle {
+                            anchors.top: parent.top
+                            anchors.right: parent.right
+                            anchors.topMargin: 8
+                            anchors.rightMargin: 8
+                            width: 12
+                            height: 12
+                            radius: 6
+                            color: "#ff4040"
+                            visible: viewport.altFailedAt > 0
+                            opacity: visible ? 1 : 0
+                            z: 2
+                            Behavior on opacity { NumberAnimation { duration: 500 } }
+
+                            Timer {
+                                interval: 3000
+                                running: viewport.altFailedAt > 0
+                                onTriggered: viewport.altFailedAt = -1
                             }
                         }
                     }

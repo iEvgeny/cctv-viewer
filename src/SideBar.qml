@@ -466,6 +466,27 @@ FocusScope {
                                     onEditingFinished: Utils.currentModel().get(currentViewportIndex).url = text
                                 }
 
+                                TextField {
+                                    text: enabled ? Utils.currentModel().get(currentViewportIndex).altUrl : ""
+                                    placeholderText: qsTr("Alternate URL (loaded on demand when maximized)")
+                                    selectByMouse: true
+
+                                    Layout.fillWidth: true
+
+                                    onEditingFinished: Utils.currentModel().get(currentViewportIndex).altUrl = text
+                                }
+
+                                CheckBox {
+                                    text: qsTr("Use alternate URL when maximized")
+                                    checked: enabled ? Utils.currentModel().get(currentViewportIndex).useAltUrl : false
+                                    enabled: rootSideBar.currentViewportIndex >= 0 &&
+                                             Utils.currentModel().get(currentViewportIndex).altUrl.toString().length > 0
+
+                                    Layout.fillWidth: true
+
+                                    onToggled: Utils.currentModel().get(currentViewportIndex).useAltUrl = checked
+                                }
+
                                 Button {
                                     text: qsTr("Mute")
                                     enabled: currentViewportIndex >= 0 ? Utils.currentLayout().get(currentViewportIndex).hasAudio : false
