@@ -244,13 +244,28 @@ FocusScope {
                         pendingUrl = "";
                     }
 
-                    function cancelTransitionWithError() {
+                    // Called when the incoming slot cannot provide a picture.
+                    // Keeps the currently visible slot on screen and clears the model
+                    // flag when it was the alt stream that failed, so the sidebar
+                    // checkbox does not claim a stream that is not displayed.
+                    function abortTransition() {
+                        if (pendingUrl === "alt") {
+                            altFailedAt = Date.now();
+                            root.model.get(model.index).useAltUrl = false;
+                        }
                         pendingUrl = "";
-                        altFailedAt = Date.now();
                     }
 
                     onUseAltUrlChanged: updateTransition()
                     onAltUrlChanged: updateTransition()
+
+                    // An incoming slot that never presents a frame (unreachable host,
+                    // stalled demuxer) must not leave the viewport stuck in transition.
+                    Timer {
+                        interval: 15000
+                        running: viewport.transitioning
+                        onTriggered: viewport.abortTransition()
+                    }
 
                     states: [
                         State {
@@ -518,11 +533,23 @@ FocusScope {
                                 NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
                             }
 
-                            onStatusChanged: {
-                                if (status === MediaPlayer.Buffered &&
+                            // Commit only once the incoming stream has a picture:
+                            // MediaPlayer.Buffered is reported as soon as the demuxer
+                            // is open, before the first frame has been decoded.
+                            onHasVideoChanged: {
+                                if (hasVideo &&
                                     viewport.transitioning &&
                                     viewport.pendingUrl === "primary") {
                                     viewport.commitTransition();
+                                }
+                            }
+
+                            onStatusChanged: {
+                                if ((status === MediaPlayer.InvalidMedia ||
+                                     status === MediaPlayer.NoMedia) &&
+                                    viewport.transitioning &&
+                                    viewport.pendingUrl === "primary") {
+                                    viewport.abortTransition();
                                 }
                             }
                         }
@@ -558,15 +585,20 @@ FocusScope {
                                 NumberAnimation { duration: 100; easing.type: Easing.OutQuad }
                             }
 
-                            onStatusChanged: {
-                                if (status === MediaPlayer.Buffered &&
+                            onHasVideoChanged: {
+                                if (hasVideo &&
                                     viewport.transitioning &&
                                     viewport.pendingUrl === "alt") {
                                     viewport.commitTransition();
-                                } else if (status === MediaPlayer.InvalidMedia &&
-                                           viewport.transitioning &&
-                                           viewport.pendingUrl === "alt") {
-                                    viewport.cancelTransitionWithError();
+                                }
+                            }
+
+                            onStatusChanged: {
+                                if ((status === MediaPlayer.InvalidMedia ||
+                                     status === MediaPlayer.NoMedia) &&
+                                    viewport.transitioning &&
+                                    viewport.pendingUrl === "alt") {
+                                    viewport.abortTransition();
                                 }
                             }
                         }

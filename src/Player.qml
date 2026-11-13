@@ -17,6 +17,7 @@ FocusScope {
     property alias muted: qmlAvPlayer.muted
     property alias volume: qmlAvPlayer.volume
     readonly property alias status: qmlAvPlayer.status
+    readonly property alias hasVideo: qmlAvPlayer.hasVideo
     readonly property alias hasAudio: qmlAvPlayer.hasAudio
 
     onPlayingChanged: {

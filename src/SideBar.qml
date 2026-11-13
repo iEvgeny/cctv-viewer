@@ -476,11 +476,13 @@ FocusScope {
                                     onEditingFinished: Utils.currentModel().get(currentViewportIndex).altUrl = text
                                 }
 
+                                // Kept usable without an alt URL so the checkbox always
+                                // reflects the stored model value; the swap itself is a
+                                // no-op until altUrl is set (see ViewportsLayout).
                                 CheckBox {
                                     text: qsTr("Use alternate URL when maximized")
                                     checked: enabled ? Utils.currentModel().get(currentViewportIndex).useAltUrl : false
-                                    enabled: rootSideBar.currentViewportIndex >= 0 &&
-                                             Utils.currentModel().get(currentViewportIndex).altUrl.toString().length > 0
+                                    enabled: rootSideBar.currentViewportIndex >= 0
 
                                     Layout.fillWidth: true
 
