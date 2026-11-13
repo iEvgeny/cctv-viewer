@@ -166,6 +166,14 @@ set(PROJ_FILES
 
 set(QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/src/imports" CACHE STRING "Additional import path used to resolve QML modules in Qt Creator's code model")
 
+# GCC 16 reports a spurious maybe-uninitialized warning in qmlavformat.cpp.
+# Dev builds pass -Werror, so it breaks the build of both the application and
+# the qmlav unit tests; the offending code lives in the pinned upstream
+# submodule, so downgrade just this diagnostic instead of patching it here.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16)
+    add_compile_options(-Wno-error=maybe-uninitialized)
+endif()
+
 add_subdirectory(src/qmlav)
 
 if (ANDROID)
